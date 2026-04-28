@@ -1,0 +1,1786 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Deutsch im Bärn 🐻</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --card: #1c2128;
+  --border: #30363d;
+  --text: #e6edf3;
+  --muted: #7d8590;
+  --masc: #4493f8;
+  --fem: #f85149;
+  --neut: #3fb950;
+  --gold: #d29922;
+  --bear: #e8a838;
+  --radius: 16px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+/* SCREENS */
+.screen { display: none; min-height: 100vh; padding-bottom: 80px; }
+.screen.active { display: block; }
+
+/* ── WELCOME ── */
+#welcome {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 100vh; padding: 40px 24px; text-align: center;
+  background: radial-gradient(ellipse at top, #1a2744 0%, #0d1117 60%);
+}
+.welcome-bear { font-size: 5rem; animation: bearBob 3s ease-in-out infinite; display: block; margin-bottom: 16px; }
+@keyframes bearBob { 0%,100%{transform:translateY(0) rotate(-3deg)} 50%{transform:translateY(-10px) rotate(3deg)} }
+.welcome-title { font-family:'Playfair Display',serif; font-size:2.6rem; font-weight:900; line-height:1.1; margin-bottom:8px; }
+.welcome-title span { color:var(--bear); }
+.welcome-sub { color:var(--muted); font-size:0.95rem; margin-bottom:8px; }
+.welcome-tagline { font-style:italic; color:var(--gold); font-size:0.85rem; margin-bottom:36px; }
+.track-cards { display:flex; flex-direction:column; gap:14px; width:100%; max-width:360px; }
+.track-card {
+  background:var(--surface); border:2px solid var(--border); border-radius:20px;
+  padding:20px; cursor:pointer; transition:all 0.25s; text-align:left;
+}
+.track-card:hover { transform:translateY(-3px); }
+.track-card.leben:hover { border-color:var(--bear); }
+.track-card.kinder:hover { border-color:#ff9ecd; }
+.track-card.work:hover { border-color:var(--neut); }
+.track-emoji { font-size:2rem; margin-bottom:8px; display:block; }
+.track-name { font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:700; margin-bottom:4px; }
+.track-name.leben { color:var(--bear); }
+.track-name.kinder { color:#ff9ecd; }
+.track-name.work { color:var(--neut); }
+.track-desc { font-size:0.8rem; color:var(--muted); line-height:1.4; }
+
+/* ── PLACEMENT TEST ── */
+#placement {
+  display:flex; flex-direction:column; align-items:center;
+  padding:32px 20px; min-height:100vh;
+}
+.placement-header { text-align:center; margin-bottom:28px; width:100%; }
+.placement-header h2 { font-family:'Playfair Display',serif; font-size:1.8rem; margin-bottom:8px; }
+.placement-header p { color:var(--muted); font-size:0.88rem; }
+.pt-progress { width:100%; max-width:400px; margin-bottom:20px; }
+.pt-bar { height:6px; background:var(--border); border-radius:99px; overflow:hidden; margin-bottom:8px; }
+.pt-fill { height:100%; background:linear-gradient(90deg,var(--bear),var(--gold)); border-radius:99px; transition:width 0.4s; }
+.pt-label { font-size:0.78rem; color:var(--muted); text-align:center; }
+.pt-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:28px 20px; text-align:center; width:100%; max-width:400px; margin-bottom:16px; }
+.pt-word { font-family:'Playfair Display',serif; font-size:2rem; font-weight:700; margin-bottom:6px; }
+.pt-trans { font-size:0.85rem; color:var(--muted); margin-bottom:4px; }
+.pt-level-tag { font-size:0.7rem; padding:3px 10px; border-radius:99px; background:rgba(232,168,56,0.15); color:var(--bear); }
+.pt-options { display:grid; grid-template-columns:1fr 1fr; gap:10px; width:100%; max-width:400px; margin-bottom:12px; }
+.pt-opt {
+  padding:16px; border-radius:12px; border:2px solid var(--border);
+  background:var(--surface); font-family:'Playfair Display',serif;
+  font-size:1.5rem; font-weight:700; cursor:pointer; transition:all 0.2s;
+}
+.pt-opt.der { color:var(--masc); } .pt-opt.die { color:var(--fem); } .pt-opt.das { color:var(--neut); } .pt-opt.ein { color:var(--gold); }
+.pt-opt.correct { background:rgba(63,185,80,0.15); border-color:var(--neut); }
+.pt-opt.wrong { background:rgba(248,81,73,0.15); border-color:var(--fem); }
+.pt-feedback { font-size:0.85rem; font-weight:600; text-align:center; min-height:20px; }
+.pt-feedback.ok { color:var(--neut); } .pt-feedback.no { color:var(--fem); }
+.pt-skip { background:transparent; border:none; color:var(--muted); font-family:'Nunito',sans-serif; font-size:0.82rem; cursor:pointer; text-decoration:underline; margin-top:8px; }
+
+/* ── LEVEL SELECT ── */
+#levelselect { padding:24px 16px; }
+.ls-header { margin-bottom:24px; }
+.ls-header h2 { font-family:'Playfair Display',serif; font-size:1.6rem; margin-bottom:4px; }
+.ls-header p { color:var(--muted); font-size:0.85rem; }
+.ls-back { background:transparent; border:none; color:var(--muted); font-family:'Nunito',sans-serif; font-size:0.85rem; cursor:pointer; margin-bottom:16px; display:flex; align-items:center; gap:6px; }
+.level-cards { display:flex; flex-direction:column; gap:12px; }
+.level-card {
+  background:var(--surface); border:2px solid var(--border);
+  border-radius:var(--radius); padding:20px; cursor:pointer; transition:all 0.25s;
+  display:flex; align-items:center; gap:16px;
+}
+.level-card:hover:not(.locked-level) { transform:translateX(4px); }
+.level-card.locked-level { opacity:0.4; cursor:not-allowed; }
+.level-card.current-level { border-color:var(--bear); }
+.lc-emoji { font-size:2.2rem; flex-shrink:0; }
+.lc-info { flex:1; }
+.lc-name { font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:700; margin-bottom:2px; }
+.lc-sub { font-size:0.78rem; color:var(--muted); }
+.lc-badge { font-size:0.7rem; font-weight:700; padding:4px 10px; border-radius:99px; }
+.lc-badge.active { background:var(--bear); color:#000; }
+.lc-badge.done { background:var(--neut); color:#000; }
+.lc-badge.locked { background:var(--border); color:var(--muted); }
+
+/* ── LOCATION MAP ── */
+#locationmap { padding:16px 16px; }
+.lm-header { margin-bottom:16px; display:flex; align-items:center; gap:12px; }
+.lm-back { background:transparent; border:none; color:var(--muted); font-family:'Nunito',sans-serif; font-size:0.85rem; cursor:pointer; }
+.lm-title { font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:700; }
+.lm-level-tag { font-size:0.72rem; padding:4px 10px; border-radius:99px; background:rgba(232,168,56,0.15); color:var(--bear); }
+.loc-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.loc-card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); padding:16px 14px; cursor:pointer; transition:all 0.25s;
+  position:relative; overflow:hidden;
+}
+.loc-card:hover:not(.loc-locked) { transform:translateY(-3px); border-color:var(--bear); }
+.loc-card.loc-locked { opacity:0.45; cursor:not-allowed; }
+.loc-card.loc-done { border-color:var(--neut); }
+.loc-emoji { font-size:2rem; display:block; margin-bottom:8px; }
+.loc-name { font-weight:800; font-size:0.88rem; line-height:1.3; margin-bottom:3px; }
+.loc-sub { font-size:0.7rem; color:var(--muted); }
+.loc-status { position:absolute; top:10px; right:10px; font-size:0.65rem; font-weight:700; padding:3px 7px; border-radius:99px; }
+.loc-status.new-s { background:var(--bear); color:#000; }
+.loc-status.done-s { background:var(--neut); color:#000; }
+.loc-status.lock-s { background:var(--border); color:var(--muted); }
+
+/* ── MODULE ── */
+#module { padding:0; }
+.mod-hero { position:relative; height:180px; display:flex; align-items:flex-end; padding:20px; overflow:hidden; }
+.mod-hero-bg { position:absolute; inset:0; font-size:8rem; display:flex; align-items:center; justify-content:center; opacity:0.12; filter:blur(3px); }
+.mod-hero-content { position:relative; z-index:1; }
+.mod-hero h2 { font-family:'Playfair Display',serif; font-size:1.8rem; font-weight:900; line-height:1.1; }
+.mod-hero p { color:var(--muted); font-size:0.82rem; margin-top:4px; }
+.mod-back { position:absolute; top:16px; left:16px; z-index:10; background:rgba(0,0,0,0.6); border:1px solid var(--border); color:var(--text); padding:8px 14px; border-radius:99px; font-family:'Nunito',sans-serif; font-size:0.82rem; font-weight:700; cursor:pointer; }
+.mod-tabs { display:flex; border-bottom:1px solid var(--border); overflow-x:auto; padding:0 16px; gap:2px; scrollbar-width:none; }
+.mod-tabs::-webkit-scrollbar { display:none; }
+.mtab { padding:12px 14px; font-family:'Nunito',sans-serif; font-size:0.8rem; font-weight:700; color:var(--muted); background:transparent; border:none; border-bottom:2px solid transparent; cursor:pointer; white-space:nowrap; transition:all 0.2s; }
+.mtab.active { color:var(--bear); border-bottom-color:var(--bear); }
+.mod-content { padding:20px 16px; }
+
+/* ── QUIZ / FLASHCARD / BLANK shared ── */
+.ex-wrap { display:flex; flex-direction:column; align-items:center; gap:14px; }
+.prog-track { width:100%; height:4px; background:var(--border); border-radius:99px; overflow:hidden; }
+.prog-fill { height:100%; background:linear-gradient(90deg,var(--bear),var(--gold)); border-radius:99px; transition:width 0.4s; }
+.score-row { display:flex; gap:14px; font-size:0.8rem; font-weight:700; align-self:flex-start; }
+.sc { color:var(--neut); } .sw { color:var(--fem); } .sn { color:var(--muted); }
+.q-card { width:100%; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:28px 20px; text-align:center; }
+.qword { font-family:'Playfair Display',serif; font-size:2.2rem; font-weight:700; margin-bottom:6px; }
+.qtrans { font-size:0.85rem; color:var(--muted); }
+.opts { display:grid; grid-template-columns:1fr 1fr; gap:10px; width:100%; }
+.opt { padding:18px; border-radius:12px; border:2px solid var(--border); background:var(--surface); font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:700; cursor:pointer; transition:all 0.2s; }
+.opt:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 4px 20px rgba(0,0,0,0.3); }
+.opt.der-o { color:var(--masc); } .opt.die-o { color:var(--fem); } .opt.das-o { color:var(--neut); } .opt.ein-o { color:var(--gold); }
+.opt.correct-a { background:rgba(63,185,80,0.15); border-color:var(--neut); }
+.opt.wrong-a { background:rgba(248,81,73,0.15); border-color:var(--fem); }
+.fb-box { width:100%; padding:14px 16px; border-radius:12px; font-size:0.85rem; font-weight:600; line-height:1.5; min-height:52px; display:flex; align-items:center; transition:all 0.3s; }
+.fb-box.ok { background:rgba(63,185,80,0.1); border:1px solid var(--neut); color:var(--neut); }
+.fb-box.no { background:rgba(248,81,73,0.1); border:1px solid var(--fem); color:#ff8080; }
+.fb-box.empty { background:transparent; border:1px solid transparent; }
+
+/* flashcard */
+.card-scene { width:100%; height:200px; perspective:1000px; cursor:pointer; }
+.card-inner { width:100%; height:100%; position:relative; transform-style:preserve-3d; transition:transform 0.5s cubic-bezier(.4,2,.55,1); }
+.card-scene.flipped .card-inner { transform:rotateY(180deg); }
+.card-face { position:absolute; inset:0; border-radius:var(--radius); display:flex; flex-direction:column; align-items:center; justify-content:center; backface-visibility:hidden; -webkit-backface-visibility:hidden; padding:24px; text-align:center; }
+.card-front { background:linear-gradient(135deg,#1c2128,#252d38); border:1px solid var(--border); }
+.card-front .fc-word { font-family:'Playfair Display',serif; font-size:2.4rem; font-weight:700; margin-bottom:8px; }
+.card-front .fc-trans { color:var(--muted); font-size:0.9rem; }
+.card-front .fc-tap { font-size:0.72rem; color:var(--border); margin-top:14px; }
+.card-back { transform:rotateY(180deg); border:2px solid; }
+.card-back.der { background:rgba(68,147,248,0.08); border-color:var(--masc); }
+.card-back.die { background:rgba(248,81,73,0.08); border-color:var(--fem); }
+.card-back.das { background:rgba(63,185,80,0.08); border-color:var(--neut); }
+.fc-art { font-family:'Playfair Display',serif; font-size:3rem; font-weight:700; margin-bottom:6px; }
+.card-back.der .fc-art { color:var(--masc); }
+.card-back.die .fc-art { color:var(--fem); }
+.card-back.das .fc-art { color:var(--neut); }
+.fc-full { font-size:1.1rem; font-weight:700; margin-bottom:8px; }
+.fc-tip { font-size:0.76rem; color:var(--muted); max-width:240px; line-height:1.4; }
+.fc-btns { display:flex; gap:10px; width:100%; }
+.fc-btn { flex:1; padding:14px; border:none; border-radius:12px; font-family:'Nunito',sans-serif; font-size:0.88rem; font-weight:700; cursor:pointer; }
+.fc-btn.knew { background:var(--neut); color:#000; }
+.fc-btn.didnt { background:var(--fem); color:white; }
+.fc-btn.flip-it { background:var(--surface); border:1px solid var(--border); color:var(--text); width:100%; }
+
+/* blank */
+.blank-card { width:100%; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:24px 20px; }
+.blank-sent { font-family:'Playfair Display',serif; font-size:1.4rem; text-align:center; line-height:1.6; margin-bottom:14px; }
+.blank-in { width:100%; background:var(--bg); border:2px solid var(--border); border-radius:10px; padding:12px; font-family:'Playfair Display',serif; font-size:1.2rem; color:var(--text); text-align:center; outline:none; transition:border-color 0.2s; }
+.blank-in:focus { border-color:var(--bear); }
+.blank-in.ok { border-color:var(--neut); background:rgba(63,185,80,0.08); }
+.blank-in.no { border-color:var(--fem); background:rgba(248,81,73,0.08); }
+.blank-hint { font-size:0.78rem; color:var(--muted); text-align:center; margin-top:8px; }
+
+/* phrases */
+.ptog-row { display:flex; gap:8px; margin-bottom:12px; }
+.ptog { flex:1; padding:10px; border-radius:10px; border:2px solid var(--border); background:transparent; font-family:'Nunito',sans-serif; font-size:0.8rem; font-weight:700; cursor:pointer; color:var(--muted); transition:all 0.2s; }
+.ptog.active { border-color:var(--bear); color:var(--bear); background:rgba(232,168,56,0.08); }
+.phrase-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px 16px; margin-bottom:10px; animation:fadeUp 0.3s ease; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+.ph-de { font-family:'Playfair Display',serif; font-size:1rem; font-weight:700; color:var(--bear); margin-bottom:4px; }
+.ph-es { font-size:0.82rem; color:#f4a261; margin-bottom:2px; }
+.ph-en { font-size:0.82rem; color:var(--masc); margin-bottom:5px; }
+.ph-ctx { font-size:0.72rem; color:var(--muted); font-style:italic; }
+
+/* culture */
+.cult-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:18px; margin-bottom:12px; }
+.cult-emoji { font-size:1.8rem; margin-bottom:8px; display:block; }
+.cult-card h4 { font-family:'Playfair Display',serif; font-size:1.05rem; margin-bottom:7px; }
+.cult-card p { font-size:0.83rem; color:var(--muted); line-height:1.6; }
+.cult-tag { display:inline-block; margin-top:8px; font-size:0.7rem; font-weight:700; padding:3px 9px; background:rgba(232,168,56,0.12); color:var(--bear); border-radius:99px; }
+
+/* grammar */
+.art-badge { display:inline-flex; align-items:center; gap:8px; padding:7px 14px; border-radius:99px; font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:700; margin-bottom:10px; }
+.art-badge.der { background:rgba(68,147,248,0.12); color:var(--masc); border:1px solid var(--masc); }
+.art-badge.die { background:rgba(248,81,73,0.12); color:var(--fem); border:1px solid var(--fem); }
+.art-badge.das { background:rgba(63,185,80,0.12); color:var(--neut); border:1px solid var(--neut); }
+.rule-list { list-style:none; display:flex; flex-direction:column; gap:7px; margin-bottom:18px; }
+.rule-list li { background:var(--surface); border:1px solid var(--border); border-radius:9px; padding:11px 13px; font-size:0.83rem; line-height:1.5; display:flex; gap:8px; }
+.arrow { opacity:0.4; flex-shrink:0; }
+.ltag { font-size:0.62rem; font-weight:700; padding:2px 6px; border-radius:4px; margin-left:4px; }
+.ltag.en { background:rgba(68,147,248,0.2); color:var(--masc); }
+.ltag.es { background:rgba(248,81,73,0.2); color:var(--fem); }
+
+/* survival tip */
+.survival-card { background:linear-gradient(135deg,rgba(232,168,56,0.08),rgba(232,168,56,0.02)); border:1px solid rgba(232,168,56,0.3); border-radius:var(--radius); padding:16px; margin-bottom:12px; }
+.survival-card h4 { color:var(--bear); font-size:0.9rem; font-weight:800; margin-bottom:6px; }
+.survival-card p { font-size:0.82rem; color:var(--muted); line-height:1.5; }
+.survival-card a { color:var(--bear); }
+
+/* finished */
+.finished { text-align:center; padding:40px 20px; }
+.finished .big { font-size:4rem; margin-bottom:14px; display:block; }
+.finished h2 { font-family:'Playfair Display',serif; font-size:1.8rem; margin-bottom:8px; }
+.finished p { color:var(--muted); margin-bottom:20px; font-size:0.88rem; }
+
+/* unlock overlay */
+#unlock { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.88); z-index:200; align-items:center; justify-content:center; padding:20px; }
+#unlock.show { display:flex; }
+.unlock-card { background:linear-gradient(135deg,#1c2128,#252d38); border:2px solid var(--bear); border-radius:24px; padding:32px 24px; text-align:center; max-width:360px; width:100%; animation:popIn 0.5s cubic-bezier(.4,2,.6,1); }
+@keyframes popIn { from{transform:scale(0.7);opacity:0} to{transform:scale(1);opacity:1} }
+.unlock-card .big-e { font-size:3.5rem; display:block; margin-bottom:12px; }
+.unlock-card h2 { font-family:'Playfair Display',serif; font-size:1.5rem; color:var(--bear); margin-bottom:8px; }
+.unlock-card p { color:var(--muted); font-size:0.85rem; line-height:1.5; margin-bottom:16px; }
+.unlock-phrases h4 { font-size:0.72rem; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:8px; text-align:left; }
+.unlock-phrase { padding:7px 0; border-bottom:1px solid var(--border); text-align:left; }
+.up-de { color:var(--bear); font-weight:700; font-size:0.88rem; }
+.up-es { color:var(--muted); font-size:0.78rem; }
+
+/* streak bar */
+.streak-bar { display:flex; align-items:center; justify-content:center; gap:16px; margin:16px auto 20px; padding:12px 20px; background:var(--surface); border:1px solid var(--border); border-radius:99px; max-width:300px; }
+.si-val { font-size:1.3rem; font-weight:800; color:var(--bear); text-align:center; }
+.si-lbl { font-size:0.65rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; text-align:center; }
+.sdiv { width:1px; height:28px; background:var(--border); }
+
+/* buttons */
+.btn-primary { width:100%; padding:14px; background:var(--bear); color:#000; border:none; border-radius:12px; font-family:'Nunito',sans-serif; font-size:1rem; font-weight:800; cursor:pointer; transition:all 0.2s; margin-bottom:8px; }
+.btn-primary:hover { background:var(--gold); }
+.btn-secondary { width:100%; padding:12px; background:var(--surface); border:1px solid var(--border); color:var(--muted); border-radius:12px; font-family:'Nunito',sans-serif; font-size:0.88rem; font-weight:700; cursor:pointer; }
+.btn-check { width:100%; padding:14px; background:var(--bear); color:#000; border:none; border-radius:12px; font-family:'Nunito',sans-serif; font-size:1rem; font-weight:800; cursor:pointer; }
+
+/* home nav */
+#homescreen { padding:0 0 80px; background:radial-gradient(ellipse at top,#1a2744 0%,#0d1117 70%); }
+.home-hero { text-align:center; padding:40px 20px 20px; }
+.home-bear { font-size:3.5rem; display:block; animation:bearBob 3s ease-in-out infinite; margin-bottom:10px; }
+.home-hero h1 { font-family:'Playfair Display',serif; font-size:2.2rem; font-weight:900; line-height:1.1; }
+.home-hero h1 span { color:var(--bear); }
+.home-hero p { color:var(--muted); font-size:0.85rem; margin-top:6px; }
+.track-tabs { display:flex; gap:8px; justify-content:center; padding:16px; }
+.ttab { padding:10px 18px; border-radius:99px; border:2px solid var(--border); background:transparent; font-family:'Nunito',sans-serif; font-size:0.82rem; font-weight:700; cursor:pointer; color:var(--muted); transition:all 0.2s; }
+.ttab.active-leben { border-color:var(--bear); color:var(--bear); background:rgba(232,168,56,0.08); }
+.ttab.active-kinder { border-color:#ff9ecd; color:#ff9ecd; background:rgba(255,158,205,0.08); }
+.ttab.active-work { border-color:var(--neut); color:var(--neut); background:rgba(63,185,80,0.08); }
+.section-title { font-size:0.75rem; text-transform:uppercase; letter-spacing:2px; color:var(--muted); text-align:center; margin-bottom:14px; }
+.level-strips { display:flex; flex-direction:column; gap:10px; padding:0 16px; }
+.level-strip { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:14px 16px; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:14px; }
+.level-strip:hover:not(.ls-locked) { border-color:var(--bear); transform:translateX(4px); }
+.level-strip.ls-locked { opacity:0.4; cursor:not-allowed; }
+.level-strip.ls-current { border-color:var(--bear); }
+.ls-emoji { font-size:1.8rem; flex-shrink:0; }
+.ls-info { flex:1; }
+.ls-name { font-family:'Playfair Display',serif; font-size:1rem; font-weight:700; }
+.ls-sub { font-size:0.72rem; color:var(--muted); margin-top:2px; }
+.ls-badge { font-size:0.65rem; font-weight:700; padding:3px 8px; border-radius:99px; }
+.ls-badge.curr { background:var(--bear); color:#000; }
+.ls-badge.comp { background:var(--neut); color:#000; }
+.ls-badge.lock { background:var(--border); color:var(--muted); }
+
+/* bottom nav */
+.bottom-nav { position:fixed; bottom:0; left:0; right:0; background:var(--surface); border-top:1px solid var(--border); display:flex; justify-content:space-around; padding:8px 0 14px; z-index:50; }
+.bnav { display:flex; flex-direction:column; align-items:center; gap:3px; background:transparent; border:none; color:var(--muted); font-family:'Nunito',sans-serif; font-size:0.62rem; font-weight:700; cursor:pointer; padding:4px 10px; border-radius:8px; transition:color 0.2s; }
+.bnav .bicon { font-size:1.3rem; }
+.bnav.active { color:var(--bear); }
+</style>
+</head>
+<body>
+
+<!-- ══ WELCOME ══ -->
+<div id="welcome" class="screen active">
+  <span class="welcome-bear">🐻</span>
+  <h1 class="welcome-title">Deutsch<br><span>im Bärn</span></h1>
+  <p class="welcome-sub">Aprende alemán viviendo Berna</p>
+  <p class="welcome-tagline">"weil das Leben nicht wartet"</p>
+  <div style="display:flex;gap:8px;margin-bottom:16px;max-width:360px;width:100%">
+    <button class="btn-primary" style="flex:1;margin:0;font-size:0.85rem" onclick="goPlacement()">🎯 Test de nivel</button>
+    <button class="btn-secondary" style="flex:1;font-size:0.85rem" onclick="skipToA1()">☕ Empezar A1</button>
+  </div>
+  <div style="font-size:0.72rem;color:var(--muted);margin-bottom:24px;text-align:center;max-width:300px">2 min · te ubica en el nivel correcto<br>O empieza directo desde A1 sin test</div>
+  <div class="track-cards">
+    <div class="track-card leben" onclick="startTrack('leben')">
+      <span class="track-emoji">🗺️</span>
+      <div class="track-name leben">Leben in Bern</div>
+      <div class="track-desc">ES: Explora la ciudad · EN: Explore the city. A1 → B2.</div>
+    </div>
+    <div class="track-card kinder" onclick="startTrack('kinder')">
+      <span class="track-emoji">🐨</span>
+      <div class="track-name kinder">Kinder in Bern</div>
+      <div class="track-desc">ES: Babycino, Spielplatz, Kita · EN: Raising kids in German.</div>
+    </div>
+    <div class="track-card work" onclick="startTrack('work')">
+      <span class="track-emoji">💼</span>
+      <div class="track-name work">Work in Bern</div>
+      <div class="track-desc">ES: Alemán para trabajar · EN: German for work. Day one.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PLACEMENT TEST ══ -->
+<div id="placement" class="screen">
+  <div class="placement-header">
+    <h2>🎯 ¿Cuánto sabes?</h2>
+    <p>20 preguntas para encontrar tu nivel. Sé honesta — ¡no hay trampa posible! 😄</p>
+  </div>
+  <div class="pt-progress">
+    <div class="pt-bar"><div class="pt-fill" id="pt-fill" style="width:0%"></div></div>
+    <div class="pt-label" id="pt-label">Pregunta 1 de 20</div>
+  </div>
+  <div class="pt-card">
+    <div class="pt-word" id="pt-word">Tisch</div>
+    <div class="pt-trans" id="pt-trans">mesa / table</div>
+    <div class="pt-level-tag" id="pt-ltag">A1</div>
+  </div>
+  <div class="pt-options">
+    <button class="pt-opt der" onclick="answerPT('der')">der</button>
+    <button class="pt-opt die" onclick="answerPT('die')">die</button>
+    <button class="pt-opt das" onclick="answerPT('das')">das</button>
+    <button class="pt-opt ein" onclick="answerPT('ein')">ein/e</button>
+  </div>
+  <div class="pt-feedback" id="pt-fb"></div>
+  <button class="pt-skip" onclick="skipPlacement()">Saltar test — empezar desde A1</button>
+</div>
+
+<!-- ══ HOME SCREEN ══ -->
+<div id="homescreen" class="screen">
+  <div class="home-hero">
+    <span class="home-bear">🐻</span>
+    <h1>Deutsch <span>im Bärn</span></h1>
+    <p id="home-track-label">Leben in Bern</p>
+  </div>
+  <div class="streak-bar">
+    <div><div class="si-val" id="h-streak">0</div><div class="si-lbl">🔥 Días</div></div>
+    <div class="sdiv"></div>
+    <div><div class="si-val" id="h-xp">0</div><div class="si-lbl">⭐ XP</div></div>
+    <div class="sdiv"></div>
+    <div><div class="si-val" id="h-done">0</div><div class="si-lbl">🏆 Lugares</div></div>
+  </div>
+  <div class="track-tabs">
+    <button class="ttab active-leben" id="ttab-leben" onclick="setHomeTrack('leben')">🗺️ Leben</button>
+    <button class="ttab" id="ttab-kinder" onclick="setHomeTrack('kinder')">🐨 Kinder</button>
+    <button class="ttab" id="ttab-work" onclick="setHomeTrack('work')">💼 Work</button>
+  </div>
+  <div class="section-title" id="home-level-label">☕ MIT KARTE BITTE — A1</div>
+  <div class="level-strips" id="level-strips"></div>
+</div>
+
+<!-- ══ LOCATION MAP ══ -->
+<div id="locationmap" class="screen">
+  <div style="padding:16px">
+    <button class="lm-back" onclick="goHome()">← Volver</button>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+      <div class="lm-title" id="lm-title">A1 — Mit Karte bitte</div>
+      <div class="lm-level-tag" id="lm-tag">☕</div>
+    </div>
+    <div class="loc-grid" id="loc-grid"></div>
+  </div>
+</div>
+
+<!-- ══ MODULE ══ -->
+<div id="module" class="screen">
+  <div class="mod-hero" id="mod-hero">
+    <div class="mod-hero-bg" id="mod-hero-bg"></div>
+    <button class="mod-back" onclick="goLocationMap()">← Volver</button>
+    <div class="mod-hero-content">
+      <h2 id="mod-title">—</h2>
+      <p id="mod-sub">—</p>
+    </div>
+  </div>
+  <div class="mod-tabs" id="mod-tabs">
+    <button class="mtab active" onclick="switchTab('grammar',this)">📖 Gramática</button>
+    <button class="mtab" onclick="switchTab('flashcards',this)">🃏 Cards</button>
+    <button class="mtab" onclick="switchTab('quiz',this)">🎯 Quiz</button>
+    <button class="mtab" onclick="switchTab('blank',this)">✍️ Espacios</button>
+    <button class="mtab" onclick="switchTab('phrases',this)">🗣️ Frases</button>
+    <button class="mtab" onclick="switchTab('culture',this)">🏛️ Cultura</button>
+    <button class="mtab" onclick="switchTab('survival',this)">🧡 Survival</button>
+  </div>
+  <div class="mod-content" id="mod-content"></div>
+</div>
+
+<!-- ══ UNLOCK OVERLAY ══ -->
+<div id="unlock">
+  <div class="unlock-card">
+    <span class="big-e" id="ul-emoji">🏰</span>
+    <h2 id="ul-title">¡Desbloqueaste!</h2>
+    <p id="ul-desc">—</p>
+    <div class="unlock-phrases" id="ul-phrases"></div>
+    <button class="btn-primary" onclick="closeUnlock()">Wunderbar! Weiter! 🎉</button>
+  </div>
+</div>
+
+<!-- Bottom Nav -->
+<div class="bottom-nav" id="bottom-nav" style="display:none">
+  <button class="bnav active" id="bn-home" onclick="goHome()"><span class="bicon">🏠</span>Inicio</button>
+  <button class="bnav" onclick="showTrackSelect()"><span class="bicon">🗺️</span>Tracks</button>
+  <button class="bnav" onclick="alert('Próximamente: tu progreso completo 📊')"><span class="bicon">📊</span>Progreso</button>
+</div>
+
+<script>
+// ════════════════════════════════════════════
+// DATA
+// ════════════════════════════════════════════
+
+const TRACKS = {
+  leben: {
+    name: 'Leben in Bern',
+    levels: [
+      { id:'a1', name:'Mit Karte bitte!', emoji:'☕', sub:'A1 — Sobrevivir el día a día', locations:['altstadt','bahnhof','marit','post','cafe'] },
+      { id:'a2', name:'Survivo...', emoji:'🕯️', sub:'A2 — Hay luz al final del túnel', locations:['marzili','rosengarten','restaurant','apotheke','migros'] },
+      { id:'b1', name:'Veo luz!', emoji:'💡', sub:'B1 — ¿Es el final del túnel?!', locations:['inselspital','migration','polizei','bundesplatz','bernmobil'] },
+      { id:'b2', name:'Nadie me saca de aquí', emoji:'🚇', sub:'B2 — Pruébame. YO VIVO aquí.', locations:['casino','munster','gurten','university','jobcenter'] },
+    ]
+  },
+  kinder: {
+    name: 'Kinder in Bern',
+    levels: [
+      { id:'k1', name:'Babycino bitte!', emoji:'☕', sub:'Primeros pasos con niños en Berna', locations:['kindercafe','spielplatz','kita','kibon','brocki'] },
+      { id:'k2', name:'Wir sind dabei!', emoji:'🛝', sub:'Ya nos manejamos', locations:['kinderarzt','schule','elterngruppe','libero','sport'] },
+    ]
+  },
+  work: {
+    name: 'Work in Bern',
+    levels: [
+      { id:'w1', name:'Grüezi, ich bin neu!', emoji:'👋', sub:'Primer día de trabajo', locations:['barista','server','supermarkt','reinigung','buero'] },
+      { id:'w2', name:'Ich kenne meine Rechte', emoji:'💪', sub:'Conozco mis derechos laborales', locations:['vertrag','uberstunden','kuendigung','bewerbung','interview'] },
+    ]
+  }
+};
+
+const LOCATIONS = {
+  // ── LEBEN A1 ──
+  altstadt: {
+    name:'Altstadt', emoji:'🏰', sub:'der/die/das · Artículos',
+    track:'leben', level:'a1',
+    words:[
+      {word:'Tisch',artikel:'der',trans:'mesa / table',tip:'Objetos masculinos comunes'},
+      {word:'Schule',artikel:'die',trans:'escuela / school',tip:'Termina en -e → suele ser die'},
+      {word:'Kind',artikel:'das',trans:'niño / child',tip:'Personas jóvenes neutras → das'},
+      {word:'Bär',artikel:'der',trans:'oso / bear',tip:'¡El símbolo de Berna! Masculino → der'},
+      {word:'Turm',artikel:'der',trans:'torre / tower',tip:'Como el Zytglogge → der'},
+      {word:'Brücke',artikel:'die',trans:'puente / bridge',tip:'Termina en -e → die'},
+      {word:'Gasse',artikel:'die',trans:'callejón / alley',tip:'Las calles de la Altstadt → die'},
+      {word:'Brunnen',artikel:'der',trans:'fuente / fountain',tip:'Berna tiene 100+ fuentes → der'},
+      {word:'Mädchen',artikel:'das',trans:'chica / girl',tip:'Termina en -chen → SIEMPRE das'},
+      {word:'Zeitung',artikel:'die',trans:'periódico / newspaper',tip:'Termina en -ung → SIEMPRE die'},
+      {word:'Museum',artikel:'das',trans:'museo / museum',tip:'Termina en -um → das'},
+      {word:'Freiheit',artikel:'die',trans:'libertad / freedom',tip:'Termina en -heit → SIEMPRE die'},
+      {word:'Straße',artikel:'die',trans:'calle / street',tip:'Termina en -e → die'},
+      {word:'Mann',artikel:'der',trans:'hombre / man',tip:'Masculino vivo → der'},
+      {word:'Frau',artikel:'die',trans:'mujer / woman',tip:'Femenino vivo → die'},
+      {word:'Buch',artikel:'das',trans:'libro / book',tip:'Objetos neutros comunes'},
+      {word:'Haus',artikel:'das',trans:'casa / house',tip:'Objeto neutro'},
+      {word:'Hund',artikel:'der',trans:'perro / dog',tip:'Animales machos → der'},
+      {word:'Katze',artikel:'die',trans:'gata / cat',tip:'Termina en -e → die'},
+      {word:'Wasser',artikel:'das',trans:'agua / water',tip:'Líquidos no alcohólicos → das'},
+    ],
+    sentences:[
+      {s:'___ Bär ist das Symbol von Bern.',a:'der',trans:'El oso es el símbolo de Berna.'},
+      {s:'___ Altstadt ist sehr alt.',a:'die',trans:'La ciudad vieja es muy antigua.'},
+      {s:'___ Zytglogge ist ein Turm.',a:'der',trans:'El Zytglogge es una torre.'},
+      {s:'___ Brücke über die Aare ist schön.',a:'die',trans:'El puente sobre el Aare es hermoso.'},
+      {s:'___ Museum ist interessant.',a:'das',trans:'El museo es interesante.'},
+      {s:'___ Mädchen spielt in der Gasse.',a:'das',trans:'La niña juega en el callejón.'},
+      {s:'___ Frau liest die Zeitung.',a:'die',trans:'La mujer lee el periódico.'},
+      {s:'___ Brunnen ist kalt.',a:'der',trans:'La fuente está fría.'},
+    ],
+    phrases:{
+      formal:[
+        {de:'Guten Tag, wo ist der Zytglogge?',es:'Buenos días, ¿dónde está el Zytglogge?',ctx:'Preguntando a un guardia o funcionario'},
+        {de:'Entschuldigung, wie komme ich zum Münster?',es:'Disculpe, ¿cómo llego a la catedral?',ctx:'Pidiendo direcciones formalmente'},
+        {de:'Haben Sie einen Stadtplan?',es:'¿Tiene usted un mapa de la ciudad?',ctx:'En la oficina de turismo'},
+        {de:'Wie lange ist das Museum geöffnet?',es:'¿Cuánto tiempo está abierto el museo?',ctx:'Llamando por teléfono'},
+        {de:'Was kostet der Eintritt?',es:'¿Cuánto cuesta la entrada?',ctx:'En la taquilla'},
+      ],
+      casual:[
+        {de:'Hey, weischt du wo das Café isch?',es:'Oye, ¿sabes dónde está el café?',ctx:'Bernés — weischt = weißt du'},
+        {de:'De Bär isch mega cool!',es:'¡El oso es muy chévere!',ctx:'Bernés — mega = muy'},
+        {de:'Gömmer go Zmittag ässe?',es:'¿Vamos a almorzar?',ctx:'Bernés — gömmer = vamos'},
+        {de:'Das isch so schön da!',es:'¡Qué bonito es aquí!',ctx:'Reacción espontánea'},
+        {de:'Chasch mir hälfe?',es:'¿Me puedes ayudar?',ctx:'Bernés — chasch = kannst du'},
+      ]
+    },
+    culture:[
+      {emoji:'🐻',title:'Los osos de Berna',text:'Bern significa "oso" (Bär). Desde 1513 la ciudad ha tenido osos vivos. El Bärenpark junto al río Aare alberga osos reales. El oso aparece en la bandera, escudos, fuentes y tiendas. Cuando veas algo con oso, es identidad de ciudad.',tag:'Historia'},
+      {emoji:'⏰',title:'El Zytglogge',text:'La torre del reloj del siglo XIII es el símbolo más famoso. "Zytglogge" en bernés significa "reloj de tiempo". Cuatro minutos antes de cada hora el mecanismo se activa. Einstein vivía cerca — quizás se inspiró aquí para su teoría de la relatividad.',tag:'Cultura'},
+      {emoji:'🏛️',title:'Los Lauben (arcadas)',text:'Más de 6km de arcadas cubiertas únicas en Europa. En Berna NUNCA te mojas bajo la lluvia mientras caminas. Esta arquitectura medieval del siglo XIII sigue siendo funcional hoy.',tag:'Arquitectura'},
+    ],
+    survival:[
+      {emoji:'😱',title:'El Milchkasten moment',text:'Cuando abras tu buzón (Milchkasten) y veas un sobre del Krankenkasse — respira. Es una factura. Vocabulario: die Rechnung (factura), die Prämie (prima del seguro), die Mahnung (recordatorio de pago), die Mahngebühr (cargo por mora). Bienvenida a la adultez suiza.',tag:'😂 Vida real'},
+      {emoji:'📬',title:'Tu buzón es sagrado',text:'En Suiza toda comunicación oficial va por carta. Nunca ignores una carta oficial (Brief). Si no entiendes, ve al Centro de Integración o a la Beratungsstelle más cercana. Ignorar cartas puede resultar en multas o problemas legales.',tag:'⚠️ Importante'},
+    ]
+  },
+
+  bahnhof: {
+    name:'Bahnhof Bern', emoji:'🚉', sub:'Transporte · Nominativ',
+    track:'leben', level:'a1',
+    words:[
+      {word:'Zug',artikel:'der',trans:'tren / train',tip:'Transporte masculino → der'},
+      {word:'Ticket',artikel:'das',trans:'boleto / ticket',tip:'Anglicismo neutro → das'},
+      {word:'Gleis',artikel:'das',trans:'andén / platform',tip:'Neutro → das'},
+      {word:'Abfahrt',artikel:'die',trans:'salida / departure',tip:'Abstracto femenino → die'},
+      {word:'Ankunft',artikel:'die',trans:'llegada / arrival',tip:'Abstracto femenino → die'},
+      {word:'Verspätung',artikel:'die',trans:'retraso / delay',tip:'Termina en -ung → die'},
+      {word:'Fahrkarte',artikel:'die',trans:'tarjeta de viaje',tip:'Termina en -e → die'},
+      {word:'Bahnhof',artikel:'der',trans:'estación / station',tip:'Compuesto masculino → der'},
+      {word:'Bus',artikel:'der',trans:'autobús / bus',tip:'Masculino → der'},
+      {word:'Tram',artikel:'das',trans:'tranvía / tram',tip:'Neutro → das'},
+      {word:'Linie',artikel:'die',trans:'línea / line',tip:'Termina en -ie → die'},
+      {word:'Schalter',artikel:'der',trans:'ventanilla / counter',tip:'Termina en -er → der'},
+      {word:'Perron',artikel:'der',trans:'andén / platform (CH)',tip:'Masculino → der'},
+      {word:'Abonnement',artikel:'das',trans:'abono / subscription',tip:'Neutro → das'},
+      {word:'Strecke',artikel:'die',trans:'trayecto / route',tip:'Termina en -e → die'},
+    ],
+    sentences:[
+      {s:'___ Zug kommt um 8 Uhr an.',a:'der',trans:'El tren llega a las 8.'},
+      {s:'___ Ticket kostet 12 Franken.',a:'das',trans:'El boleto cuesta 12 francos.'},
+      {s:'___ Verspätung beträgt 5 Minuten.',a:'die',trans:'El retraso es de 5 minutos.'},
+      {s:'___ Bahnhof ist sehr gross.',a:'der',trans:'La estación es muy grande.'},
+      {s:'Auf welchem ___ fährt der Zug ab?',a:'Gleis',trans:'¿En qué andén sale el tren?'},
+      {s:'___ Abfahrt ist um 14:32.',a:'die',trans:'La salida es a las 14:32.'},
+    ],
+    phrases:{
+      formal:[
+        {de:'Ein Ticket nach Zürich, bitte.',es:'Un boleto a Zúrich, por favor.',ctx:'En la ventanilla SBB'},
+        {de:'Auf welchem Gleis fährt der Zug ab?',es:'¿En qué andén sale el tren?',ctx:'Preguntando en información'},
+        {de:'Gibt es eine Verspätung?',es:'¿Hay algún retraso?',ctx:'Al empleado SBB'},
+        {de:'Ich möchte ein Halbtax-Abo beantragen.',es:'Quisiera solicitar un abono Halbtax.',ctx:'¡Ahorra 50% en trenes!'},
+        {de:'Ist dieser Platz besetzt?',es:'¿Está ocupado este asiento?',ctx:'En el tren'},
+      ],
+      casual:[
+        {de:'Ha, de Zug isch scho weg!',es:'¡Ay, el tren ya se fue!',ctx:'El drama cotidiano bernés'},
+        {de:'Chasch mir säge wo Gleis 7 isch?',es:'¿Me puedes decir dónde está el andén 7?',ctx:'Bernés informal'},
+        {de:'De Zug het Verspätig, natürlich.',es:'El tren tiene retraso, claro.',ctx:'El sarcasmo suizo 😂'},
+        {de:'Gömmer mit em Bus oder em Tram?',es:'¿Vamos en bus o en tram?',ctx:'Bernés cotidiano'},
+        {de:'Ich ha mis Ticket vergässe!',es:'¡Olvidé mi boleto!',ctx:'Pánico en el Bahnhof'},
+      ]
+    },
+    culture:[
+      {emoji:'🎫',title:'El Halbtax — tu mejor amiga',text:'El Halbtax es lo primero que debes comprar al llegar a Suiza. Por ~190 CHF al año todos tus viajes en tren, bus y tram cuestan la mitad. Hay también el GA (Generalabonnement) que da viaje ilimitado en todo Suiza por ~3860 CHF/año. Compara en sbb.ch.',tag:'Consejo esencial'},
+      {emoji:'⏱️',title:'La puntualidad suiza',text:'Los trenes SBB tienen 92%+ de puntualidad. Un retraso de 3 minutos ya aparece en la app. Si el tren llega con más de 60 minutos de retraso, SBB te devuelve el dinero. Los suizos ajustan su vida al horario — no al revés.',tag:'Cultura'},
+    ],
+    survival:[
+      {emoji:'📱',title:'Apps que necesitas',text:'• SBB Mobile: horarios, compra de tickets, alertas de retraso\n• Bernmobil: trams y buses de Berna\n• Fairtiq: toca y viaja, paga automáticamente lo mínimo\n\nCon Fairtiq nunca pagas de más — calcula el mejor precio solo.',tag:'Digital'},
+      {emoji:'🎟️',title:'Zonas Libero',text:'Berna está en la zona 100 de Libero. Zona 100+101 cubre Bern ciudad + Belp, Worb, Zollikofen. Una Monatskarte (mensual) zona 100 cuesta ~85 CHF. Niños bajo 6 años viajan gratis. De 6-16 años con Kinderabo (80% descuento).',tag:'Práctica'},
+    ]
+  },
+
+  marit: {
+    name:'Märit & Bundesplatz', emoji:'🛒', sub:'Compras · Preposiciones',
+    track:'leben', level:'a1',
+    words:[
+      {word:'Markt',artikel:'der',trans:'mercado / market',tip:'Masculino → der'},
+      {word:'Gemüse',artikel:'das',trans:'verdura / vegetable',tip:'Neutro colectivo → das'},
+      {word:'Käse',artikel:'der',trans:'queso / cheese',tip:'Alimentos masculinos → der'},
+      {word:'Blume',artikel:'die',trans:'flor / flower',tip:'Termina en -e → die'},
+      {word:'Preis',artikel:'der',trans:'precio / price',tip:'Masculino → der'},
+      {word:'Tasche',artikel:'die',trans:'bolsa / bag',tip:'Termina en -e → die'},
+      {word:'Brot',artikel:'das',trans:'pan / bread',tip:'Neutro → das'},
+      {word:'Obst',artikel:'das',trans:'fruta / fruit',tip:'Neutro colectivo → das'},
+      {word:'Fleisch',artikel:'das',trans:'carne / meat',tip:'Neutro → das'},
+      {word:'Milch',artikel:'die',trans:'leche / milk',tip:'Femenino → die'},
+      {word:'Ei',artikel:'das',trans:'huevo / egg',tip:'Neutro → das'},
+      {word:'Honig',artikel:'der',trans:'miel / honey',tip:'Termina en -ig → der'},
+      {word:'Wein',artikel:'der',trans:'vino / wine',tip:'Bebidas alcohólicas → der'},
+      {word:'Butter',artikel:'die',trans:'mantequilla / butter',tip:'Femenino → die'},
+      {word:'Joghurt',artikel:'der',trans:'yogur / yoghurt',tip:'Masculino → der'},
+    ],
+    sentences:[
+      {s:'___ Markt ist am Dienstag.',a:'der',trans:'El mercado es el martes.'},
+      {s:'___ Käse kommt aus der Schweiz.',a:'der',trans:'El queso viene de Suiza.'},
+      {s:'___ Blume kostet zwei Franken.',a:'die',trans:'La flor cuesta dos francos.'},
+      {s:'Ich kaufe ___ Gemüse beim Bauern.',a:'das',trans:'Compro la verdura al agricultor.'},
+      {s:'___ Brot ist frisch.',a:'das',trans:'El pan está fresco.'},
+      {s:'Wie viel kostet ___ Milch?',a:'die',trans:'¿Cuánto cuesta la leche?'},
+    ],
+    phrases:{
+      formal:[
+        {de:'Was kostet das Kilo Tomaten?',es:'¿Cuánto cuesta el kilo de tomates?',ctx:'En el puesto del mercado'},
+        {de:'Haben Sie Bio-Produkte?',es:'¿Tienen productos orgánicos?',ctx:'Preguntando al vendedor'},
+        {de:'Kann ich bitte eine Tüte haben?',es:'¿Puede darme una bolsa, por favor?',ctx:'En cualquier tienda'},
+        {de:'Ist dieser Käse aus der Region?',es:'¿Es este queso de la región?',ctx:'Pregunta de producto local'},
+        {de:'Akzeptieren Sie Karte?',es:'¿Aceptan tarjeta?',ctx:'Siempre preguntar — no siempre aceptan'},
+      ],
+      casual:[
+        {de:'Dä Käse isch mega fein!',es:'¡Este queso está riquísimo!',ctx:'Bernés — fein = delicioso'},
+        {de:'Was chostet das?',es:'¿Cuánto cuesta esto?',ctx:'Bernés — chostet = kostet'},
+        {de:'Hani no Batze?',es:'¿Tengo cambio?',ctx:'Bernés — Batze = monedas'},
+        {de:'Das isch frisch vom Bure!',es:'¡Esto es fresco del agricultor!',ctx:'Bernés — Bure = Bauer'},
+        {de:'I nime no es Bündeli Blüeme.',es:'Me llevo un ramito de flores.',ctx:'Bernés — Bündeli = ramito'},
+      ]
+    },
+    culture:[
+      {emoji:'📅',title:'Horarios del Märit',text:'El Bundeshausmarkt se celebra martes y sábados en el Bundesplatz. El mercado de flores es miércoles. En diciembre el Bundesplatz se convierte en Weihnachtsmarkt con el famoso techo de estrellas de luz. El mercado de Bümpliz (martes) es más económico y más local.',tag:'Práctica'},
+      {emoji:'🧀',title:'El queso suizo — más que Emmental',text:'Suiza tiene 450+ variedades de queso. En el Märit encuentras Gruyère, Appenzeller, Tilsiter y quesos berneses locales. Preguntar "woher kommt der Käse?" es señal de que eres local.',tag:'Gastronomía'},
+    ],
+    survival:[
+      {emoji:'♻️',title:'Bolsas y reciclaje',text:'Las bolsas de plástico cuestan. Lleva siempre una Jute-Tasche (bolsa de tela). El reciclaje es obligatorio: papel (Papier), vidrio (Glas), plástico (PET), orgánico (Kompost). Las bolsas de basura oficiales (Kehrichtsack) cuestan dinero — son el impuesto de basura de Berna.',tag:'Vida práctica'},
+      {emoji:'💰',title:'Supermercados: Migros vs Coop',text:'Migros (naranja): sin alcohol, más económico, fidelidad con Cumulus. Coop (rojo): con alcohol, Supercard. Lidl y Aldi son más baratos. Manor Food es premium. Para carne halal: carnicerías en el Länggasse o mercado de Bümpliz.',tag:'Práctica'},
+    ]
+  },
+
+  post: {
+    name:'Post & Milchkasten', emoji:'📬', sub:'Administración · Números',
+    track:'leben', level:'a1',
+    words:[
+      {word:'Brief',artikel:'der',trans:'carta / letter',tip:'Masculino → der'},
+      {word:'Paket',artikel:'das',trans:'paquete / package',tip:'Neutro → das'},
+      {word:'Briefkasten',artikel:'der',trans:'buzón / mailbox',tip:'Compuesto masculino → der'},
+      {word:'Rechnung',artikel:'die',trans:'factura / bill',tip:'Termina en -ung → die'},
+      {word:'Formular',artikel:'das',trans:'formulario / form',tip:'Neutro → das'},
+      {word:'Adresse',artikel:'die',trans:'dirección / address',tip:'Termina en -e → die'},
+      {word:'Absender',artikel:'der',trans:'remitente / sender',tip:'Termina en -er → der'},
+      {word:'Empfänger',artikel:'der',trans:'destinatario / recipient',tip:'Termina en -er → der'},
+      {word:'Briefmarke',artikel:'die',trans:'sello / stamp',tip:'Termina en -e → die'},
+      {word:'Einschreiben',artikel:'das',trans:'carta certificada / registered',tip:'Infinitivo → das'},
+      {word:'Mahnung',artikel:'die',trans:'recordatorio de pago',tip:'Termina en -ung → die'},
+      {word:'Quittung',artikel:'die',trans:'recibo / receipt',tip:'Termina en -ung → die'},
+      {word:'Versicherung',artikel:'die',trans:'seguro / insurance',tip:'Termina en -ung → die'},
+      {word:'Prämie',artikel:'die',trans:'prima / premium',tip:'Termina en -ie → die'},
+      {word:'Krankenkasse',artikel:'die',trans:'caja de enfermedad / health insurance',tip:'Termina en -e → die'},
+    ],
+    sentences:[
+      {s:'___ Brief ist für mich.',a:'der',trans:'La carta es para mí.'},
+      {s:'___ Rechnung muss ich bezahlen.',a:'die',trans:'Tengo que pagar la factura.'},
+      {s:'___ Paket liegt bei der Post.',a:'das',trans:'El paquete está en la oficina de correos.'},
+      {s:'___ Mahnung kommt von der Krankenkasse.',a:'die',trans:'El recordatorio viene de la caja médica.'},
+      {s:'Ich brauche ___ Briefmarke.',a:'eine',trans:'Necesito un sello.'},
+      {s:'___ Adresse ist falsch.',a:'die',trans:'La dirección está equivocada.'},
+    ],
+    phrases:{
+      formal:[
+        {de:'Ich möchte dieses Paket aufgeben.',es:'Quisiera enviar este paquete.',ctx:'En la ventanilla de la Post'},
+        {de:'Was kostet ein Brief nach Kolumbien?',es:'¿Cuánto cuesta una carta a Colombia?',ctx:'Preguntando tarifas'},
+        {de:'Ich habe eine Rechnung erhalten, aber ich verstehe sie nicht.',es:'He recibido una factura pero no la entiendo.',ctx:'Con el empleado de correos'},
+        {de:'Kann ich hier ein Einschreiben aufgeben?',es:'¿Puedo enviar una carta certificada aquí?',ctx:'En la Post'},
+        {de:'Haben Sie mein Paket?',es:'¿Tienen mi paquete?',ctx:'Cuando recibes la nota de aviso'},
+      ],
+      casual:[
+        {de:'Scho wieder e Rechning!',es:'¡Otra factura!',ctx:'Bernés — el lamento universal'},
+        {de:'Was isch das de jetzt?',es:'¿Y esto qué es ahora?',ctx:'Bernés — abriendo carta desconocida'},
+        {de:'I mues go Päckli hole.',es:'Tengo que ir a recoger el paquete.',ctx:'Bernés cotidiano'},
+        {de:'D\'Post isch scho zuegmacht!',es:'¡La oficina ya está cerrada!',ctx:'El drama de llegar tarde'},
+        {de:'Hani das richtig verstande?',es:'¿Lo entendí bien?',ctx:'La duda existencial ante una carta oficial'},
+      ]
+    },
+    culture:[
+      {emoji:'😱',title:'Cartas que dan miedo',text:'En Suiza comunican TODO por carta. Las más importantes: Krankenkasse (seguro médico), Steuern (impuestos), Betreibungsamt (cobros legales), Migrationsdienst (migración), Gemeinde (municipio). Una carta del Betreibungsamt es seria — busca ayuda inmediatamente en el Centro de Deudas (Schuldenberatung Bern).',tag:'⚠️ Importante'},
+      {emoji:'📬',title:'El sistema postal suizo',text:'La Post también es banco (PostFinance), y tiene la app PostApp para rastrear paquetes. Si no estás en casa, dejan aviso (Abholungseinladung) — tienes 7 días para recoger en la oficina más cercana. Puedes cambiar la dirección de entrega en la app.',tag:'Práctica'},
+    ],
+    survival:[
+      {emoji:'🆘',title:'¿No entiendes una carta?',text:'No entres en pánico. Opciones:\n• Integrationsdienst Bern: te ayudan gratis\n• Caritas Bern: asesoría gratuita\n• InfoPoint Bern Hauptbahnhof: orientación general\n• Google Translate con la cámara (funciona bien para alemán)\n• Pregúntame a mí — fotografía la carta y la traduzco.',tag:'🆘 Ayuda'},
+    ]
+  },
+
+  cafe: {
+    name:'Café & Bäckerei', emoji:'☕', sub:'Saludos · Pedidos básicos',
+    track:'leben', level:'a1',
+    words:[
+      {word:'Kaffee',artikel:'der',trans:'café / coffee',tip:'Bebidas masculinas → der'},
+      {word:'Tee',artikel:'der',trans:'té / tea',tip:'Masculino → der'},
+      {word:'Milch',artikel:'die',trans:'leche / milk',tip:'Femenino → die'},
+      {word:'Zucker',artikel:'der',trans:'azúcar / sugar',tip:'Masculino → der'},
+      {word:'Kuchen',artikel:'der',trans:'pastel / cake',tip:'Termina en -en → der'},
+      {word:'Croissant',artikel:'das',trans:'croissant',tip:'Neutro → das'},
+      {word:'Wasser',artikel:'das',trans:'agua / water',tip:'Neutro → das'},
+      {word:'Saft',artikel:'der',trans:'jugo / juice',tip:'Masculino → der'},
+      {word:'Gipfeli',artikel:'das',trans:'croissant (CH) / croissant',tip:'Diminutivo suizo → das'},
+      {word:'Rechnung',artikel:'die',trans:'factura / bill',tip:'Termina en -ung → die'},
+      {word:'Trinkgeld',artikel:'das',trans:'propina / tip',tip:'Compuesto neutro → das'},
+      {word:'Tisch',artikel:'der',trans:'mesa / table',tip:'Masculino → der'},
+      {word:'Stuhl',artikel:'der',trans:'silla / chair',tip:'Masculino → der'},
+      {word:'Menü',artikel:'das',trans:'menú / menu',tip:'Neutro → das'},
+      {word:'Speisekarte',artikel:'die',trans:'carta / menu card',tip:'Termina en -e → die'},
+    ],
+    sentences:[
+      {s:'Ich möchte ___ Kaffee, bitte.',a:'einen',trans:'Quisiera un café, por favor.'},
+      {s:'___ Milch ist kalt.',a:'die',trans:'La leche está fría.'},
+      {s:'Bringen Sie mir bitte ___ Rechnung.',a:'die',trans:'Tráigame la cuenta, por favor.'},
+      {s:'___ Kuchen schmeckt sehr gut.',a:'der',trans:'El pastel está muy rico.'},
+      {s:'Haben Sie ___ Gipfeli?',a:'ein',trans:'¿Tiene un croissant?'},
+      {s:'___ Tee ist zu heiss.',a:'der',trans:'El té está muy caliente.'},
+    ],
+    phrases:{
+      formal:[
+        {de:'Einen Kaffee und ein Gipfeli, bitte.',es:'Un café y un croissant, por favor.',ctx:'El desayuno clásico bernés'},
+        {de:'Haben Sie einen Tisch für zwei?',es:'¿Tiene una mesa para dos?',ctx:'Al entrar al café'},
+        {de:'Die Rechnung bitte.',es:'La cuenta, por favor.',ctx:'Al terminar'},
+        {de:'Mit Karte, bitte.',es:'Con tarjeta, por favor.',ctx:'¡El nombre de tu nivel A1!'},
+        {de:'Haben Sie laktosefreie Milch?',es:'¿Tiene leche sin lactosa?',ctx:'Para intolerancias'},
+      ],
+      casual:[
+        {de:'En Kafi ond es Gipfeli, merci!',es:'Un café y un croissant, ¡gracias!',ctx:'Bernés clásico de mañana'},
+        {de:'Isch no öpis frei?',es:'¿Hay algo libre?',ctx:'Bernés — buscando mesa'},
+        {de:'Chani zahle?',es:'¿Puedo pagar?',ctx:'Bernés — chani = kann ich'},
+        {de:'Das isch fein gsi!',es:'¡Estuvo delicioso!',ctx:'Bernés — gsi = gewesen'},
+        {de:'No en Kafi, merci!',es:'Otro café, ¡gracias!',ctx:'El clásico bernés — merci = danke'},
+      ]
+    },
+    culture:[
+      {emoji:'☕',title:'La cultura del café en Berna',text:'Los berneses dicen "Kafi" (no Kaffee) y "merci" (no danke) — mezcla de alemán y francés. El café favorito viene con Gipfeli (croissant suizo). La propina no es obligatoria — redondear al franco más cercano es suficiente. Decir "stimmt so" significa "está bien así".',tag:'Cultura'},
+      {emoji:'🐻',title:'Cafés amigos de niños en Berna',text:'• Café des Pyrénées (Kornhausplatz): terraza grande\n• Dampfzentrale: zona de juegos cerca\n• Café Kairo: ambiente relajado\n• Wankdorf City área: varios cafés con espacio\nPregunta siempre: "Haben Sie einen Hochstuhl?" (¿Tienen silla alta?) y "Gibt es einen Wickelraum?" (¿Hay cambiador?)',tag:'🐨 Kinder-friendly'},
+    ],
+    survival:[
+      {emoji:'💳',title:'¿Efectivo o tarjeta?',text:'En Suiza la mayoría acepta tarjeta (Karte) pero algunos mercados y cafés pequeños solo efectivo (Bargeld). Twint es el pago móvil suizo — casi todos lo aceptan. Postfinance, UBS, Raiffeisen, Migros Bank — todas tienen Twint. Descarga la app de tu banco para activarlo.',tag:'Práctica'},
+    ]
+  },
+
+  // ── KINDER ──
+  kindercafe: {
+    name:'Kinderfreundliche Cafés', emoji:'☕', sub:'Babycino · Spielbereich',
+    track:'kinder', level:'k1',
+    words:[
+      {word:'Babycino',artikel:'der',trans:'babycino (leche espumosa)',tip:'Masculino → der'},
+      {word:'Hochstuhl',artikel:'der',trans:'silla alta / high chair',tip:'Compuesto masculino → der'},
+      {word:'Wickelraum',artikel:'der',trans:'cambiador / changing room',tip:'Compuesto masculino → der'},
+      {word:'Spielecke',artikel:'die',trans:'rincón de juegos',tip:'Termina en -e → die'},
+      {word:'Kindermenu',artikel:'das',trans:'menú infantil',tip:'Compuesto neutro → das'},
+      {word:'Milch',artikel:'die',trans:'leche / milk',tip:'Femenino → die'},
+      {word:'Schaum',artikel:'der',trans:'espuma / foam',tip:'Masculino → der'},
+      {word:'Spielzeug',artikel:'das',trans:'juguete / toy',tip:'Compuesto neutro → das'},
+      {word:'Kinderwagen',artikel:'der',trans:'cochecito / pram',tip:'Compuesto masculino → der'},
+      {word:'Krümel',artikel:'der',trans:'miga / crumb',tip:'Termina en -el → der (¡inevitable con niños!)'},
+      {word:'Lätzchen',artikel:'das',trans:'babero / bib',tip:'Termina en -chen → das'},
+      {word:'Schnuller',artikel:'der',trans:'chupete / pacifier',tip:'Termina en -er → der'},
+      {word:'Windel',artikel:'die',trans:'pañal / diaper',tip:'Termina en -el → die'},
+      {word:'Flasche',artikel:'die',trans:'biberón / bottle',tip:'Termina en -e → die'},
+      {word:'Brei',artikel:'der',trans:'puré / porridge',tip:'Masculino → der'},
+    ],
+    sentences:[
+      {s:'Haben Sie ___ Hochstuhl?',a:'einen',trans:'¿Tienen silla alta?'},
+      {s:'Wo ist ___ Wickelraum?',a:'der',trans:'¿Dónde está el cambiador?'},
+      {s:'___ Babycino ist für mein Kind.',a:'der',trans:'El babycino es para mi hijo.'},
+      {s:'___ Spielecke ist toll!',a:'die',trans:'¡El rincón de juegos es genial!'},
+      {s:'Kann ich ___ Kinderwagen hereinstellen?',a:'den',trans:'¿Puedo entrar el cochecito?'},
+      {s:'___ Milch soll warm sein.',a:'die',trans:'La leche debe estar caliente.'},
+    ],
+    phrases:{
+      formal:[
+        {de:'Haben Sie einen Hochstuhl für mein Kind?',es:'¿Tienen silla alta para mi hijo/a?',ctx:'Al entrar al café'},
+        {de:'Gibt es einen Wickelraum?',es:'¿Hay un cambiador?',ctx:'La pregunta esencial'},
+        {de:'Einen Babycino bitte — nicht zu heiss.',es:'Un babycino, por favor — no muy caliente.',ctx:'Especificación importante'},
+        {de:'Darf ich den Kinderwagen hier lassen?',es:'¿Puedo dejar el cochecito aquí?',ctx:'En la entrada'},
+        {de:'Haben Sie ein Kindermenu?',es:'¿Tienen menú infantil?',ctx:'Para niños más grandes'},
+      ],
+      casual:[
+        {de:'En Babycino für mys Chind, bitte!',es:'¡Un babycino para mi niño/a, por favor!',ctx:'Bernés — Chind = Kind'},
+        {de:'Isch da e Spielecke?',es:'¿Hay un rincón de juegos aquí?',ctx:'Bernés relajado'},
+        {de:'Sorry, er het öpis umgworfe!',es:'¡Lo siento, tiró algo!',ctx:'El momento inevitable 😅'},
+        {de:'Isch das chinderfründlich da?',es:'¿Es amigable con niños esto?',ctx:'Bernés — chinderfründlich = kinderfreundlich'},
+        {de:'No en Babycino, er trinkt sehr gärn!',es:'Otro babycino, ¡le encanta!',ctx:'La adicción al babycino 😂'},
+      ]
+    },
+    culture:[
+      {emoji:'☕',title:'El Babycino — la vida social de los niños',text:'El babycino (leche espumada con cacao en polvo) es la bebida social de los niños berneses. Los cafés que los ofrecen generalmente son más amigos de familias. Pregunta "Haben Sie einen Babycino?" como detector de café familiar.',tag:'Insider tip'},
+      {emoji:'🏠',title:'Cafés recomendados con niños',text:'• Café Kairo (Neubrückstrasse): tranquilo, buena zona\n• Dampfzentrale: terraza junto al Aare\n• Café Tscharni (Breitenrain): barrio familiar\n• Kindercafé Rampenlichter: especialmente para familias\n• La Sosta: terraza grande en verano',tag:'🐨 Lugares'},
+    ],
+    survival:[
+      {emoji:'🗺️',title:'Spielplätze cerca de cafés',text:'El combo perfecto: café + Spielplatz cercano.\n• Rosengarten: café + vistas + parque\n• Gurten: café en la cima + zona de juegos\n• Kleine Schanze: parque + cafetería cercana\n• Marzili: verano + zona de picnic\nBernapp.ch tiene mapa de todos los Spielplätze de Berna.',tag:'🛝 Práctica'},
+    ]
+  },
+
+  spielplatz: {
+    name:'Spielplatz & Parks', emoji:'🛝', sub:'Naturaleza · Juegos',
+    track:'kinder', level:'k1',
+    words:[
+      {word:'Schaukel',artikel:'die',trans:'columpio / swing',tip:'Femenino → die'},
+      {word:'Rutsche',artikel:'die',trans:'tobogán / slide',tip:'Termina en -e → die'},
+      {word:'Sandkasten',artikel:'der',trans:'cajón de arena / sandbox',tip:'Compuesto masculino → der'},
+      {word:'Wippe',artikel:'die',trans:'balancín / seesaw',tip:'Termina en -e → die'},
+      {word:'Klettergerüst',artikel:'das',trans:'estructura para trepar',tip:'Compuesto neutro → das'},
+      {word:'Picknick',artikel:'das',trans:'picnic',tip:'Anglicismo neutro → das'},
+      {word:'Decke',artikel:'die',trans:'manta / blanket',tip:'Termina en -e → die'},
+      {word:'Sonnencreme',artikel:'die',trans:'protector solar',tip:'Termina en -e → die'},
+      {word:'Mücke',artikel:'die',trans:'mosquito / mosquito',tip:'Termina en -e → die'},
+      {word:'Pflaster',artikel:'das',trans:'curita / bandaid',tip:'Neutro → das'},
+      {word:'Trinkflasche',artikel:'die',trans:'botella de agua',tip:'Termina en -e → die'},
+      {word:'Sonnenhut',artikel:'der',trans:'sombrero de sol',tip:'Compuesto masculino → der'},
+      {word:'Ball',artikel:'der',trans:'pelota / ball',tip:'Masculino → der'},
+      {word:'Fahrrad',artikel:'das',trans:'bicicleta / bicycle',tip:'Compuesto neutro → das'},
+      {word:'Helm',artikel:'der',trans:'casco / helmet',tip:'Masculino → der'},
+    ],
+    sentences:[
+      {s:'___ Schaukel ist besetzt.',a:'die',trans:'El columpio está ocupado.'},
+      {s:'___ Sandkasten ist nass.',a:'der',trans:'El cajón de arena está mojado.'},
+      {s:'___ Kind braucht ein Pflaster.',a:'das',trans:'El niño necesita una curita.'},
+      {s:'Wo ist ___ nächste Spielplatz?',a:'der',trans:'¿Dónde está el parque más cercano?'},
+      {s:'___ Ball ist im Wasser.',a:'der',trans:'La pelota está en el agua.'},
+      {s:'Vergiss ___ Sonnencreme nicht!',a:'die',trans:'¡No olvides el protector solar!'},
+    ],
+    phrases:{
+      formal:[
+        {de:'Entschuldigung, ist dieser Platz frei?',es:'Disculpe, ¿está libre este lugar?',ctx:'En el parque'},
+        {de:'Darf mein Kind mitspielen?',es:'¿Puede mi hijo/a jugar también?',ctx:'Preguntando a otros padres'},
+        {de:'Wie alt ist Ihr Kind?',es:'¿Cuántos años tiene su hijo/a?',ctx:'Conversación de parque'},
+        {de:'Kennen Sie einen guten Spielplatz in der Nähe?',es:'¿Conoce un buen parque cerca?',ctx:'Preguntando a padres locales'},
+        {de:'Mein Kind hat sich verletzt.',es:'Mi hijo/a se lastimó.',ctx:'En caso de accidente'},
+      ],
+      casual:[
+        {de:'Hey, darf mis Chind au mitmache?',es:'Oye, ¿puede mi niño/a jugar también?',ctx:'Bernés directo'},
+        {de:'Wie alt isch dis?',es:'¿Cuántos años tiene el tuyo/a?',ctx:'Bernés — dis = deins'},
+        {de:'Wo chunnt ihr her?',es:'¿De dónde son?',ctx:'Conversación de parque'},
+        {de:'Hei ihr au no Sunnecrème?',es:'¿Tienen también protector solar?',ctx:'El momento de solidaridad entre madres'},
+        {de:'Er isch vo de Schaukel gheit!',es:'¡Se cayó del columpio!',ctx:'El susto inevitable'},
+      ]
+    },
+    culture:[
+      {emoji:'🛝',title:'Los mejores Spielplätze de Berna',text:'• Schulwarte (Helvetiaplatz): enorme, muy equipado\n• Dalmazi: junto al Aare, perfecto en verano\n• Kleine Schanze: central, bien mantenido\n• Wylerbad: cerca de la piscina\n• Wald-Spielplatz Egelsee: en el bosque, aventura natural\n• Gurten: en la cima de la montaña local',tag:'Guía práctica'},
+      {emoji:'🌿',title:'Naturspielplätze',text:'Los Naturspielplätze son parques con elementos naturales — troncos, agua, tierra. Perfectos para niños curiosos. El mejor en Berna: Spielplatz im Dählhölzli (junto al zoo). Entrada gratuita, junto al río.',tag:'Insider'},
+    ],
+    survival:[
+      {emoji:'📱',title:'Apps para encontrar Spielplätze',text:'• Bernapp.ch: mapa de todos los parques de Berna\n• OpenStreetMap: busca "Spielplatz Bern"\n• Google Maps: busca playground near me\n\nConsejo: los parques cerca de escuelas son generalmente los mejores equipados.',tag:'Digital'},
+      {emoji:'🌧️',title:'¿Llueve? Lugares cubiertos',text:'• Kornhausbibliothek: biblioteca infantil gratis\n• Kindermuseum Creaviva (Zentrum Paul Klee): talleres\n• Bern Show: indoor play area\n• Centro comercial Westside: zona de juegos\n• Schwimmbad Hirschenpark: piscina cubierta',tag:'Plan B'},
+    ]
+  },
+
+  kita: {
+    name:'Kita & Schule', emoji:'🏫', sub:'Sistema educativo · Vocab',
+    track:'kinder', level:'k1',
+    words:[
+      {word:'Kindergarten',artikel:'der',trans:'jardín de infantes',tip:'Compuesto masculino → der'},
+      {word:'Schule',artikel:'die',trans:'escuela / school',tip:'Termina en -e → die'},
+      {word:'Lehrer',artikel:'der',trans:'maestro / teacher (m)',tip:'Termina en -er → der'},
+      {word:'Lehrerin',artikel:'die',trans:'maestra / teacher (f)',tip:'Termina en -in → die'},
+      {word:'Hausaufgabe',artikel:'die',trans:'tarea / homework',tip:'Compuesto femenino → die'},
+      {word:'Zeugnis',artikel:'das',trans:'boletín / report card',tip:'Neutro → das'},
+      {word:'Elternabend',artikel:'der',trans:'reunión de padres',tip:'Compuesto masculino → der'},
+      {word:'Anmeldung',artikel:'die',trans:'inscripción / registration',tip:'Termina en -ung → die'},
+      {word:'Schulweg',artikel:'der',trans:'camino a la escuela',tip:'Compuesto masculino → der'},
+      {word:'Pausenhof',artikel:'der',trans:'patio de recreo',tip:'Compuesto masculino → der'},
+      {word:'Ranzen',artikel:'der',trans:'mochila escolar',tip:'Masculino → der'},
+      {word:'Heft',artikel:'das',trans:'cuaderno / notebook',tip:'Neutro → das'},
+      {word:'Bleistift',artikel:'der',trans:'lápiz / pencil',tip:'Compuesto masculino → der'},
+      {word:'Schere',artikel:'die',trans:'tijeras / scissors',tip:'Termina en -e → die'},
+      {word:'Kleber',artikel:'der',trans:'pegamento / glue',tip:'Termina en -er → der'},
+    ],
+    sentences:[
+      {s:'___ Kindergarten beginnt um 8 Uhr.',a:'der',trans:'El jardín empieza a las 8.'},
+      {s:'___ Lehrerin ist sehr nett.',a:'die',trans:'La maestra es muy amable.'},
+      {s:'___ Elternabend ist am Donnerstag.',a:'der',trans:'La reunión de padres es el jueves.'},
+      {s:'___ Anmeldung muss bis März erfolgen.',a:'die',trans:'La inscripción debe ser hasta marzo.'},
+      {s:'Mein Kind braucht ___ Ranzen.',a:'einen',trans:'Mi hijo/a necesita una mochila.'},
+      {s:'___ Hausaufgabe ist schwer.',a:'die',trans:'La tarea es difícil.'},
+    ],
+    phrases:{
+      formal:[
+        {de:'Ich möchte mein Kind anmelden.',es:'Quisiera inscribir a mi hijo/a.',ctx:'En la secretaría del Kindergarten'},
+        {de:'Wann beginnt der Kindergarten?',es:'¿Cuándo empieza el jardín de infantes?',ctx:'Pregunta de organización'},
+        {de:'Mein Kind spricht noch kein Deutsch.',es:'Mi hijo/a aún no habla alemán.',ctx:'Información importante al inscribir'},
+        {de:'Gibt es Deutschkurse für Kinder?',es:'¿Hay clases de alemán para niños?',ctx:'DaZ — Deutsch als Zweitsprache'},
+        {de:'Kann ich mit der Klassenlehrerin sprechen?',es:'¿Puedo hablar con la maestra de clase?',ctx:'Para el Elternabend'},
+      ],
+      casual:[
+        {de:'Isch dis au im Chindsgi?',es:'¿El tuyo también está en el jardín?',ctx:'Bernés — Chindsgi = Kindergarten'},
+        {de:'We fangt d\'Schuel a?',es:'¿Cuándo empieza la escuela?',ctx:'Bernés — we = wann, fangt a = beginnt'},
+        {de:'Mini Tochter will nid i Chindsgi!',es:'¡Mi hija no quiere ir al jardín!',ctx:'El drama del lunes'},
+        {de:'Hesch du d\'Hausaufgabe gmacht?',es:'¿Hiciste la tarea?',ctx:'La pregunta más temida'},
+        {de:'De Elteraabe isch hüt Abe.',es:'La reunión de padres es esta tarde.',ctx:'Bernés — Abe = Abend'},
+      ]
+    },
+    culture:[
+      {emoji:'🏫',title:'El sistema escolar bernés',text:'Berna tiene educación pública gratuita. El Kindergarten es de 4-6 años (2 años). La Primarschule de 6-12 años. La Sekundarschule de 12-15. Las clases son en alemán estándar pero los niños hablan Berndeutsch (bernés) entre sí. Hay apoyo DaZ (Deutsch als Zweitsprache) gratuito para niños que no hablan alemán.',tag:'Sistema'},
+      {emoji:'📝',title:'La Anmeldung escolar',text:'Para inscribir a tu hijo/a en el Kindergarten necesitas: pasaporte/Ausweis del niño, comprobante de domicilio, registro de vacunas (Impfausweis). La inscripción es en la Schulverwaltung de tu barrio (Schulkreis). Plazo: generalmente antes de fin de enero para septiembre.',tag:'Práctica'},
+    ],
+    survival:[
+      {emoji:'💰',title:'Kibon Card — ESENCIAL',text:'La Kibon Card da acceso a actividades culturales y deportivas con descuento o gratis para familias con ingresos reducidos. Incluye: museos, piscinas, teatros, clases deportivas, excursiones escolares. Solicitar en: kibon.ch o en la Sozialdirektion de Berna. Muchas familias no saben que existe — ¡úsala!',tag:'🌟 Esencial'},
+      {emoji:'🤝',title:'DaZ — Alemán para tu hijo/a',text:'Deutsch als Zweitsprache (DaZ) es el apoyo de alemán gratuito en la escuela pública de Berna para niños que no hablan alemán como lengua materna. Tu hijo/a tiene derecho a estas clases. Pregunta en la escuela: "Hat mein Kind Anrecht auf DaZ-Unterricht?"',tag:'Derechos'},
+    ]
+  },
+
+  kibon: {
+    name:'Kibon & Vergünstigungen', emoji:'💳', sub:'Descuentos · Derechos',
+    track:'kinder', level:'k1',
+    words:[
+      {word:'Vergünstigung',artikel:'die',trans:'descuento / discount',tip:'Termina en -ung → die'},
+      {word:'Berechtigung',artikel:'die',trans:'derecho / entitlement',tip:'Termina en -ung → die'},
+      {word:'Antrag',artikel:'der',trans:'solicitud / application',tip:'Masculino → der'},
+      {word:'Einkommen',artikel:'das',trans:'ingresos / income',tip:'Infinitivo sustantivado → das'},
+      {word:'Subvention',artikel:'die',trans:'subvención / subsidy',tip:'Termina en -ion → die'},
+      {word:'Krippenbeitrag',artikel:'der',trans:'aporte a la guardería',tip:'Compuesto masculino → der'},
+      {word:'Prämienverbilligung',artikel:'die',trans:'reducción de prima',tip:'Termina en -ung → die'},
+      {word:'Sozialhilfe',artikel:'die',trans:'ayuda social / welfare',tip:'Compuesto femenino → die'},
+      {word:'Gemeinde',artikel:'die',trans:'municipio / commune',tip:'Termina en -e → die'},
+      {word:'Formular',artikel:'das',trans:'formulario / form',tip:'Neutro → das'},
+      {word:'Nachweis',artikel:'der',trans:'comprobante / proof',tip:'Compuesto masculino → der'},
+      {word:'Steuererklaerung',artikel:'die',trans:'declaración de impuestos',tip:'Termina en -ung → die'},
+      {word:'Lohnausweis',artikel:'der',trans:'constancia de sueldo',tip:'Compuesto masculino → der'},
+      {word:'Aufenthaltsbewilligung',artikel:'die',trans:'permiso de residencia',tip:'Termina en -ung → die'},
+      {word:'Krippenplatz',artikel:'der',trans:'plaza en guardería',tip:'Compuesto masculino → der'},
+    ],
+    sentences:[
+      {s:'___ Kibon Card gibt viele Vergünstigungen.',a:'die',trans:'La Kibon Card da muchos descuentos.'},
+      {s:'___ Antrag muss ausgefüllt werden.',a:'der',trans:'La solicitud debe ser completada.'},
+      {s:'___ Prämienverbilligung hilft viel.',a:'die',trans:'La reducción de prima ayuda mucho.'},
+      {s:'Wo bekomme ich ___ Formular?',a:'das',trans:'¿Dónde consigo el formulario?'},
+      {s:'___ Krippenplatz ist sehr teuer.',a:'der',trans:'La plaza en la guardería es muy cara.'},
+      {s:'___ Gemeinde hilft bei der Anmeldung.',a:'die',trans:'El municipio ayuda con la inscripción.'},
+    ],
+    phrases:{
+      formal:[
+        {de:'Ich möchte die Kibon Card beantragen.',es:'Quisiera solicitar la Kibon Card.',ctx:'En la Sozialdirektion'},
+        {de:'Habe ich Anrecht auf Prämienverbilligung?',es:'¿Tengo derecho a reducción de prima?',ctx:'Pregunta importante'},
+        {de:'Welche Unterlagen brauche ich?',es:'¿Qué documentos necesito?',ctx:'Para cualquier solicitud'},
+        {de:'Ich verstehe das Formular nicht.',es:'No entiendo el formulario.',ctx:'Pidiendo ayuda'},
+        {de:'Gibt es einen Krippenplatz mit Subvention?',es:'¿Hay plaza de guardería con subvención?',ctx:'En la administración'},
+      ],
+      casual:[
+        {de:'Hesch du d\'Kibon Card?',es:'¿Tienes la Kibon Card?',ctx:'Preguntando a otras madres'},
+        {de:'Das isch gratis mit Kibon!',es:'¡Eso es gratis con Kibon!',ctx:'El momento de alegría'},
+        {de:'I ha Vergünstigung für d\'Piscine!',es:'¡Tengo descuento para la piscina!',ctx:'Compartiendo el descubrimiento'},
+        {de:'Das Formular isch kompliziert!',es:'¡El formulario es complicado!',ctx:'La realidad burocrática'},
+        {de:'D\'Integrationsstelle hilft dir.',es:'La oficina de integración te ayuda.',ctx:'Consejo de mamá a mamá'},
+      ]
+    },
+    culture:[
+      {emoji:'💳',title:'Todo lo que cubre la Kibon Card',text:'La Kibon Card (Kulturvermittlung und Integration Bern) ofrece: entradas gratuitas o con descuento a museos, piscinas municipales, teatro, ópera, conciertos, excursiones escolares y actividades deportivas. Renovación anual. Para familias con ingresos hasta ~72,000 CHF/año.',tag:'🌟 Esencial'},
+      {emoji:'💰',title:'Prämienverbilligung — dinero que te devuelven',text:'Si tus ingresos son medios o bajos, tienes derecho a que el cantón te pague parte de tu prima de Krankenkasse. En Berna se llama IPV (Individuelle Prämienverbilligung). Solicitar en: sv.fin.be.ch. Muchas familias no lo saben y pierden cientos de francos al año.',tag:'💡 Importante'},
+    ],
+    survival:[
+      {emoji:'🆘',title:'Ayudas que existen en Berna',text:'• Kibon Card: cultura y deporte con descuento\n• IPV: reducción de prima Krankenkasse\n• Kita-Subvention: subsidio para guardería\n• Schulergänzende Tagesstrukturen: cuidado extracurricular subsidiado\n• Integrationskurse: alemán gratis o subsidiado\n• Caritas Bern: asesoría y apoyo general\n• Integrationsabteilung Bern: tu primer contacto',tag:'📋 Directorio'},
+    ]
+  },
+
+  brocki: {
+    name:'Brocki & Second Hand', emoji:'🧸', sub:'Compras económicas · Vocabulario',
+    track:'kinder', level:'k1',
+    words:[
+      {word:'Brockenstube',artikel:'die',trans:'tienda de segunda mano',tip:'Termina en -e → die'},
+      {word:'Flohmarkt',artikel:'der',trans:'mercado de pulgas / flea market',tip:'Compuesto masculino → der'},
+      {word:'Kleidung',artikel:'die',trans:'ropa / clothing',tip:'Termina en -ung → die'},
+      {word:'Möbel',artikel:'die',trans:'muebles / furniture',tip:'Plural → die'},
+      {word:'Spielsachen',artikel:'die',trans:'juguetes / toys (pl)',tip:'Plural → die'},
+      {word:'Preis',artikel:'der',trans:'precio / price',tip:'Masculino → der'},
+      {word:'Zustand',artikel:'der',trans:'estado / condition',tip:'Masculino → der'},
+      {word:'Grösse',artikel:'die',trans:'talla / size',tip:'Termina en -e → die'},
+      {word:'Jacke',artikel:'die',trans:'chaqueta / jacket',tip:'Termina en -e → die'},
+      {word:'Schuhe',artikel:'die',trans:'zapatos / shoes (pl)',tip:'Plural → die'},
+      {word:'Hose',artikel:'die',trans:'pantalón / pants',tip:'Termina en -e → die'},
+      {word:'Kinderwagen',artikel:'der',trans:'cochecito / pram',tip:'Compuesto masculino → der'},
+      {word:'Kindersitz',artikel:'der',trans:'silla para niños',tip:'Compuesto masculino → der'},
+      {word:'Bücher',artikel:'die',trans:'libros / books (pl)',tip:'Plural → die'},
+      {word:'Rabatt',artikel:'der',trans:'descuento / discount',tip:'Masculino → der'},
+    ],
+    sentences:[
+      {s:'___ Brockenstube öffnet um 9 Uhr.',a:'die',trans:'La tienda de segunda mano abre a las 9.'},
+      {s:'___ Flohmarkt ist am Samstag.',a:'der',trans:'El mercado de pulgas es el sábado.'},
+      {s:'___ Jacke kostet nur 5 Franken!',a:'die',trans:'¡La chaqueta cuesta solo 5 francos!'},
+      {s:'Welche ___ hat das Kind?',a:'Grösse',trans:'¿Qué talla tiene el niño?'},
+      {s:'___ Spielsachen sind sehr günstig.',a:'die',trans:'Los juguetes están muy baratos.'},
+      {s:'Ich suche ___ Kinderwagen.',a:'einen',trans:'Busco un cochecito.'},
+    ],
+    phrases:{
+      formal:[
+        {de:'In welcher Grösse haben Sie das?',es:'¿En qué talla tiene eso?',ctx:'En la tienda'},
+        {de:'Ist das in gutem Zustand?',es:'¿Está en buen estado?',ctx:'Preguntando calidad'},
+        {de:'Können Sie den Preis reduzieren?',es:'¿Puede reducir el precio?',ctx:'Intentando regatear'},
+        {de:'Haben Sie Kinderwagen oder Kinderfahrräder?',es:'¿Tienen cochecitos o bicicletas para niños?',ctx:'Pregunta específica'},
+        {de:'Akzeptieren Sie Karte?',es:'¿Aceptan tarjeta?',ctx:'Siempre preguntar'},
+      ],
+      casual:[
+        {de:'Das isch en super Schnäppli!',es:'¡Eso es una súper ganga!',ctx:'Bernés — Schnäppli = Schnäppchen'},
+        {de:'Was chostet das?',es:'¿Cuánto cuesta?',ctx:'Bernés directo'},
+        {de:'Hesch no öpis Chleineres?',es:'¿Tienes algo más pequeño?',ctx:'Bernés — Chleineres = Kleineres'},
+        {de:'Das isch mega günstig!',es:'¡Está muy barato!',ctx:'Bernés — mega = muy'},
+        {de:'I nime das!',es:'¡Me lo llevo!',ctx:'Bernés — nime = nehme'},
+      ]
+    },
+    culture:[
+      {emoji:'🧸',title:'Las mejores Brockis de Berna',text:'• Caritas Brocki Bümpliz: enorme, muy económico, martes-sábado\n• Brockenstube Bern Mitte (Hodlerstrasse): ropa y hogar\n• Brockistube Länggasse: barrio universitario, libros y ropa\n• Heilsarmee (Ejército de Salvación): ropa económica\n• Flohmarkt Schützenmatte: sábados en verano\n• Facebook Marketplace y Ricardo.ch: segunda mano online',tag:'Guía práctica'},
+      {emoji:'♻️',title:'La cultura del second hand en Suiza',text:'Comprar segunda mano es completamente normal y valorado en Suiza — no hay estigma. Las Brockis son espacios limpios y organizados. El dinero recaudado va a causas sociales (Caritas, Heilsarmee). Muchos suizos compran ropa de niños en Brockis porque los niños crecen rápido.',tag:'Cultura'},
+    ],
+    survival:[
+      {emoji:'💻',title:'Segunda mano online',text:'• Ricardo.ch: el eBay suizo, muy usado en Berna\n• Tutti.ch: anuncios gratuitos, muy popular\n• Facebook Marketplace: grupos locales de Berna\n• Anibis.ch: usado para todo\n• Kinderkreisel.ch: específico para niños\n\nEn estos grupos encuentras desde ropa hasta muebles, casi siempre en buen estado.',tag:'Digital'},
+    ]
+  },
+
+  // ── WORK ──
+  barista: {
+    name:'Barista & Café', emoji:'☕', sub:'Servicio · Vocabulario de café',
+    track:'work', level:'w1',
+    words:[
+      {word:'Kaffee',artikel:'der',trans:'café / coffee',tip:'Masculino → der'},
+      {word:'Espresso',artikel:'der',trans:'espresso',tip:'Masculino → der'},
+      {word:'Milchschaum',artikel:'der',trans:'espuma de leche',tip:'Compuesto masculino → der'},
+      {word:'Bestellung',artikel:'die',trans:'pedido / order',tip:'Termina en -ung → die'},
+      {word:'Kasse',artikel:'die',trans:'caja / register',tip:'Termina en -e → die'},
+      {word:'Quittung',artikel:'die',trans:'recibo / receipt',tip:'Termina en -ung → die'},
+      {word:'Schicht',artikel:'die',trans:'turno / shift',tip:'Femenino → die'},
+      {word:'Pause',artikel:'die',trans:'descanso / break',tip:'Termina en -e → die'},
+      {word:'Kollege',artikel:'der',trans:'colega / colleague (m)',tip:'Termina en -e (masc.) → der'},
+      {word:'Chefin',artikel:'die',trans:'jefa / boss (f)',tip:'Termina en -in → die'},
+      {word:'Reinigung',artikel:'die',trans:'limpieza / cleaning',tip:'Termina en -ung → die'},
+      {word:'Hafer',artikel:'der',trans:'avena / oat',tip:'Masculino → der'},
+      {word:'Soja',artikel:'die',trans:'soja / soy',tip:'Femenino → die'},
+      {word:'Mandel',artikel:'die',trans:'almendra / almond',tip:'Femenino → die'},
+      {word:'Tasse',artikel:'die',trans:'taza / cup',tip:'Termina en -e → die'},
+    ],
+    sentences:[
+      {s:'___ Bestellung ist fertig.',a:'die',trans:'El pedido está listo.'},
+      {s:'___ Kasse ist leer.',a:'die',trans:'La caja está vacía.'},
+      {s:'___ Schicht beginnt um 7 Uhr.',a:'die',trans:'El turno empieza a las 7.'},
+      {s:'___ Milchschaum ist zu heiss.',a:'der',trans:'La espuma de leche está muy caliente.'},
+      {s:'Ich mache ___ Pause um 10.',a:'die',trans:'Hago el descanso a las 10.'},
+      {s:'___ Chefin kommt um 9.',a:'die',trans:'La jefa viene a las 9.'},
+    ],
+    phrases:{
+      formal:[
+        {de:'Was darf es sein?',es:'¿Qué desea?',ctx:'La pregunta clásica del barista'},
+        {de:'Zum Mitnehmen oder hier trinken?',es:'¿Para llevar o para tomar aquí?',ctx:'Pregunta obligatoria'},
+        {de:'Mit Kuhmilch oder pflanzlicher Milch?',es:'¿Con leche de vaca o vegetal?',ctx:'Opción estándar hoy'},
+        {de:'Das macht 4 Franken 50, bitte.',es:'Son 4 francos 50, por favor.',ctx:'Cobrando'},
+        {de:'Einen Moment bitte, ich bin gleich da.',es:'Un momento, enseguida estoy.',ctx:'Cuando estás ocupado/a'},
+      ],
+      casual:[
+        {de:'En groosse Kafi zum Mitnä?',es:'¿Un café grande para llevar?',ctx:'Bernés de café'},
+        {de:'Hei ihr Hafermilch?',es:'¿Tienen leche de avena?',ctx:'Bernés — hei = haben Sie'},
+        {de:'Stimmt so!',es:'¡Está bien así! (propina)',ctx:'El cliente no quiere cambio'},
+        {de:'I mues go Pause mache.',es:'Tengo que ir a tomar el descanso.',ctx:'Bernés laboral'},
+        {de:'De Chef chunnt grad.',es:'El jefe viene ahora.',ctx:'Bernés — chunnt = kommt'},
+      ]
+    },
+    culture:[
+      {emoji:'⏰',title:'Tus derechos laborales en Suiza',text:'En Suiza los derechos laborales están muy protegidos:\n• Pausa de 15 min por cada 4h de trabajo\n• Pago de horas extras (Überstunden)\n• 4 semanas mínimo de vacaciones (Ferien) al año\n• Aviso de despido (Kündigung) mínimo 1 mes\n• Sueldo mínimo en Berna: CHF 23/hora\nGuarda SIEMPRE tu contrato y tus nóminas.',tag:'⚖️ Derechos'},
+      {emoji:'📋',title:'Vocabulario de contrato',text:'Arbeitsvertrag = contrato laboral, Lohn = sueldo, Überstunden = horas extras, Kündigung = despido/renuncia, Probezeit = período de prueba (generalmente 3 meses), AHV = seguro social, Quellensteuer = impuesto en la fuente (para extranjeros).',tag:'Esencial'},
+    ],
+    survival:[
+      {emoji:'💬',title:'Frases de supervivencia en el trabajo',text:'• "Ich verstehe das nicht ganz" — No entiendo del todo\n• "Können Sie das wiederholen?" — ¿Puede repetirlo?\n• "Wie macht man das?" — ¿Cómo se hace esto?\n• "Ich habe einen Fehler gemacht" — Cometí un error\n• "Kann ich kurz fragen?" — ¿Puedo preguntar un momento?\n\nNunca tengas miedo de preguntar. Los suizos prefieren que preguntes a que cometas errores.',tag:'🗣️ Práctica'},
+      {emoji:'🆘',title:'¿Problemas en el trabajo?',text:'• Gewerkschaft (sindicato): Unia y SGB son los más grandes de Berna\n• Arbeitsgericht: tribunal laboral gratuito para trabajadores\n• Beratungsstelle für Arbeitnehmende: asesoría gratuita\n• RAV (Regionales Arbeitsvermittlungszentrum): si pierdes el trabajo\n\nTus derechos no dependen de tu permiso de residencia.',tag:'⚖️ Ayuda'},
+    ]
+  },
+
+  server: {
+    name:'Restaurant & Service', emoji:'🍽️', sub:'Servicio de mesa · Gastronomía',
+    track:'work', level:'w1',
+    words:[
+      {word:'Vorspeise',artikel:'die',trans:'entrada / starter',tip:'Compuesto femenino → die'},
+      {word:'Hauptgang',artikel:'der',trans:'plato principal / main course',tip:'Compuesto masculino → der'},
+      {word:'Dessert',artikel:'das',trans:'postre / dessert',tip:'Neutro → das'},
+      {word:'Weinkarte',artikel:'die',trans:'carta de vinos',tip:'Termina en -e → die'},
+      {word:'Allergie',artikel:'die',trans:'alergia / allergy',tip:'Termina en -ie → die'},
+      {word:'Trinkgeld',artikel:'das',trans:'propina / tip',tip:'Compuesto neutro → das'},
+      {word:'Reservierung',artikel:'die',trans:'reserva / reservation',tip:'Termina en -ung → die'},
+      {word:'Tagesmenü',artikel:'das',trans:'menú del día',tip:'Compuesto neutro → das'},
+      {word:'Kellner',artikel:'der',trans:'mesero / waiter (m)',tip:'Termina en -er → der'},
+      {word:'Kellnerin',artikel:'die',trans:'mesera / waitress',tip:'Termina en -in → die'},
+      {word:'Tisch',artikel:'der',trans:'mesa / table',tip:'Masculino → der'},
+      {word:'Bestellung',artikel:'die',trans:'pedido / order',tip:'Termina en -ung → die'},
+      {word:'Rechnung',artikel:'die',trans:'cuenta / bill',tip:'Termina en -ung → die'},
+      {word:'Getränk',artikel:'das',trans:'bebida / drink',tip:'Neutro → das'},
+      {word:'Speisekarte',artikel:'die',trans:'carta / menu',tip:'Termina en -e → die'},
+    ],
+    sentences:[
+      {s:'___ Reservierung ist auf den Namen Müller.',a:'die',trans:'La reserva está a nombre de Müller.'},
+      {s:'___ Tagesmenü kostet 18 Franken.',a:'das',trans:'El menú del día cuesta 18 francos.'},
+      {s:'___ Rechnung bitte.',a:'die',trans:'La cuenta, por favor.'},
+      {s:'Haben Sie ___ Allergie?',a:'eine',trans:'¿Tiene alguna alergia?'},
+      {s:'___ Hauptgang ist ausverkauft.',a:'der',trans:'El plato principal está agotado.'},
+      {s:'___ Tisch ist reserviert.',a:'der',trans:'La mesa está reservada.'},
+    ],
+    phrases:{
+      formal:[
+        {de:'Haben Sie reserviert?',es:'¿Tiene reserva?',ctx:'Al recibir clientes'},
+        {de:'Haben Sie Allergien oder Unverträglichkeiten?',es:'¿Tiene alergias o intolerancias?',ctx:'Pregunta importante'},
+        {de:'Was darf ich Ihnen bringen?',es:'¿Qué le puedo traer?',ctx:'Tomando la comanda'},
+        {de:'Das Tagesmenü ist heute Zürcher Geschnetzeltes.',es:'El menú del día es hoy Zürcher Geschnetzeltes.',ctx:'Describiendo el plato'},
+        {de:'Hat es Ihnen geschmeckt?',es:'¿Le gustó la comida?',ctx:'Al retirar los platos'},
+      ],
+      casual:[
+        {de:'Hei ihr reserviert?',es:'¿Tienen reserva?',ctx:'Bernés — hei ihr = haben Sie'},
+        {de:'Was nehmt ihr?',es:'¿Qué van a pedir?',ctx:'Bernés informal'},
+        {de:'Het öppis nid gstimmt?',es:'¿Algo no estuvo bien?',ctx:'Bernés — si hay queja'},
+        {de:'Stimmt so — danke!',es:'Está bien así — ¡gracias! (propina)',ctx:'El cliente te deja propina'},
+        {de:'I bringe das grad.',es:'Te traigo eso enseguida.',ctx:'Bernés — grad = gleich'},
+      ]
+    },
+    culture:[
+      {emoji:'🍷',title:'La propina en Suiza',text:'La propina (Trinkgeld) no es obligatoria en Suiza — los sueldos son más altos. Lo normal: redondear al siguiente franco o dejar 5-10% en restaurantes formales. "Stimmt so" significa "está bien así" = el cliente deja propina. Si el cliente dice "stimmt so", agradece pero no hagas comentarios.',tag:'Cultura'},
+      {emoji:'📋',title:'Platos típicos berneses que debes conocer',text:'• Berner Platte: chucrut con carnes ahumadas\n• Rösti: patatas ralladas fritas — el plato nacional\n• Zürcher Geschnetzeltes: ternera en salsa de crema\n• Käseschnitte: tostada con queso gratinado\n• Meringues mit Rahm: merengues con crema — postre bernés\n• Cervelat: salchicha suiza, se come a la brasa',tag:'Gastronomía'},
+    ],
+    survival:[
+      {emoji:'💬',title:'Si un cliente se queja',text:'• "Es tut mir leid" — Lo siento\n• "Ich spreche mit meinem Chef" — Hablo con mi jefe\n• "Das war ein Missverständnis" — Fue un malentendido\n• "Ich löse das sofort" — Lo resuelvo enseguida\n• Nunca discutas con el cliente. Llama al supervisor.\n\nEn Suiza los clientes son generalmente directos pero no groseros. Si alguien es irrespetuoso, tienes derecho a llamar al encargado.',tag:'Práctica'},
+    ]
+  },
+
+  // ── B1 LEBEN ──
+  inselspital: {
+    name:'Inselspital', emoji:'🏥', sub:'Salud · Dativ',
+    track:'leben', level:'b1',
+    words:[
+      {word:'Arzt',artikel:'der',trans:'médico / doctor (m)',tip:'Profesión masculina → der'},
+      {word:'Ärztin',artikel:'die',trans:'médica / doctor (f)',tip:'Termina en -in → die'},
+      {word:'Rezept',artikel:'das',trans:'receta / prescription',tip:'Neutro → das'},
+      {word:'Schmerz',artikel:'der',trans:'dolor / pain',tip:'Masculino → der'},
+      {word:'Krankheit',artikel:'die',trans:'enfermedad / illness',tip:'Termina en -heit → die'},
+      {word:'Versicherung',artikel:'die',trans:'seguro / insurance',tip:'Termina en -ung → die'},
+      {word:'Notfall',artikel:'der',trans:'emergencia / emergency',tip:'Compuesto masculino → der'},
+      {word:'Blutdruck',artikel:'der',trans:'presión arterial',tip:'Compuesto masculino → der'},
+      {word:'Fieber',artikel:'das',trans:'fiebre / fever',tip:'Neutro → das'},
+      {word:'Husten',artikel:'der',trans:'tos / cough',tip:'Masculino → der'},
+      {word:'Impfung',artikel:'die',trans:'vacuna / vaccination',tip:'Termina en -ung → die'},
+      {word:'Krankenhaus',artikel:'das',trans:'hospital',tip:'Compuesto neutro → das'},
+      {word:'Apotheke',artikel:'die',trans:'farmacia / pharmacy',tip:'Termina en -e → die'},
+      {word:'Tablette',artikel:'die',trans:'pastilla / tablet',tip:'Termina en -e → die'},
+      {word:'Spritze',artikel:'die',trans:'inyección / injection',tip:'Termina en -e → die'},
+    ],
+    sentences:[
+      {s:'___ Arzt gibt mir das Rezept.',a:'der',trans:'El médico me da la receta.'},
+      {s:'___ Schmerz ist sehr stark.',a:'der',trans:'El dolor es muy fuerte.'},
+      {s:'___ Versicherung bezahlt das.',a:'die',trans:'El seguro paga eso.'},
+      {s:'Ich habe ___ Fieber.',a:'das',trans:'Tengo fiebre.'},
+      {s:'___ Apotheke ist um die Ecke.',a:'die',trans:'La farmacia está a la vuelta.'},
+      {s:'___ Impfung ist wichtig.',a:'die',trans:'La vacuna es importante.'},
+    ],
+    phrases:{
+      formal:[
+        {de:'Ich hätte gerne einen Termin beim Arzt.',es:'Me gustaría pedir una cita con el médico.',ctx:'Llamando al consultorio'},
+        {de:'Ich habe starke Schmerzen im Bauch.',es:'Tengo fuertes dolores abdominales.',ctx:'Con el médico'},
+        {de:'Ich bin bei der KPT versichert.',es:'Estoy asegurado/a en la KPT.',ctx:'En recepción del hospital'},
+        {de:'Können Sie mir ein Rezept ausstellen?',es:'¿Puede extenderme una receta?',ctx:'Pidiendo receta'},
+        {de:'Ich nehme täglich Blutdruckmittel.',es:'Tomo medicación para la presión diariamente.',ctx:'Informando al médico'},
+      ],
+      casual:[
+        {de:'Mir geit\'s nid guet.',es:'No me siento bien.',ctx:'Bernés — nid guet = nicht gut'},
+        {de:'I ha Chopfweh.',es:'Tengo dolor de cabeza.',ctx:'Bernés — Chopfweh = Kopfweh'},
+        {de:'Die Wartezeit isch ewig lang!',es:'¡El tiempo de espera es eterno!',ctx:'La sala de espera suiza'},
+        {de:'Muess ich echli warte?',es:'¿Tengo que esperar un poco?',ctx:'Bernés — echli = ein bisschen'},
+        {de:'Die Prämie isch so teuer!',es:'¡La prima del seguro es tan cara!',ctx:'El lamento suizo universal 😂'},
+      ]
+    },
+    culture:[
+      {emoji:'💊',title:'El sistema de salud suizo',text:'El seguro médico (Krankenkasse) es obligatorio en Suiza. Pagas una prima mensual y una franquicia anual (Franchise) que puedes elegir: a mayor franquicia, menor prima. La franquicia estándar es 300 CHF/año. Puedes elegir 500, 1000, 1500, 2000 o 2500 CHF para pagar menos mensual.',tag:'Esencial'},
+      {emoji:'🏥',title:'Médico de cabecera o urgencias',text:'Hausarzt/Hausärztin = médico de cabecera, tu primer contacto. Urgencias (Notfall) solo si es urgente real — una consulta de urgencias cuesta 3-4x más. Para urgencias no graves: walk-in Permanence (Hauptbahnhof Bern, abierto hasta las 23h). Triage telefónico: llama al 1811.',tag:'Práctica'},
+    ],
+    survival:[
+      {emoji:'📱',title:'Números de emergencia Suiza',text:'• 144: Ambulancia (Sanitätsnotruf)\n• 117: Policía (Polizei)\n• 118: Bomberos (Feuerwehr)\n• 145: Centro de intoxicaciones (Tox Center)\n• 143: La Main Tendue (apoyo emocional)\n• 147: Apoyo para jóvenes\n• 1811: Consulta médica telefónica (no urgencias)',tag:'⚠️ Emergencias'},
+    ]
+  },
+
+  migration: {
+    name:'Migration Office', emoji:'🏛️', sub:'Documentos · Modalverben',
+    track:'leben', level:'b1',
+    words:[
+      {word:'Ausweis',artikel:'der',trans:'identificación / ID',tip:'Masculino → der'},
+      {word:'Aufenthaltsbewilligung',artikel:'die',trans:'permiso de residencia',tip:'Termina en -ung → die'},
+      {word:'Formular',artikel:'das',trans:'formulario / form',tip:'Neutro → das'},
+      {word:'Unterschrift',artikel:'die',trans:'firma / signature',tip:'Femenino → die'},
+      {word:'Termin',artikel:'der',trans:'cita / appointment',tip:'Masculino → der'},
+      {word:'Wohnsitz',artikel:'der',trans:'domicilio / residence',tip:'Compuesto masculino → der'},
+      {word:'Anmeldung',artikel:'die',trans:'empadronamiento / registration',tip:'Termina en -ung → die'},
+      {word:'Verlängerung',artikel:'die',trans:'prórroga / renewal',tip:'Termina en -ung → die'},
+      {word:'Ausländerausweis',artikel:'der',trans:'permiso de extranjería',tip:'Compuesto masculino → der'},
+      {word:'Niederlassungsbewilligung',artikel:'die',trans:'permiso de establecimiento (C)',tip:'Termina en -ung → die'},
+      {word:'Einreise',artikel:'die',trans:'entrada / entry',tip:'Compuesto femenino → die'},
+      {word:'Visum',artikel:'das',trans:'visa / visa',tip:'Neutro → das'},
+      {word:'Pass',artikel:'der',trans:'pasaporte / passport',tip:'Masculino → der'},
+      {word:'Staatsbürgerschaft',artikel:'die',trans:'ciudadanía / citizenship',tip:'Termina en -schaft → die'},
+      {word:'Einbürgerung',artikel:'die',trans:'naturalización',tip:'Termina en -ung → die'},
+    ],
+    sentences:[
+      {s:'___ Ausweis muss immer dabei sein.',a:'der',trans:'La identificación siempre debe estar consigo.'},
+      {s:'___ Formular ist auf Deutsch.',a:'das',trans:'El formulario está en alemán.'},
+      {s:'___ Termin ist um 10 Uhr.',a:'der',trans:'La cita es a las 10.'},
+      {s:'___ Verlängerung dauert 4 Wochen.',a:'die',trans:'La prórroga tarda 4 semanas.'},
+      {s:'Ich brauche ___ Visum.',a:'ein',trans:'Necesito una visa.'},
+      {s:'___ Anmeldung muss innerhalb von 14 Tagen erfolgen.',a:'die',trans:'El empadronamiento debe hacerse en 14 días.'},
+    ],
+    phrases:{
+      formal:[
+        {de:'Ich möchte meine Aufenthaltsbewilligung verlängern.',es:'Me gustaría renovar mi permiso de residencia.',ctx:'En ventanilla'},
+        {de:'Welche Dokumente benötige ich?',es:'¿Qué documentos necesito?',ctx:'La pregunta más importante'},
+        {de:'Ich habe einen Termin um 14 Uhr.',es:'Tengo una cita a las 14h.',ctx:'Al llegar'},
+        {de:'Wie lange dauert die Bearbeitung?',es:'¿Cuánto tiempo tarda el proceso?',ctx:'Preguntando plazos'},
+        {de:'Kann ich das Formular auf Englisch haben?',es:'¿Puedo tener el formulario en inglés?',ctx:'Si el alemán es difícil'},
+      ],
+      casual:[
+        {de:'Scho wieder e Wartenummer zieh…',es:'A sacar otro número de turno...',ctx:'La experiencia universal'},
+        {de:'Ha, i ha das falsch Papier mitgnoh!',es:'¡Ay, traje el papel equivocado!',ctx:'El drama de la burocracia'},
+        {de:'Das isch so kompliziert!',es:'¡Esto es tan complicado!',ctx:'La reacción honesta'},
+        {de:'Endlich! I ha es Bewilligung!',es:'¡Por fin! ¡Tengo el permiso!',ctx:'La celebración merecida 🎉'},
+        {de:'Chasch du mir hälfe das z\'verstah?',es:'¿Me puedes ayudar a entender esto?',ctx:'Pidiendo ayuda'},
+      ]
+    },
+    culture:[
+      {emoji:'📂',title:'Documentos SIEMPRE necesarios',text:'Nunca vayas a trámites sin: pasaporte vigente, permiso de residencia actual, contrato de trabajo + últimas 3 nóminas, comprobante de domicilio (Wohnsitzbestätigung — de la Einwohnerdienste), número AHV (tarjeta beige). Para migración específicamente: fotos de pasaporte y a veces extracto bancario.',tag:'⚠️ Importante'},
+      {emoji:'🔴',title:'La Anmeldung — lo primero',text:'Al llegar a Berna tienes 14 días para registrarte en Einwohnerdienste (no en migración). Dirección: Schwanengasse 14, Berna. Sin Anmeldung no puedes abrir cuenta bancaria ni conseguir seguro médico. Lleva: pasaporte, contrato de arrendamiento y foto de pasaporte.',tag:'Obligatorio'},
+    ],
+    survival:[
+      {emoji:'🆘',title:'Ayuda con trámites migratorios',text:'• Integrationsdienst Bern: asesoría migratoria gratuita\n• Beratungsstelle für Ausländerinnen und Ausländer: apoyo legal\n• Solidarité sans frontières: para casos complicados\n• Rechtsberatungsstelle für Asylsuchende: para solicitantes de asilo\n\nNunca pagues a intermediarios para trámites de migración — todos los servicios públicos son gratuitos.',tag:'🆘 Recursos'},
+    ]
+  },
+};
+
+// ════════════════════════════════════════════
+// PLACEMENT TEST DATA
+// ════════════════════════════════════════════
+const PT_QUESTIONS = [
+  {word:'Tisch',trans:'mesa / table',ans:'der',level:'A1'},{word:'Schule',trans:'escuela / school',ans:'die',level:'A1'},
+  {word:'Kind',trans:'niño/a / child',ans:'das',level:'A1'},{word:'Zeitung',trans:'periódico / newspaper',ans:'die',level:'A1'},
+  {word:'Museum',trans:'museo / museum',ans:'das',level:'A1'},{word:'Mädchen',trans:'chica / girl',ans:'das',level:'A1'},
+  {word:'Freiheit',trans:'libertad / freedom',ans:'die',level:'A2'},{word:'Krankenhaus',trans:'hospital',ans:'das',level:'A2'},
+  {word:'Abfahrt',trans:'salida / departure',ans:'die',level:'A2'},{word:'Aufenthalt',trans:'estadía / stay',ans:'der',level:'A2'},
+  {word:'Versicherung',trans:'seguro / insurance',ans:'die',level:'A2'},{word:'Kindergarten',trans:'jardín de infantes',ans:'der',level:'A2'},
+  {word:'Niederlassungsbewilligung',trans:'permiso de establecimiento',ans:'die',level:'B1'},{word:'Einbürgerung',trans:'naturalización',ans:'die',level:'B1'},
+  {word:'Steuererklärung',trans:'declaración de impuestos',ans:'die',level:'B1'},{word:'Aufenthaltsbewilligung',trans:'permiso de residencia',ans:'die',level:'B1'},
+  {word:'Prämienverbilligung',trans:'reducción de prima médica',ans:'die',level:'B1'},{word:'Arbeitsvertrag',trans:'contrato laboral',ans:'der',level:'B2'},
+  {word:'Quellensteuer',trans:'impuesto en la fuente',ans:'die',level:'B2'},{word:'Gewerkschaft',trans:'sindicato / union',ans:'die',level:'B2'},
+];
+
+// ════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════
+let state = {
+  track: 'leben',
+  level: null,
+  streak: parseInt(localStorage.getItem('dib_streak')||'0'),
+  xp: parseInt(localStorage.getItem('dib_xp')||'0'),
+  lastDay: localStorage.getItem('dib_lastDay')||'',
+  completed: JSON.parse(localStorage.getItem('dib_completed')||'[]'),
+  ptScore: 0,
+};
+
+let currentLoc = null, currentTab = 'grammar', phraseMode = 'formal';
+let qDeck=[], qIndex=0, qCorrect=0, qWrong=0, qAnswered=false;
+let fDeck=[], fIndex=0, fCorrect=0, fWrong=0, fFlipped=false;
+let bDeck=[], bIndex=0, bCorrect=0, bWrong=0;
+let ptIndex=0, ptCorrect=0, ptAnswered=false;
+
+function shuffle(a){return [...a].sort(()=>Math.random()-0.5);}
+function make15(words){let d=shuffle(words);while(d.length<15)d=d.concat(shuffle(words));return d.slice(0,15);}
+function saveState(){localStorage.setItem('dib_streak',state.streak);localStorage.setItem('dib_xp',state.xp);localStorage.setItem('dib_lastDay',state.lastDay);localStorage.setItem('dib_completed',JSON.stringify(state.completed));}
+function addXP(n){state.xp+=n;saveState();updateHomeStats();}
+
+function updateStreak(){
+  const today=new Date().toDateString();
+  if(state.lastDay!==today){
+    const yesterday=new Date(Date.now()-86400000).toDateString();
+    state.streak=state.lastDay===yesterday?state.streak+1:1;
+    state.lastDay=today; saveState();
+  }
+}
+
+// ════════════════════════════════════════════
+// SCREENS
+// ════════════════════════════════════════════
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const showNav=['homescreen','locationmap','module'].includes(id);
+  document.getElementById('bottom-nav').style.display=showNav?'flex':'none';
+}
+
+function startTrack(track){
+  state.track=track;
+  localStorage.setItem('dib_visited','1');
+  showScreen('homescreen');
+  renderHome();
+}
+
+function showTrackSelect(){showScreen('welcome');}
+
+// ════════════════════════════════════════════
+// PLACEMENT TEST
+// ════════════════════════════════════════════
+function loadPTQuestion(){
+  if(ptIndex>=PT_QUESTIONS.length){finishPT();return;}
+  const q=PT_QUESTIONS[ptIndex];
+  document.getElementById('pt-word').textContent=q.word;
+  document.getElementById('pt-trans').textContent=q.trans;
+  document.getElementById('pt-ltag').textContent=q.level;
+  document.getElementById('pt-fill').style.width=(ptIndex/PT_QUESTIONS.length*100)+'%';
+  document.getElementById('pt-label').textContent='Pregunta '+(ptIndex+1)+' de '+PT_QUESTIONS.length;
+  document.getElementById('pt-fb').textContent='';
+  document.getElementById('pt-fb').className='pt-feedback';
+  document.querySelectorAll('.pt-opt').forEach(b=>{b.classList.remove('correct','wrong');b.disabled=false;});
+  ptAnswered=false;
+}
+
+function answerPT(chosen){
+  if(ptAnswered)return;
+  ptAnswered=true;
+  const q=PT_QUESTIONS[ptIndex];
+  document.querySelectorAll('.pt-opt').forEach(b=>{
+    b.disabled=true;
+    if(b.textContent.trim()===q.ans)b.classList.add('correct');
+  });
+  const fb=document.getElementById('pt-fb');
+  if(chosen===q.ans){
+    ptCorrect++;
+    fb.textContent='✓ ¡Correcto!'; fb.className='pt-feedback ok';
+  } else {
+    fb.textContent='✗ Era '+q.ans; fb.className='pt-feedback no';
+    document.querySelectorAll('.pt-opt').forEach(b=>{if(b.textContent.trim()===chosen)b.classList.add('wrong');});
+  }
+  setTimeout(()=>{ptIndex++;loadPTQuestion();},chosen===q.ans?1000:2000);
+}
+
+function finishPT(){
+  const pct=ptCorrect/PT_QUESTIONS.length;
+  let suggestedLevel;
+  if(pct<0.35) suggestedLevel='a1';
+  else if(pct<0.60) suggestedLevel='a2';
+  else if(pct<0.80) suggestedLevel='b1';
+  else suggestedLevel='b2';
+  state.level=suggestedLevel;
+  document.getElementById('placement').innerHTML=`
+    <div style="text-align:center;padding:60px 24px;">
+      <div style="font-size:4rem;margin-bottom:16px">${pct>=0.8?'🏆':pct>=0.6?'💡':pct>=0.35?'🕯️':'☕'}</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:8px">Tu nivel: ${suggestedLevel.toUpperCase()}</h2>
+      <p style="color:var(--muted);margin-bottom:24px;font-size:0.9rem">${ptCorrect}/${PT_QUESTIONS.length} correctas — ${Math.round(pct*100)}%<br>Te hemos colocado en el nivel más adecuado.</p>
+      <button class="btn-primary" onclick="goToLevel('${suggestedLevel}')">¡Empezar desde ${suggestedLevel.toUpperCase()}! 🚀</button>
+      <button class="btn-secondary" style="margin-top:8px" onclick="goToLevel('a1')">Empezar desde A1 de todas formas</button>
+    </div>`;
+}
+
+function skipPlacement(){
+  state.level='a1';
+  showScreen('homescreen');
+  renderHome();
+}
+
+function goToLevel(level){
+  state.level=level;
+  showScreen('homescreen');
+  renderHome();
+}
+
+// ════════════════════════════════════════════
+// HOME
+// ════════════════════════════════════════════
+function updateHomeStats(){
+  document.getElementById('h-streak').textContent=state.streak;
+  document.getElementById('h-xp').textContent=state.xp;
+  document.getElementById('h-done').textContent=state.completed.length;
+}
+
+function setHomeTrack(track){
+  state.track=track;
+  document.querySelectorAll('.ttab').forEach(t=>{t.className='ttab';});
+  document.getElementById('ttab-'+track).className='ttab active-'+track;
+  renderLevelStrips();
+}
+
+function renderHome(){
+  updateHomeStats();
+  setHomeTrack(state.track);
+  const trackNames={leben:'🗺️ Leben in Bern',kinder:'🐨 Kinder in Bern',work:'💼 Work in Bern'};
+  document.getElementById('home-track-label').textContent=trackNames[state.track];
+}
+
+function renderLevelStrips(){
+  const trackData=TRACKS[state.track];
+  const strips=document.getElementById('level-strips');
+  strips.innerHTML='';
+  trackData.levels.forEach((lv,i)=>{
+    const isUnlocked=i===0||state.completed.filter(id=>LOCATIONS[id]&&LOCATIONS[id].level===trackData.levels[i-1].id).length>0;
+    const isDone=lv.locations.every(id=>state.completed.includes(id));
+    const strip=document.createElement('div');
+    strip.className='level-strip'+(isDone?' ls-done':isUnlocked?' ls-current':' ls-locked');
+    strip.innerHTML=`
+      <div class="ls-emoji">${lv.emoji}</div>
+      <div class="ls-info">
+        <div class="ls-name">${lv.name}</div>
+        <div class="ls-sub">${lv.sub}</div>
+      </div>
+      <span class="ls-badge ${isDone?'comp':isUnlocked?'curr':'lock'}">${isDone?'✓ Hecho':isUnlocked?'Activo':'🔒'}</span>`;
+    if(isUnlocked) strip.onclick=()=>openLevel(lv);
+    strips.appendChild(strip);
+  });
+}
+
+function openLevel(level){
+  document.getElementById('lm-title').textContent=level.emoji+' '+level.name;
+  document.getElementById('lm-tag').textContent=level.sub;
+  const grid=document.getElementById('loc-grid');
+  grid.innerHTML='';
+  level.locations.forEach((id,i)=>{
+    const loc=LOCATIONS[id];
+    if(!loc){
+      // placeholder
+      const card=document.createElement('div');
+      card.className='loc-card loc-locked';
+      card.innerHTML=`<span class="loc-emoji">🔒</span><div class="loc-name">Próximamente</div><div class="loc-sub">En desarrollo</div>`;
+      grid.appendChild(card);
+      return;
+    }
+    const isDone=state.completed.includes(id);
+    const isUnlocked=i===0||state.completed.includes(level.locations[i-1]);
+    const card=document.createElement('div');
+    card.className='loc-card'+(isDone?' loc-done':!isUnlocked?' loc-locked':'');
+    card.innerHTML=`
+      <span class="loc-emoji">${loc.emoji}</span>
+      <div class="loc-name">${loc.name}</div>
+      <div class="loc-sub">${loc.sub}</div>
+      <span class="loc-status ${isDone?'done-s':isUnlocked?'new-s':'lock-s'}">${isDone?'✓':isUnlocked?'▶':'🔒'}</span>`;
+    if(isUnlocked||isDone) card.onclick=()=>openModule(loc,id);
+    grid.appendChild(card);
+  });
+  showScreen('locationmap');
+}
+
+function goHome(){showScreen('homescreen');renderHome();}
+function goLocationMap(){showScreen('locationmap');}
+
+// ════════════════════════════════════════════
+// MODULE
+// ════════════════════════════════════════════
+function openModule(loc,id){
+  currentLoc={...loc,id};
+  document.getElementById('mod-title').textContent=loc.name;
+  document.getElementById('mod-sub').textContent=loc.sub;
+  document.getElementById('mod-hero-bg').textContent=loc.emoji;
+  qDeck=make15(loc.words); qIndex=0; qCorrect=0; qWrong=0; qAnswered=false;
+  fDeck=make15(loc.words); fIndex=0; fCorrect=0; fWrong=0; fFlipped=false;
+  bDeck=shuffle(loc.sentences||[]); bIndex=0; bCorrect=0; bWrong=0;
+  phraseMode='formal';
+  document.querySelectorAll('.mtab').forEach(t=>t.classList.remove('active'));
+  document.querySelector('.mtab').classList.add('active');
+  switchTab('grammar');
+  showScreen('module');
+}
+
+function switchTab(tab,btn){
+  currentTab=tab;
+  if(btn){document.querySelectorAll('.mtab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');}
+  renderTab(tab);
+}
+
+function renderTab(tab){
+  const c=document.getElementById('mod-content');
+  if(tab==='grammar') c.innerHTML=renderGrammar();
+  else if(tab==='flashcards'){c.innerHTML=renderFCHTML();loadFC();}
+  else if(tab==='quiz'){c.innerHTML=renderQHTML();loadQ();}
+  else if(tab==='blank'){c.innerHTML=renderBHTML();loadB();}
+  else if(tab==='phrases') c.innerHTML=renderPhrases();
+  else if(tab==='culture') c.innerHTML=renderCulture();
+  else if(tab==='survival') c.innerHTML=renderSurvival();
+}
+
+// ── GRAMMAR ──
+function renderGrammar(){
+  return `<div>
+    <div style="margin-bottom:16px">
+      <div class="art-badge der">🔵 DER — masculino</div>
+      <ul class="rule-list">
+        <li><span class="arrow">→</span>Termina en <strong>-er, -el, -en</strong> → der Lehrer, der Apfel <span class="ltag en">EN</span></li>
+        <li><span class="arrow">→</span>Días, meses, estaciones → der Montag, der Sommer, der Januar</li>
+        <li><span class="arrow">→</span>Termina en <strong>-ismus, -or, -ig, -ling</strong> → der König, der Frühling</li>
+        <li><span class="arrow">→</span>Bebidas alcohólicas → der Wein, der Whisky, der Kaffee</li>
+        <li><span class="arrow">→</span>Masculinos vivos → der Mann, der Hund <span class="ltag es">ES: como "el"</span></li>
+      </ul>
+      <div class="art-badge die">🔴 DIE — femenino</div>
+      <ul class="rule-list">
+        <li><span class="arrow">→</span>Termina en <strong>-ung, -heit, -keit, -schaft</strong> → die Zeitung, die Freiheit <span class="ltag es">ES: siempre</span></li>
+        <li><span class="arrow">→</span>Termina en <strong>-tion, -sion, -tät, -ie</strong> → die Nation, die Allergie <span class="ltag en">EN: -tion!</span></li>
+        <li><span class="arrow">→</span>Termina en <strong>-e</strong> (muchos) → die Schule, die Straße, die Brücke</li>
+        <li><span class="arrow">→</span>Termina en <strong>-in</strong> (femenino) → die Lehrerin, die Ärztin</li>
+        <li><span class="arrow">→</span>Femeninas vivas → die Frau, die Mutter, die Katze</li>
+      </ul>
+      <div class="art-badge das">🟢 DAS — neutro</div>
+      <ul class="rule-list">
+        <li><span class="arrow">→</span>Termina en <strong>-chen, -lein</strong> → das Mädchen, das Büchlein <span class="ltag es">ES: sin equiv.</span></li>
+        <li><span class="arrow">→</span>Termina en <strong>-um, -ment, -tum</strong> → das Museum, das Dokument</li>
+        <li><span class="arrow">→</span>Infinitivos como sustantivos → das Essen, das Leben, das Lernen</li>
+        <li><span class="arrow">→</span>Con prefijo <strong>Ge-</strong> → das Gebäude, das Gesicht, das Gespräch</li>
+        <li><span class="arrow">→</span>Colores, metales, elementos → das Gold, das Blau, das Eisen</li>
+      </ul>
+    </div>
+    <div style="background:rgba(232,168,56,0.08);border:1px solid rgba(232,168,56,0.25);border-radius:12px;padding:14px">
+      <div style="font-weight:800;color:var(--bear);margin-bottom:8px">💡 Palabras clave de ${currentLoc.name}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        ${currentLoc.words.slice(0,8).map(w=>`<span style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:0.82rem"><span style="color:${w.artikel==='der'?'var(--masc)':w.artikel==='die'?'var(--fem)':'var(--neut)'};font-weight:700">${w.artikel}</span> ${w.word}</span>`).join('')}
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── FLASHCARDS ──
+function renderFCHTML(){
+  return `<div class="ex-wrap" id="fc-wrap">
+    <div class="prog-track"><div class="prog-fill" id="fc-prog" style="width:0%"></div></div>
+    <div class="score-row"><span class="sc">✓ <span id="fc-c">0</span></span><span class="sw">✗ <span id="fc-w">0</span></span><span class="sn" id="fc-n">1/15</span></div>
+    <div class="card-scene" id="fc-scene" onclick="flipFC()">
+      <div class="card-inner" id="fc-inner">
+        <div class="card-face card-front">
+          <div class="fc-word" id="fc-word">—</div>
+          <div class="fc-trans" id="fc-trans">—</div>
+          <div class="fc-tap">Toca para ver el artículo</div>
+        </div>
+        <div class="card-face card-back" id="fc-back">
+          <div class="fc-art" id="fc-art">—</div>
+          <div class="fc-full" id="fc-full">—</div>
+          <div class="fc-tip" id="fc-tip">—</div>
+        </div>
+      </div>
+    </div>
+    <button class="fc-btn flip-it" id="fc-flip-btn" onclick="flipFC()">🔄 Ver artículo</button>
+    <div class="fc-btns" id="fc-btns" style="display:none">
+      <button class="fc-btn didnt" onclick="markFC(false)">✗ No sabía</button>
+      <button class="fc-btn knew" onclick="markFC(true)">✓ Lo sabía</button>
+    </div>
+    <button class="btn-secondary" style="margin-top:4px" onclick="restartFC()">↺ Reiniciar</button>
+  </div>`;
+}
+
+function loadFC(){
+  if(fIndex>=fDeck.length){showFCDone();return;}
+  const w=fDeck[fIndex];
+  document.getElementById('fc-word').textContent=w.word;
+  document.getElementById('fc-trans').textContent=w.trans;
+  document.getElementById('fc-art').textContent=w.artikel;
+  document.getElementById('fc-full').textContent=w.artikel+' '+w.word;
+  document.getElementById('fc-tip').textContent=w.tip;
+  document.getElementById('fc-back').className='card-face card-back '+w.artikel;
+  document.getElementById('fc-n').textContent=(fIndex+1)+'/'+fDeck.length;
+  document.getElementById('fc-prog').style.width=(fIndex/fDeck.length*100)+'%';
+  document.getElementById('fc-c').textContent=fCorrect;
+  document.getElementById('fc-w').textContent=fWrong;
+  fFlipped=false;
+  document.getElementById('fc-scene').classList.remove('flipped');
+  document.getElementById('fc-btns').style.display='none';
+  document.getElementById('fc-flip-btn').style.display='block';
+}
+
+function flipFC(){
+  if(!fFlipped){
+    document.getElementById('fc-scene').classList.add('flipped');
+    document.getElementById('fc-btns').style.display='flex';
+    document.getElementById('fc-flip-btn').style.display='none';
+    fFlipped=true;
+  }
+}
+
+function markFC(knew){if(knew)fCorrect++;else fWrong++;fIndex++;loadFC();}
+
+function showFCDone(){
+  const pct=Math.round(fCorrect/fDeck.length*100);
+  document.getElementById('fc-wrap').innerHTML=`<div class="finished"><span class="big">${pct>=80?'🎉':'💪'}</span><h2>${fCorrect}/${fDeck.length}</h2><p>${pct>=70?'¡Prueba el quiz!':'¡Sigue practicando!'}</p><button class="btn-primary" onclick="restartFC()">↺ Otra vez</button></div>`;
+}
+
+function restartFC(){fDeck=make15(currentLoc.words);fIndex=0;fCorrect=0;fWrong=0;document.getElementById('mod-content').innerHTML=renderFCHTML();loadFC();}
+
+// ── QUIZ ──
+function renderQHTML(){
+  return `<div class="ex-wrap" id="qz-wrap">
+    <div class="prog-track"><div class="prog-fill" id="qz-prog" style="width:0%"></div></div>
+    <div class="score-row"><span class="sc">✓ <span id="qz-c">0</span></span><span class="sw">✗ <span id="qz-w">0</span></span><span class="sn" id="qz-n">1/15</span></div>
+    <div class="q-card"><div class="qword" id="qz-word">—</div><div class="qtrans" id="qz-trans">—</div></div>
+    <div class="opts" id="qz-opts">
+      <button class="opt der-o" onclick="checkQ('der')">der</button>
+      <button class="opt die-o" onclick="checkQ('die')">die</button>
+      <button class="opt das-o" onclick="checkQ('das')">das</button>
+      <button class="opt ein-o" onclick="checkQ('ein')">ein/e</button>
+    </div>
+    <div class="fb-box empty" id="qz-fb"></div>
+    <button class="btn-secondary" onclick="restartQ()">↺ Reiniciar</button>
+  </div>`;
+}
+
+function loadQ(){
+  if(qIndex>=qDeck.length){showQDone();return;}
+  const w=qDeck[qIndex];
+  document.getElementById('qz-word').textContent=w.word;
+  document.getElementById('qz-trans').textContent=w.trans;
+  document.getElementById('qz-n').textContent=(qIndex+1)+'/'+qDeck.length;
+  document.getElementById('qz-prog').style.width=(qIndex/qDeck.length*100)+'%';
+  document.getElementById('qz-c').textContent=qCorrect;
+  document.getElementById('qz-w').textContent=qWrong;
+  document.getElementById('qz-fb').textContent='';
+  document.getElementById('qz-fb').className='fb-box empty';
+  document.querySelectorAll('.opt').forEach(b=>{b.classList.remove('correct-a','wrong-a');b.disabled=false;});
+  qAnswered=false;
+}
+
+function checkQ(chosen){
+  if(qAnswered)return;
+  qAnswered=true;
+  const w=qDeck[qIndex];
+  document.querySelectorAll('.opt').forEach(b=>{b.disabled=true;if(b.textContent.trim()===w.artikel)b.classList.add('correct-a');});
+  const fb=document.getElementById('qz-fb');
+  const isCorrect=chosen===w.artikel;
+  const delay=isCorrect?1400:2800;
+  if(isCorrect){
+    qCorrect++;
+    fb.textContent='✓ ¡Correcto! '+w.tip;
+    fb.className='fb-box ok';
+    addXP(10);
+  } else {
+    qWrong++;
+    fb.innerHTML=`✗ Era <strong>${w.artikel} ${w.word}</strong>. ${w.tip}`;
+    fb.className='fb-box no';
+    document.querySelectorAll('.opt').forEach(b=>{if(b.textContent.trim()===chosen)b.classList.add('wrong-a');});
+  }
+  setTimeout(()=>{qIndex++;loadQ();},delay);
+}
+
+function showQDone(){
+  const pct=Math.round(qCorrect/qDeck.length*100);
+  const passed=pct>=70;
+  let html=`<div class="finished"><span class="big">${pct>=80?'🏆':pct>=60?'🎉':'💪'}</span><h2>${qCorrect}/${qDeck.length} — ${pct}%</h2><p>${passed?'¡Superaste el quiz!':'Necesitas 70% para desbloquear. ¡Casi!'}</p>`;
+  if(passed&&!state.completed.includes(currentLoc.id)){
+    state.completed.push(currentLoc.id);
+    addXP(100); saveState();
+    html+=`<button class="btn-primary" style="margin-bottom:8px" onclick="showUnlock()">🏆 Ver recompensa</button>`;
+  }
+  html+=`<button class="btn-secondary" onclick="restartQ()">↺ Volver a intentar</button></div>`;
+  document.getElementById('qz-wrap').innerHTML=html;
+}
+
+function restartQ(){qDeck=make15(currentLoc.words);qIndex=0;qCorrect=0;qWrong=0;document.getElementById('mod-content').innerHTML=renderQHTML();loadQ();}
+
+// ── BLANK ──
+function renderBHTML(){
+  const total=(currentLoc.sentences||[]).length;
+  return `<div class="ex-wrap" id="bl-wrap">
+    <div class="prog-track"><div class="prog-fill" id="bl-prog" style="width:0%"></div></div>
+    <div class="score-row"><span class="sc">✓ <span id="bl-c">0</span></span><span class="sw">✗ <span id="bl-w">0</span></span><span class="sn" id="bl-n">1/${total}</span></div>
+    <div class="blank-card">
+      <div class="blank-sent" id="bl-s">—</div>
+      <input class="blank-in" id="bl-in" placeholder="der / die / das" maxlength="6" onkeydown="if(event.key==='Enter')checkB()">
+      <div class="blank-hint" id="bl-hint">—</div>
+    </div>
+    <button class="btn-check" onclick="checkB()">Comprobar →</button>
+    <div class="fb-box empty" id="bl-fb"></div>
+    <button class="btn-secondary" style="margin-top:4px" onclick="restartB()">↺ Reiniciar</button>
+  </div>`;
+}
+
+function loadB(){
+  if(!currentLoc.sentences||bIndex>=bDeck.length){showBDone();return;}
+  const s=bDeck[bIndex];
+  document.getElementById('bl-s').textContent=s.s;
+  document.getElementById('bl-hint').textContent=s.trans;
+  document.getElementById('bl-n').textContent=(bIndex+1)+'/'+bDeck.length;
+  document.getElementById('bl-prog').style.width=(bIndex/bDeck.length*100)+'%';
+  document.getElementById('bl-c').textContent=bCorrect;
+  document.getElementById('bl-w').textContent=bWrong;
+  const inp=document.getElementById('bl-in');
+  inp.value='';inp.className='blank-in';inp.disabled=false;
+  document.getElementById('bl-fb').textContent='';
+  document.getElementById('bl-fb').className='fb-box empty';
+  setTimeout(()=>inp.focus(),100);
+}
+
+function checkB(){
+  const inp=document.getElementById('bl-in');
+  const val=inp.value.trim().toLowerCase();
+  const s=bDeck[bIndex];
+  inp.disabled=true;
+  const fb=document.getElementById('bl-fb');
+  if(val===s.a.toLowerCase()){
+    bCorrect++;inp.className='blank-in ok';
+    fb.textContent='✓ ¡Correcto!';fb.className='fb-box ok';
+    addXP(15);
+    setTimeout(()=>{bIndex++;loadB();},1200);
+  } else {
+    bWrong++;inp.className='blank-in no';
+    fb.innerHTML=`✗ Era "<strong>${s.a}</strong>" — ${s.trans}`;
+    fb.className='fb-box no';
+    setTimeout(()=>{bIndex++;loadB();},2800);
+  }
+}
+
+function showBDone(){
+  const pct=Math.round(bCorrect/(bDeck.length||1)*100);
+  document.getElementById('bl-wrap').innerHTML=`<div class="finished"><span class="big">${pct>=80?'🌟':'💪'}</span><h2>${bCorrect}/${bDeck.length}</h2><p>${pct>=70?'¡Excelente! Prueba el quiz.':'Sigue practicando.'}</p><button class="btn-primary" onclick="restartB()">↺ Otra vez</button></div>`;
+}
+
+function restartB(){bDeck=shuffle(currentLoc.sentences||[]);bIndex=0;bCorrect=0;bWrong=0;document.getElementById('mod-content').innerHTML=renderBHTML();loadB();}
+
+// ── PHRASES ──
+function renderPhrases(){
+  const phrases=currentLoc.phrases[phraseMode]||[];
+  return `<div>
+    <div class="ptog-row">
+      <button class="ptog ${phraseMode==='formal'?'active':''}" onclick="setPM('formal')">🎩 Formal</button>
+      <button class="ptog ${phraseMode==='casual'?'active':''}" onclick="setPM('casual')">😎 Bernés casual</button>
+    </div>
+    ${phrases.map(p=>`<div class="phrase-card">
+      <div class="ph-de">${p.de}</div>
+      <div class="ph-es">🇪🇸 ${p.es}</div>
+      <div class="ph-en">🇬🇧 ${p.en||toEnglish(p.es)}</div>
+      <div class="ph-ctx">📍 ${p.ctx}</div>
+    </div>`).join('')}
+  </div>`;
+}
+
+function setPM(mode){phraseMode=mode;document.getElementById('mod-content').innerHTML=renderPhrases();}
+
+// ── CULTURE ──
+function renderCulture(){
+  return `<div>${(currentLoc.culture||[]).map(c=>`<div class="cult-card"><span class="cult-emoji">${c.emoji}</span><h4>${c.title}</h4><p>${c.text}</p><span class="cult-tag">${c.tag}</span></div>`).join('')}</div>`;
+}
+
+// ── SURVIVAL ──
+function renderSurvival(){
+  const items=currentLoc.survival||[];
+  if(!items.length) return `<div style="text-align:center;padding:40px 20px;color:var(--muted)">Consejos de supervivencia próximamente para ${currentLoc.name} 🐻</div>`;
+  return `<div>${items.map(s=>`<div class="survival-card"><h4>${s.emoji} ${s.title}</h4><p style="white-space:pre-line">${s.text}</p><span class="cult-tag">${s.tag}</span></div>`).join('')}</div>`;
+}
+
+// ── UNLOCK ──
+function showUnlock(){
+  const loc=currentLoc;
+  document.getElementById('ul-emoji').textContent=loc.emoji;
+  document.getElementById('ul-title').textContent='¡Desbloqueaste '+loc.name+'!';
+  document.getElementById('ul-desc').textContent=(loc.culture&&loc.culture[0])?loc.culture[0].text.slice(0,120)+'...':'¡Excelente trabajo!';
+  const phrases=[...(loc.phrases.formal||[]).slice(0,3),...(loc.phrases.casual||[]).slice(0,2)];
+  document.getElementById('ul-phrases').innerHTML=`<h4>🗣️ Tus 5 frases clave:</h4>${phrases.map(p=>`<div class="unlock-phrase"><div class="up-de">${p.de}</div><div class="up-es">${p.es}</div></div>`).join('')}`;
+  document.getElementById('unlock').classList.add('show');
+}
+
+function closeUnlock(){document.getElementById('unlock').classList.remove('show');}
+
+// ── INIT ──
+updateStreak();
+
+function goPlacement(){showScreen('placement');loadPTQuestion();}
+function skipToA1(){state.level='a1';localStorage.setItem('dib_visited','1');showScreen('homescreen');renderHome();}
+
+// Simple EN translation fallback for phrases that don't have en field
+function toEnglish(es){
+  const map={
+    'Buenos días, ¿dónde está el Zytglogge?':'Good morning, where is the Zytglogge?',
+    'Disculpe, ¿cómo llego a la catedral?':'Excuse me, how do I get to the cathedral?',
+    '¿Tiene usted un mapa de la ciudad?':'Do you have a city map?',
+    '¿Cuánto tiempo está abierto el museo?':'How long is the museum open?',
+    '¿Cuánto cuesta la entrada?':'How much is the entrance fee?',
+    'Oye, ¿sabes dónde está el café?':'Hey, do you know where the café is?',
+    '¿Vamos a almorzar?':'Shall we go for lunch?',
+    '¡Qué bonito es aquí!':'How beautiful it is here!',
+    '¿Me puedes ayudar?':'Can you help me?',
+    'Un boleto a Zúrich, por favor.':'A ticket to Zurich, please.',
+    '¿En qué andén sale el tren?':'Which platform does the train leave from?',
+    '¿Hay algún retraso?':'Is there any delay?',
+    '¿Está ocupado este asiento?':'Is this seat taken?',
+    '¿Pueden darme una bolsa, por favor?':'Can you give me a bag, please?',
+    'La cuenta, por favor.':'The bill, please.',
+    'Con tarjeta, por favor.':'By card, please.',
+    '¿Tienen silla alta para mi hijo/a?':'Do you have a high chair for my child?',
+    '¿Hay un cambiador?':'Is there a changing room?',
+    'Un babycino, por favor — no muy caliente.':'A babycino, please — not too hot.',
+    '¿Puede darme una receta?':'Can you give me a prescription?',
+    'No me siento bien.':'I\'m not feeling well.',
+    '¿Qué desea?':'What would you like?',
+    '¿Para llevar o para tomar aquí?':'To take away or to have here?',
+  };
+  return map[es]||'(English translation coming soon)';
+}
+</script>
+</body>
+</html>
