@@ -171,6 +171,8 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--te
 .vb-end-present { color:var(--neut); text-decoration:underline; font-weight:800; }
 .vb-end-past { color:var(--masc); text-decoration:underline; font-weight:800; }
 .vb-end-future { color:var(--gold); text-decoration:underline; font-weight:800; }
+.vb-end-praet { color:#f4a261; text-decoration:underline; font-weight:800; }
+.vb-end-konj2 { color:#f85149; text-decoration:underline; font-weight:800; }
 .vb-trans { font-size:0.75rem; color:var(--muted); }
 .vb-example-card {
   background:var(--surface); border:1px solid var(--border); border-radius:12px;
@@ -609,27 +611,29 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--te
     <button class="vb-tense-btn active" id="vbt-present" onclick="setTense('present',this)">🟢 Präsens</button>
     <button class="vb-tense-btn" id="vbt-past" onclick="setTense('past',this)">🔵 Perfekt</button>
     <button class="vb-tense-btn" id="vbt-future" onclick="setTense('future',this)">🟡 Futur</button>
+    <button class="vb-tense-btn" id="vbt-praet" onclick="setTense('praet',this)">🟠 Präteritum</button>
+    <button class="vb-tense-btn" id="vbt-konj2" onclick="setTense('konj2',this)">🔴 Konjunktiv II</button>
   </div>
 
   <!-- Tense explanation -->
   <div class="vb-tense-info" id="vb-tense-info"></div>
 
-  <!-- VERB SELECTOR -->
+  <!-- CONJUGATION TABLE — all 6 forms — now ABOVE verb picker -->
   <div style="padding:0 16px 14px">
-    <div class="sz-section-title" id="vb-lbl-pick">Pick a verb</div>
-    <div class="vb-verb-grid" id="vb-verb-grid"></div>
-  </div>
-
-  <!-- CONJUGATION TABLE — all 6 forms -->
-  <div style="padding:0 16px 20px">
     <div class="sz-section-title" id="vb-lbl-conj">Conjugation</div>
     <div id="vb-conj-table"></div>
   </div>
 
   <!-- SENTENCE EXAMPLE -->
-  <div style="padding:0 16px 20px">
+  <div style="padding:0 16px 14px">
     <div class="sz-section-title" id="vb-lbl-ex">Example sentences</div>
     <div id="vb-examples"></div>
+  </div>
+
+  <!-- VERB SELECTOR — now BELOW conjugation -->
+  <div style="padding:0 16px 20px">
+    <div class="sz-section-title" id="vb-lbl-pick">Pick a verb</div>
+    <div class="vb-verb-grid" id="vb-verb-grid"></div>
   </div>
 </div>
 
@@ -975,10 +979,14 @@ const VERBS = [
     present:{ ich:'bin', du:'bist', er:'ist', wir:'sind', ihr:'seid', sie:'sind' },
     past:{ aux:'sein', pp:'gewesen', ich:'bin gewesen', du:'bist gewesen', er:'ist gewesen', wir:'sind gewesen', ihr:'seid gewesen', sie:'sind gewesen' },
     future:{ ich:'werde sein', du:'wirst sein', er:'wird sein', wir:'werden sein', ihr:'werdet sein', sie:'werden sein' },
+    praet:{ ich:'war', du:'warst', er:'war', wir:'waren', ihr:'wart', sie:'waren' },
+    konj2:{ ich:'wäre', du:'wärst', er:'wäre', wir:'wären', ihr:'wärt', sie:'wären' },
     examples:{
       present:{ de:'Ich bin in Bern.', en:'I am in Bern.', es:'Estoy en Berna.' },
       past:{ de:'Ich bin gestern in Bern gewesen.', en:'I was in Bern yesterday.', es:'Ayer estuve en Berna.' },
       future:{ de:'Ich werde morgen in Bern sein.', en:'I will be in Bern tomorrow.', es:'Mañana estaré en Berna.' },
+      praet:{ de:'Ich war gestern in Bern.', en:'I was in Bern yesterday.', es:'Ayer estuve en Berna.' },
+      konj2:{ de:'Ich wäre gern in Bern.', en:'I would like to be in Bern.', es:'Me gustaría estar en Berna.' },
     }
   },
   {
@@ -986,10 +994,14 @@ const VERBS = [
     present:{ ich:'habe', du:'hast', er:'hat', wir:'haben', ihr:'habt', sie:'haben' },
     past:{ aux:'haben', pp:'gehabt', ich:'habe gehabt', du:'hast gehabt', er:'hat gehabt', wir:'haben gehabt', ihr:'habt gehabt', sie:'haben gehabt' },
     future:{ ich:'werde haben', du:'wirst haben', er:'wird haben', wir:'werden haben', ihr:'werdet haben', sie:'werden haben' },
+    praet:{ ich:'hatte', du:'hattest', er:'hatte', wir:'hatten', ihr:'hattet', sie:'hatten' },
+    konj2:{ ich:'hätte', du:'hättest', er:'hätte', wir:'hätten', ihr:'hättet', sie:'hätten' },
     examples:{
       present:{ de:'Ich habe einen Hund.', en:'I have a dog.', es:'Tengo un perro.' },
       past:{ de:'Ich habe Hunger gehabt.', en:'I was hungry.', es:'Tuve hambre.' },
       future:{ de:'Ich werde Zeit haben.', en:'I will have time.', es:'Tendré tiempo.' },
+      praet:{ de:'Ich hatte keine Zeit.', en:'I had no time.', es:'No tuve tiempo.' },
+      konj2:{ de:'Ich hätte gerne einen Kaffee.', en:'I would like a coffee.', es:'Me gustaría un café.' },
     }
   },
   {
@@ -997,10 +1009,14 @@ const VERBS = [
     present:{ ich:'gehe', du:'gehst', er:'geht', wir:'gehen', ihr:'geht', sie:'gehen' },
     past:{ aux:'sein', pp:'gegangen', ich:'bin gegangen', du:'bist gegangen', er:'ist gegangen', wir:'sind gegangen', ihr:'seid gegangen', sie:'sind gegangen' },
     future:{ ich:'werde gehen', du:'wirst gehen', er:'wird gehen', wir:'werden gehen', ihr:'werdet gehen', sie:'werden gehen' },
+    praet:{ ich:'ging', du:'gingst', er:'ging', wir:'gingen', ihr:'gingt', sie:'gingen' },
+    konj2:{ ich:'würde gehen', du:'würdest gehen', er:'würde gehen', wir:'würden gehen', ihr:'würdet gehen', sie:'würden gehen' },
     examples:{
       present:{ de:'Ich gehe in die Altstadt.', en:'I go to the old town.', es:'Voy a la ciudad vieja.' },
       past:{ de:'Ich bin zum Bahnhof gegangen.', en:'I went to the train station.', es:'Fui a la estación.' },
       future:{ de:'Wir werden morgen zum Gurten gehen.', en:'We will go to Gurten tomorrow.', es:'Iremos al Gurten mañana.' },
+      praet:{ de:'Er ging jeden Tag zum Märit.', en:'He went to the market every day.', es:'Él iba al mercado cada día.' },
+      konj2:{ de:'Ich würde gern nach Hause gehen.', en:'I would like to go home.', es:'Me gustaría ir a casa.' },
     }
   },
   {
@@ -1008,10 +1024,14 @@ const VERBS = [
     present:{ ich:'komme', du:'kommst', er:'kommt', wir:'kommen', ihr:'kommt', sie:'kommen' },
     past:{ aux:'sein', pp:'gekommen', ich:'bin gekommen', du:'bist gekommen', er:'ist gekommen', wir:'sind gekommen', ihr:'seid gekommen', sie:'sind gekommen' },
     future:{ ich:'werde kommen', du:'wirst kommen', er:'wird kommen', wir:'werden kommen', ihr:'werdet kommen', sie:'werden kommen' },
+    praet:{ ich:'kam', du:'kamst', er:'kam', wir:'kamen', ihr:'kamt', sie:'kamen' },
+    konj2:{ ich:'würde kommen', du:'würdest kommen', er:'würde kommen', wir:'würden kommen', ihr:'würdet kommen', sie:'würden kommen' },
     examples:{
       present:{ de:'Er kommt aus Kolumbien.', en:'He comes from Colombia.', es:'Él viene de Colombia.' },
       past:{ de:'Sie ist um 8 Uhr gekommen.', en:'She came at 8 o\'clock.', es:'Ella vino a las 8.' },
       future:{ de:'Wann wirst du kommen?', en:'When will you come?', es:'¿Cuándo vendrás?' },
+      praet:{ de:'Sie kam jeden Morgen früh.', en:'She came every morning early.', es:'Ella venía cada mañana temprano.' },
+      konj2:{ de:'Könntest du bitte kommen?', en:'Could you please come?', es:'¿Podrías venir por favor?' },
     }
   },
   {
@@ -1019,10 +1039,14 @@ const VERBS = [
     present:{ ich:'arbeite', du:'arbeitest', er:'arbeitet', wir:'arbeiten', ihr:'arbeitet', sie:'arbeiten' },
     past:{ aux:'haben', pp:'gearbeitet', ich:'habe gearbeitet', du:'hast gearbeitet', er:'hat gearbeitet', wir:'haben gearbeitet', ihr:'habt gearbeitet', sie:'haben gearbeitet' },
     future:{ ich:'werde arbeiten', du:'wirst arbeiten', er:'wird arbeiten', wir:'werden arbeiten', ihr:'werdet arbeiten', sie:'werden arbeiten' },
+    praet:{ ich:'arbeitete', du:'arbeitetest', er:'arbeitete', wir:'arbeiteten', ihr:'arbeitetet', sie:'arbeiteten' },
+    konj2:{ ich:'würde arbeiten', du:'würdest arbeiten', er:'würde arbeiten', wir:'würden arbeiten', ihr:'würdet arbeiten', sie:'würden arbeiten' },
     examples:{
       present:{ de:'Ich arbeite in Bern.', en:'I work in Bern.', es:'Trabajo en Berna.' },
       past:{ de:'Sie hat heute viel gearbeitet.', en:'She worked a lot today.', es:'Ella trabajó mucho hoy.' },
       future:{ de:'Er wird nächste Woche arbeiten.', en:'He will work next week.', es:'Él trabajará la semana que viene.' },
+      praet:{ de:'Er arbeitete lange in der Post.', en:'He worked at the post office for a long time.', es:'Él trabajó en correos mucho tiempo.' },
+      konj2:{ de:'Ich würde gern von zuhause arbeiten.', en:'I would like to work from home.', es:'Me gustaría trabajar desde casa.' },
     }
   },
   {
@@ -1030,10 +1054,14 @@ const VERBS = [
     present:{ ich:'kaufe', du:'kaufst', er:'kauft', wir:'kaufen', ihr:'kauft', sie:'kaufen' },
     past:{ aux:'haben', pp:'gekauft', ich:'habe gekauft', du:'hast gekauft', er:'hat gekauft', wir:'haben gekauft', ihr:'habt gekauft', sie:'haben gekauft' },
     future:{ ich:'werde kaufen', du:'wirst kaufen', er:'wird kaufen', wir:'werden kaufen', ihr:'werdet kaufen', sie:'werden kaufen' },
+    praet:{ ich:'kaufte', du:'kauftest', er:'kaufte', wir:'kauften', ihr:'kauftet', sie:'kauften' },
+    konj2:{ ich:'würde kaufen', du:'würdest kaufen', er:'würde kaufen', wir:'würden kaufen', ihr:'würdet kaufen', sie:'würden kaufen' },
     examples:{
       present:{ de:'Ich kaufe Brot am Märit.', en:'I buy bread at the market.', es:'Compro pan en el mercado.' },
       past:{ de:'Sie hat einen Käse gekauft.', en:'She bought a cheese.', es:'Ella compró un queso.' },
       future:{ de:'Wir werden im Loeb kaufen.', en:'We will shop at Loeb.', es:'Compraremos en el Loeb.' },
+      praet:{ de:'Er kaufte jeden Samstag Blumen.', en:'He bought flowers every Saturday.', es:'Él compraba flores cada sábado.' },
+      konj2:{ de:'Ich würde das gern kaufen.', en:'I would like to buy that.', es:'Me gustaría comprar eso.' },
     }
   },
   {
@@ -1041,10 +1069,14 @@ const VERBS = [
     present:{ ich:'esse', du:'isst', er:'isst', wir:'essen', ihr:'esst', sie:'essen' },
     past:{ aux:'haben', pp:'gegessen', ich:'habe gegessen', du:'hast gegessen', er:'hat gegessen', wir:'haben gegessen', ihr:'habt gegessen', sie:'haben gegessen' },
     future:{ ich:'werde essen', du:'wirst essen', er:'wird essen', wir:'werden essen', ihr:'werdet essen', sie:'werden essen' },
+    praet:{ ich:'aß', du:'aßt', er:'aß', wir:'aßen', ihr:'aßt', sie:'aßen' },
+    konj2:{ ich:'würde essen', du:'würdest essen', er:'würde essen', wir:'würden essen', ihr:'würdet essen', sie:'würden essen' },
     examples:{
       present:{ de:'Wir essen Rösti zum Mittag.', en:'We eat Rösti for lunch.', es:'Comemos Rösti al mediodía.' },
       past:{ de:'Ich habe ein Gipfeli gegessen.', en:'I ate a croissant.', es:'Comí un croissant.' },
       future:{ de:'Wir werden im Restaurant essen.', en:'We will eat at the restaurant.', es:'Comeremos en el restaurante.' },
+      praet:{ de:'Er aß jeden Morgen ein Gipfeli.', en:'He ate a croissant every morning.', es:'Él comía un croissant cada mañana.' },
+      konj2:{ de:'Ich würde gern im Altersheim essen.', en:'I would like to eat at the care home.', es:'Me gustaría comer en la residencia.' },
     }
   },
   {
@@ -1052,10 +1084,14 @@ const VERBS = [
     present:{ ich:'trinke', du:'trinkst', er:'trinkt', wir:'trinken', ihr:'trinkt', sie:'trinken' },
     past:{ aux:'haben', pp:'getrunken', ich:'habe getrunken', du:'hast getrunken', er:'hat getrunken', wir:'haben getrunken', ihr:'habt getrunken', sie:'haben getrunken' },
     future:{ ich:'werde trinken', du:'wirst trinken', er:'wird trinken', wir:'werden trinken', ihr:'werdet trinken', sie:'werden trinken' },
+    praet:{ ich:'trank', du:'trankst', er:'trank', wir:'tranken', ihr:'trankt', sie:'tranken' },
+    konj2:{ ich:'würde trinken', du:'würdest trinken', er:'würde trinken', wir:'würden trinken', ihr:'würdet trinken', sie:'würden trinken' },
     examples:{
       present:{ de:'Sie trinkt einen Babyccino.', en:'She drinks a babyccino.', es:'Ella bebe un babyccino.' },
       past:{ de:'Ich habe Kaffee getrunken.', en:'I drank coffee.', es:'Bebí café.' },
       future:{ de:'Er wird Wasser trinken.', en:'He will drink water.', es:'Él beberá agua.' },
+      praet:{ de:'Sie trank jeden Abend Tee.', en:'She drank tea every evening.', es:'Ella tomaba té cada tarde.' },
+      konj2:{ de:'Ich hätte gern einen Kafi.', en:'I would like a coffee.', es:'Me gustaría un café.' },
     }
   },
   {
@@ -1063,10 +1099,14 @@ const VERBS = [
     present:{ ich:'spreche', du:'sprichst', er:'spricht', wir:'sprechen', ihr:'sprecht', sie:'sprechen' },
     past:{ aux:'haben', pp:'gesprochen', ich:'habe gesprochen', du:'hast gesprochen', er:'hat gesprochen', wir:'haben gesprochen', ihr:'habt gesprochen', sie:'haben gesprochen' },
     future:{ ich:'werde sprechen', du:'wirst sprechen', er:'wird sprechen', wir:'werden sprechen', ihr:'werdet sprechen', sie:'werden sprechen' },
+    praet:{ ich:'sprach', du:'sprachst', er:'sprach', wir:'sprachen', ihr:'spracht', sie:'sprachen' },
+    konj2:{ ich:'würde sprechen', du:'würdest sprechen', er:'würde sprechen', wir:'würden sprechen', ihr:'würdet sprechen', sie:'würden sprechen' },
     examples:{
       present:{ de:'Ich spreche ein bisschen Deutsch.', en:'I speak a little German.', es:'Hablo un poco de alemán.' },
       past:{ de:'Wir haben Deutsch gesprochen.', en:'We spoke German.', es:'Hablamos alemán.' },
       future:{ de:'Du wirst Deutsch sprechen!', en:'You will speak German!', es:'¡Hablarás alemán!' },
+      praet:{ de:'Einstein sprach Deutsch und Französisch.', en:'Einstein spoke German and French.', es:'Einstein hablaba alemán y francés.' },
+      konj2:{ de:'Könnten Sie bitte langsamer sprechen?', en:'Could you please speak more slowly?', es:'¿Podría hablar más despacio?' },
     }
   },
   {
@@ -1074,10 +1114,14 @@ const VERBS = [
     present:{ ich:'fahre', du:'fährst', er:'fährt', wir:'fahren', ihr:'fahrt', sie:'fahren' },
     past:{ aux:'sein', pp:'gefahren', ich:'bin gefahren', du:'bist gefahren', er:'ist gefahren', wir:'sind gefahren', ihr:'seid gefahren', sie:'sind gefahren' },
     future:{ ich:'werde fahren', du:'wirst fahren', er:'wird fahren', wir:'werden fahren', ihr:'werdet fahren', sie:'werden fahren' },
+    praet:{ ich:'fuhr', du:'fuhrst', er:'fuhr', wir:'fuhren', ihr:'fuhrt', sie:'fuhren' },
+    konj2:{ ich:'würde fahren', du:'würdest fahren', er:'würde fahren', wir:'würden fahren', ihr:'würdet fahren', sie:'würden fahren' },
     examples:{
       present:{ de:'Ich fahre mit dem Tram.', en:'I ride the tram.', es:'Voy en tranvía.' },
       past:{ de:'Wir sind mit dem Zug gefahren.', en:'We traveled by train.', es:'Viajamos en tren.' },
       future:{ de:'Er wird mit dem Bus fahren.', en:'He will take the bus.', es:'Él irá en autobús.' },
+      praet:{ de:'Sie fuhr jeden Tag mit dem Velo.', en:'She rode her bike every day.', es:'Ella andaba en bici cada día.' },
+      konj2:{ de:'Würdest du mit mir fahren?', en:'Would you come with me?', es:'¿Vendrías conmigo?' },
     }
   },
   {
@@ -1085,10 +1129,14 @@ const VERBS = [
     present:{ ich:'wohne', du:'wohnst', er:'wohnt', wir:'wohnen', ihr:'wohnt', sie:'wohnen' },
     past:{ aux:'haben', pp:'gewohnt', ich:'habe gewohnt', du:'hast gewohnt', er:'hat gewohnt', wir:'haben gewohnt', ihr:'habt gewohnt', sie:'haben gewohnt' },
     future:{ ich:'werde wohnen', du:'wirst wohnen', er:'wird wohnen', wir:'werden wohnen', ihr:'werdet wohnen', sie:'werden wohnen' },
+    praet:{ ich:'wohnte', du:'wohntest', er:'wohnte', wir:'wohnten', ihr:'wohntet', sie:'wohnten' },
+    konj2:{ ich:'würde wohnen', du:'würdest wohnen', er:'würde wohnen', wir:'würden wohnen', ihr:'würdet wohnen', sie:'würden wohnen' },
     examples:{
       present:{ de:'Ich wohne in Bern.', en:'I live in Bern.', es:'Vivo en Berna.' },
       past:{ de:'Sie hat in Zürich gewohnt.', en:'She lived in Zurich.', es:'Ella vivió en Zúrich.' },
       future:{ de:'Wir werden hier wohnen.', en:'We will live here.', es:'Viviremos aquí.' },
+      praet:{ de:'Einstein wohnte in der Kramgasse.', en:'Einstein lived on Kramgasse.', es:'Einstein vivía en la Kramgasse.' },
+      konj2:{ de:'Ich würde gern in der Matte wohnen.', en:'I would like to live in the Matte.', es:'Me gustaría vivir en el barrio Matte.' },
     }
   },
   {
@@ -1096,10 +1144,14 @@ const VERBS = [
     present:{ ich:'lerne', du:'lernst', er:'lernt', wir:'lernen', ihr:'lernt', sie:'lernen' },
     past:{ aux:'haben', pp:'gelernt', ich:'habe gelernt', du:'hast gelernt', er:'hat gelernt', wir:'haben gelernt', ihr:'habt gelernt', sie:'haben gelernt' },
     future:{ ich:'werde lernen', du:'wirst lernen', er:'wird lernen', wir:'werden lernen', ihr:'werdet lernen', sie:'werden lernen' },
+    praet:{ ich:'lernte', du:'lerntest', er:'lernte', wir:'lernten', ihr:'lerntet', sie:'lernten' },
+    konj2:{ ich:'würde lernen', du:'würdest lernen', er:'würde lernen', wir:'würden lernen', ihr:'würdet lernen', sie:'würden lernen' },
     examples:{
       present:{ de:'Ich lerne Deutsch in Bern.', en:'I am learning German in Bern.', es:'Aprendo alemán en Berna.' },
       past:{ de:'Sie hat Deutsch gelernt.', en:'She learned German.', es:'Ella aprendió alemán.' },
       future:{ de:'Du wirst es lernen!', en:'You will learn it!', es:'¡Lo aprenderás!' },
+      praet:{ de:'Er lernte schnell Berndeutsch.', en:'He learned Bernese German quickly.', es:'Él aprendió el bernés rápidamente.' },
+      konj2:{ de:'Ich würde gern mehr lernen.', en:'I would like to learn more.', es:'Me gustaría aprender más.' },
     }
   },
   // ── 100 NEW VERBS ──
@@ -1619,6 +1671,20 @@ const TENSE_INFO = {
     color: 'var(--gold)',
     endColor: 'vb-end-future',
   },
+  praet: {
+    title: 'Präteritum — Simple past',
+    rule_en: 'Used in writing, news, books. In speech, mainly for sein (war), haben (hatte), werden (wurde) and modal verbs. Regular verbs add -te, irregular verbs change their stem.',
+    rule_es: 'Se usa en escritura, noticias, libros. En conversación, principalmente sein (war), haben (hatte), werden (wurde) y verbos modales. Los regulares añaden -te, los irregulares cambian su raíz.',
+    color: '#f4a261',
+    endColor: 'vb-end-praet',
+  },
+  konj2: {
+    title: 'Konjunktiv II — Subjunctive',
+    rule_en: 'Used for polite requests, hypothetical situations and wishes. Swiss people use this constantly! "Könnten Sie...?" sounds much more polite than "Können Sie...?"',
+    rule_es: 'Se usa para peticiones educadas, situaciones hipotéticas y deseos. ¡Los suizos lo usan constantemente! "Könnten Sie...?" suena mucho más educado que "Können Sie...?"',
+    color: '#f85149',
+    endColor: 'vb-end-konj2',
+  },
 };
 
 const PRONOUNS = [
@@ -1651,10 +1717,10 @@ function showVerbspiel(){
 }
 
 function renderVerbspiel(){
-  renderVerbGrid();
   renderTenseInfo();
   renderConjTable();
   renderExamples();
+  renderVerbGrid();
 }
 
 function renderVerbGrid(){
@@ -1702,36 +1768,55 @@ function renderConjTable(){
   const info = TENSE_INFO[tense];
   const pronKeys = ['ich','du','er','wir','ihr','sie'];
 
+  // Check if verb has this tense
+  if(!verb[tense]){
+    document.getElementById('vb-conj-table').innerHTML = `
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;color:var(--muted);font-size:0.85rem">
+        ${isEN?'This tense will be added soon for':'Este tiempo se añadirá pronto para'} <strong>${verb.inf}</strong>
+      </div>`;
+    return;
+  }
+
   const rows = PRONOUNS.map((p, i) => {
     const key = pronKeys[i];
     const form = verb[tense][key] || '—';
     const trans = isEN ? p.en : p.es;
 
-    // Split form for highlighting
     let formHTML = '';
     if(tense === 'present'){
-      // Highlight ending — find stem vs ending
-      const inf = verb.inf;
-      const stem = inf.replace(/en$|n$/,'');
+      const stem = verb.inf.replace(/en$|n$/,'');
       if(form.startsWith(stem)){
-        const ending = form.slice(stem.length);
-        formHTML = `<span class="vb-stem">${stem}</span><span class="${info.endColor}">${ending}</span>`;
+        formHTML = `<span class="vb-stem">${stem}</span><span class="${info.endColor}">${form.slice(stem.length)}</span>`;
       } else {
-        // Irregular — highlight whole form
         formHTML = `<span style="color:var(--gold);font-weight:800">${form}</span>`;
       }
     } else if(tense === 'past'){
-      // Split aux + participle
       const parts = form.split(' ');
       if(parts.length >= 2){
-        const aux = parts[0];
-        const rest = parts.slice(1).join(' ');
-        formHTML = `<span class="${info.endColor}">${aux}</span> <span style="color:var(--text)">${rest}</span>`;
+        formHTML = `<span class="${info.endColor}">${parts[0]}</span> <span style="color:var(--text)">${parts.slice(1).join(' ')}</span>`;
       } else {
         formHTML = `<span class="${info.endColor}">${form}</span>`;
       }
+    } else if(tense === 'praet'){
+      // Highlight the Präteritum ending
+      const stem = verb.inf.replace(/en$|n$/,'');
+      // For regular verbs, stem+te; for irregular, whole form is colored
+      if(form.includes('te')||form.includes('tet')){
+        const teIdx = form.lastIndexOf('te');
+        formHTML = `<span class="vb-stem">${form.slice(0,teIdx)}</span><span class="${info.endColor}">${form.slice(teIdx)}</span>`;
+      } else {
+        formHTML = `<span style="color:#f4a261;font-weight:800">${form}</span>`;
+      }
+    } else if(tense === 'konj2'){
+      // würde + inf OR stem form
+      const parts = form.split(' ');
+      if(parts.length >= 2){
+        formHTML = `<span class="${info.endColor}">${parts[0]}</span> <span style="color:var(--text)">${parts.slice(1).join(' ')}</span>`;
+      } else {
+        // Pure Konjunktiv II (wäre, hätte, etc.)
+        formHTML = `<span class="${info.endColor}">${form}</span>`;
+      }
     } else {
-      // Future: werden + infinitive
       const parts = form.split(' ');
       if(parts.length >= 2){
         formHTML = `<span class="${info.endColor}">${parts[0]}</span> <span style="color:var(--text)">${parts.slice(1).join(' ')}</span>`;
@@ -1758,15 +1843,26 @@ function renderConjTable(){
 function renderExamples(){
   const isEN = state.lang==='en';
   const tense = vb.tense;
-  const examples = vb.verb.examples[tense];
+  const verb = vb.verb;
+
+  if(!verb.examples||!verb.examples[tense]){
+    document.getElementById('vb-examples').innerHTML = `
+      <div class="vb-example-card" style="text-align:center;color:var(--muted);font-size:0.82rem">
+        ${isEN?'Example coming soon for this tense.':'Ejemplo próximamente para este tiempo.'}
+      </div>`;
+    return;
+  }
+
+  const examples = verb.examples[tense];
   const trans = isEN ? examples.en : examples.es;
 
-  // Highlight the verb in the German sentence
-  const form = vb.verb[tense]['ich'];
-  const verbParts = form.split(' ');
+  // Highlight the verb form in the German sentence
+  const form = verb[tense] ? verb[tense]['ich'] : '';
+  const verbParts = form ? form.split(' ') : [];
   let highlighted = examples.de;
   verbParts.forEach(part => {
-    highlighted = highlighted.replace(part, `<span class="vb-highlight">${part}</span>`);
+    if(part && part.length > 1)
+      highlighted = highlighted.replace(part, `<span class="vb-highlight">${part}</span>`);
   });
 
   document.getElementById('vb-examples').innerHTML = `
@@ -1785,7 +1881,7 @@ const TRACKS = {
     name: 'Leben in Bern',
     levels: [
       { id:'a1', name:'Mit Karte bitte!', emoji:'☕', sub:'Sobrevivir el día a día', locations:['altstadt','bahnhof','marit','post','cafe','aare_grammar','confiserie'] },
-      { id:'a2', name:'Sobrevivo...', emoji:'🕯️', sub:'Hay luz al final del túnel', locations:['marzili','rosengarten','restaurant','baerenpark','munster','quartiere','velo'] },
+      { id:'a2', name:'Sobrevivo...', emoji:'🕯️', sub:'Hay luz al final del túnel', locations:['marzili','rosengarten','restaurant','baerenpark','munster','quartiere','velo','hidden_gems'] },
       { id:'b1', name:'Veo luz!', emoji:'💡', sub:'¿Es el final del túnel?!', locations:['inselspital','migration','polizei','bundesplatz','bernmobil','bundeshaus','sport'] },
       { id:'b2', name:'Nadie me saca de aquí', emoji:'🚇', sub:'Pruébame. YO VIVO aquí.', locations:['casino','munster','gurten','university','jobcenter','einstein'] },
     ]
@@ -2160,9 +2256,12 @@ const LOCATIONS = {
     culture:[
       {emoji:'😱',title:'Cartas que dan miedo',text:'En Suiza comunican TODO por carta. Las más importantes: Krankenkasse (seguro médico), Steuern (impuestos), Betreibungsamt (cobros legales), Migrationsdienst (migración), Gemeinde (municipio). Una carta del Betreibungsamt es seria — busca ayuda inmediatamente en el Centro de Deudas (Schuldenberatung Bern).',tag:'⚠️ Importante'},
       {emoji:'📬',title:'El sistema postal suizo',text:'La Post también es banco (PostFinance), y tiene la app PostApp para rastrear paquetes. Si no estás en casa, dejan aviso (Abholungseinladung) — tienes 7 días para recoger en la oficina más cercana. Puedes cambiar la dirección de entrega en la app.',tag:'Práctica'},
+      {emoji:'🖨️',title:'Imprimir en la Post — ¡lo puedes hacer!',text:'¿No tienes impresora? La oficina de correos suiza ofrece servicio de impresión. Puedes imprimir documentos directamente en la Post — formularios de migración, contratos, documentos oficiales. Muy útil cuando necesitas imprimir algo urgente sin tener impresora en casa.',tag:'💡 Tip práctico'},
     ],
     survival:[
       {emoji:'🆘',title:'¿No entiendes una carta?',text:'No entres en pánico. Opciones:\n• Integrationsdienst Bern: te ayudan gratis\n• Caritas Bern: asesoría gratuita\n• InfoPoint Bern Hauptbahnhof: orientación general\n• Google Translate con la cámara (funciona bien para alemán)\n• Pregúntame a mí — fotografía la carta y la traduzco.',tag:'🆘 Ayuda'},
+      {emoji:'📱',title:'Twint — tu mejor aliado en Suiza',text:'Twint es el sistema de pago móvil suizo. Prácticamente TODO lo acepta: mercados, pequeñas tiendas, máquinas, colectas, eventos, amigos. Descarga la app de tu banco suizo y activa Twint. Es gratis. Funciona escaneando un QR o con número de teléfono. Sin Twint en Suiza te sientes del pasado.',tag:'💳 Esencial'},
+      {emoji:'📶',title:'PostMobile — la SIM más inteligente para Berna',text:'Si viajas frecuentemente a la UE o tienes familia en el extranjero, PostMobile es la mejor opción de telefonía en Suiza. Ofrece datos ilimitados en toda la UE a un precio muy competitivo — ideal para quien viaja entre Suiza y países europeos. Disponible directamente en cualquier oficina de la Post.',tag:'📶 Telefonía'},
     ]
   },
 
@@ -2488,6 +2587,8 @@ const LOCATIONS = {
     survival:[
       {emoji:'💰',title:'Kibon Card — ESENCIAL',text:'La Kibon Card da acceso a actividades culturales y deportivas con descuento o gratis para familias con ingresos reducidos. Incluye: museos, piscinas, teatros, clases deportivas, excursiones escolares. Solicitar en: kibon.ch o en la Sozialdirektion de Berna. Muchas familias no saben que existe — ¡úsala!',tag:'🌟 Esencial'},
       {emoji:'🤝',title:'DaZ — Alemán para tu hijo/a',text:'Deutsch als Zweitsprache (DaZ) es el apoyo de alemán gratuito en la escuela pública de Berna para niños que no hablan alemán como lengua materna. Tu hijo/a tiene derecho a estas clases. Pregunta en la escuela: "Hat mein Kind Anrecht auf DaZ-Unterricht?"',tag:'Derechos'},
+      {emoji:'🎸',title:'Ukelele desde el Kindergarten — Conservatorio de Berna',text:'El Conservatorio de Berna (Musikschule Konservatorium Bern) ofrece clases de ukelele y otros instrumentos desde edad de jardín de infantes. Es una de las pocas escuelas de música en Suiza que empieza tan temprano. Las clases son en alemán — perfectas para aprender el idioma mientras aprenden música. Consulta en kmb.ch.',tag:'🎵 Para niños'},
+      {emoji:'⚽',title:'Deportes gratuitos para niños — oferta de la ciudad',text:'La ciudad de Berna ofrece una amplia gama de actividades deportivas para niños completamente gratuitas o muy subsidiadas. Desde fútbol hasta natación, atletismo, gimnasia y artes marciales. Busca el programa "Sportamt Bern" en sport.bern.ch — hay algo para cada niño, cada barrio y cada edad.',tag:'🏅 Gratis'},
     ]
   },
 
@@ -3162,11 +3263,13 @@ const LOCATIONS = {
       ]
     },
     culture:[
-      {emoji:'🍫',title:'Berna y el chocolate suizo',text:'Suiza es mundialmente famosa por su chocolate. En Berna, las confiterías tradicionales llevan siglos creando pralinés y especialidades de chocolate artesanal. El Berner Leckerli es una galleta especiada con miel, almendras y especias — la golosina más emblemática de la ciudad. Se puede comprar en casi todas las confiterías.',tag:'Gastronomía'},
-      {emoji:'🎂',title:'Confiterías clásicas de Berna',text:'Algunas de las confiterías más queridas de Berna: Eichenberger (desde 1832), Tschirren, Beeler, Honold. Muchas están en la Altstadt bajo las Lauben. Son perfectas para regalos o para tomarse un café con algo dulce. Schnouse — picar golosinas — es una actividad bernesa con nombre propio.',tag:'Local'},
+      {emoji:'🐻',title:'Berner Mandelbärli — el embajador dulce',text:'Los Mandelbärli (ositos de almendra) son las galletas más emblemáticas de Berna. Ligeras y aireadas, hechas con almendras de alta calidad, existen en 21 sabores — desde piña hasta limón. Tienen la forma del oso heráldico de Berna y de las figuras del Zytglogge. Son el regalo perfecto: elegantes, locales y deliciosas en cualquier momento del día.',tag:'🌟 Ícono bernés'},
+      {emoji:'🍫',title:'Toblerone — inventado en Berna',text:'El Toblerone fue inventado en Berna en 1908 por Theodor Tobler. La primera fábrica estaba aquí. La forma triangular representa los picos de los Alpes suizos. Hoy se vende en todo el mundo pero sus raíces son completamente bernesas. El nougat de almendra y miel en su interior es un guiño a la miel y almendras de la región.',tag:'Historia'},
+      {emoji:'🍦',title:'Los mejores helados de Berna',text:'Dos heladerías imprescindibles en Berna:\n• Gelateria di Berna — heladería artesanal italiana, sabores creativos y clásicos, siempre con cola en verano\n• La Golosa — otra joya de helados artesanales\n\nEn Berna los helados se toman junto al Aare, en el Rosengarten o paseando por las Lauben. El combo helado + atardecer desde el Rosengarten es imbatible.',tag:'🍦 Insider'},
+      {emoji:'🎂',title:'Confiterías clásicas de Berna',text:'Las confiterías más queridas: Eichenberger (desde 1832 — también el mejor Babyccino), Tschirren, Beeler. Muchas están bajo las Lauben de la Altstadt. Schnouse — picar golosinas — es una actividad bernesa con nombre propio.',tag:'Local'},
     ],
     survival:[
-      {emoji:'🎁',title:'Regalos típicos de Berna',text:'Para regalar algo típico de Berna:\n• Berner Leckerli — galletas especiadas, en todas las confiterías\n• Pralinés artesanales de Eichenberger\n• Miel local — la encuentras en el Märit\n• Chocolates con forma de oso — icónicos\n• Alpenkräutertee — té de hierbas alpinas\n\nEvita los souvenirs genéricos de los aeropuertos — lo auténtico está en la Altstadt.',tag:'Insider'},
+      {emoji:'🎁',title:'Regalos típicos de Berna',text:'Para regalar algo auténtico de Berna:\n• Berner Mandelbärli — 21 sabores, en confiterías y en el aeropuerto\n• Berner Leckerli — galletas especiadas clásicas\n• Pralinés artesanales de Eichenberger\n• Toblerone — sí, es 100% bernés\n• Miel local del Märit\n\nEvita los souvenirs genéricos. Lo auténtico está en la Altstadt bajo las Lauben.',tag:'Insider'},
     ]
   },
 
@@ -3437,6 +3540,63 @@ const LOCATIONS = {
       {emoji:'📱',title:'aare.guru — la app que necesitas',text:'Antes de nadar en el Aare, abre aare.guru. Te da:\n• Temperatura del agua en tiempo real\n• Velocidad de la corriente\n• Nivel del agua\n• Pronóstico para las próximas horas\n\nSi la temperatura es <16°C o la corriente >2.5 m/s — mejor no nadar. Los berneses la consultan como el horóscopo en verano.',tag:'📱 Esencial'},
     ]
   },
+
+  hidden_gems: {
+    name:'Hidden Gems von Bern', emoji:'💎', sub:'Geheimtipps · Insider · A2',
+    track:'leben', level:'a2',
+    words:[
+      {word:'Geheimtipp',artikel:'der',trans:'hidden gem / secreto local',tip:'Compuesto masculino → der'},
+      {word:'Orangerie',artikel:'die',trans:'orangery / orangería',tip:'Termina en -ie → die'},
+      {word:'Altersheim',artikel:'das',trans:'retirement home / residencia de ancianos',tip:'Compuesto neutro → das'},
+      {word:'Generationenhaus',artikel:'das',trans:'community center / centro generacional',tip:'Compuesto neutro → das'},
+      {word:'Messe',artikel:'die',trans:'trade fair / feria',tip:'Termina en -e → die'},
+      {word:'Ausstellung',artikel:'die',trans:'exhibition / exposición',tip:'Termina en -ung → die'},
+      {word:'Garten',artikel:'der',trans:'garden / jardín',tip:'Termina en -en → der'},
+      {word:'Elfenau',artikel:'die',trans:'Elfenau park area',tip:'Zona verde de Berna → die'},
+      {word:'Veranstaltung',artikel:'die',trans:'event / evento',tip:'Termina en -ung → die'},
+      {word:'Mittagsmenü',artikel:'das',trans:'lunch menu / menú del mediodía',tip:'Compuesto neutro → das'},
+      {word:'Tagessuppe',artikel:'die',trans:'soup of the day / sopa del día',tip:'Compuesto femenino → die'},
+      {word:'Seniorenrestaurant',artikel:'das',trans:'seniors restaurant / restaurante',tip:'Compuesto neutro → das'},
+      {word:'Eintritt',artikel:'der',trans:'entrance fee / entrada',tip:'Compuesto masculino → der'},
+      {word:'Geheimnis',artikel:'das',trans:'secret / secreto',tip:'Termina en -nis → das'},
+      {word:'Tipp',artikel:'der',trans:'tip / consejo',tip:'Masculino → der'},
+    ],
+    sentences:[
+      {s:'___ Orangerie ist ein verstecktes Juwel.',a:'die',trans:'La orangería es una joya escondida.'},
+      {s:'___ Altersheim hat ein gutes Restaurant.',a:'das',trans:'La residencia tiene un buen restaurante.'},
+      {s:'___ Messe findet einmal im Jahr statt.',a:'die',trans:'La feria tiene lugar una vez al año.'},
+      {s:'___ Garten ist im Frühling wunderschön.',a:'der',trans:'El jardín es precioso en primavera.'},
+      {s:'___ Mittagsmenü kostet nur 15 Franken.',a:'das',trans:'El menú del mediodía cuesta solo 15 francos.'},
+      {s:'___ Eintritt ist gratis.',a:'der',trans:'La entrada es gratis.'},
+    ],
+    phrases:{
+      formal:[
+        {de:'Ist das Restaurant heute geöffnet?',es:'¿Está abierto el restaurante hoy?',en:'Is the restaurant open today?',ctx:'En el Altersheim o Generationenhaus'},
+        {de:'Was kostet das Mittagsmenü?',es:'¿Cuánto cuesta el menú del mediodía?',en:'How much is the lunch menu?',ctx:'Suelen ser muy económicos'},
+        {de:'Wann findet die BEA statt?',es:'¿Cuándo tiene lugar la BEA?',en:'When does the BEA take place?',ctx:'La gran feria de Berna — cada primavera'},
+        {de:'Gibt es eine Führung durch die Orangerie?',es:'¿Hay visitas guiadas por la orangería?',en:'Are there guided tours of the orangery?',ctx:'En el Elfenaupark'},
+        {de:'Ist der Eintritt kostenlos?',es:'¿Es gratuita la entrada?',en:'Is entry free?',ctx:'Para muchos hidden gems — sí'},
+      ],
+      casual:[
+        {de:'Hesch gwüsst, dass d\'Altersheim super Mittagstisch händ?',es:'¿Sabías que las residencias tienen excelente almuerzo?',en:'Did you know care homes have great lunch?',ctx:'El secreto mejor guardado de Berna 😄'},
+        {de:'D\'Orangerie isch so schön im Frühling!',es:'¡La orangería es tan bonita en primavera!',en:'The orangery is so beautiful in spring!',ctx:'Bernés — en el Elfenaupark'},
+        {de:'Gömmer go Zmittag ässe im Altersheim?',es:'¿Vamos a almorzar en la residencia?',en:'Shall we have lunch at the care home?',ctx:'Suena raro pero es un plan excelente 😂'},
+        {de:'D\'BEA isch immer mega!',es:'¡La BEA siempre es increíble!',en:'The BEA is always amazing!',ctx:'Bernés — la feria más grande del año'},
+        {de:'Im Generationenhaus isch es so gmütlich!',es:'¡En el Generationenhaus es tan acogedor!',en:'The Generationenhaus is so cozy!',ctx:'Bernés — gmütlich = gemütlich'},
+      ]
+    },
+    culture:[
+      {emoji:'🌿',title:'La Orangerie del Elfenaupark',text:'El Elfenaupark es uno de los parques más hermosos y menos conocidos de Berna, junto al Aare en la zona sureste. Dentro está la Orangerie ElfenauPark — restaurante-café en un edificio histórico rodeado de jardines. Perfecta para almuerzo tranquilo o café dominical. En primavera cuando florecen los rosales es mágica.',tag:'💎 Tesoro escondido'},
+      {emoji:'🍽️',title:'Altersheim restaurants — el secreto mejor guardado',text:'Los restaurantes de las residencias de ancianos de Berna son uno de los secretos mejor guardados de la ciudad. Ofrecen menús del día caseros y de calidad a precios muy asequibles — entre 12 y 18 CHF con sopa, plato principal y postre. Son abiertos al público. El Heimhaus es una excelente opción.',tag:'💡 Insider'},
+      {emoji:'☕',title:'Generationenhaus — para todas las edades',text:'El Generationenhaus es un centro comunitario intergeneracional donde conviven diferentes generaciones. Su café es acogedor, económico y tiene ambiente único — abuelos, familias y jóvenes juntos. Perfecto para trabajar, tomar algo o conectar con la comunidad.',tag:'🤝 Comunidad'},
+      {emoji:'🎪',title:'BEA — la gran feria de Berna',text:'La BEA (Bern Expo Ausstellung) es la feria más importante de Berna y una de las mayores de Suiza. Se celebra cada primavera en el BEA Expo. Combina feria agropecuaria, exposición comercial, conciertos y atracciones. Para familias es imperdible — hay animales de granja, demostraciones, comida típica y mucho entretenimiento. Una experiencia muy bernesa.',tag:'🎪 Evento anual'},
+    ],
+    survival:[
+      {emoji:'💰',title:'Comer bien y barato en Berna',text:'Las mejores opciones para comer bien sin gastar mucho:\n• Altersheim restaurants: menú completo 12-18 CHF — nadie los conoce\n• Generationenhaus café: económico y acogedor\n• Orangerie Elfenaupark: especial y razonable\n• Migros/Coop restaurant: autoservicio muy razonable\n• Märit: frutas y verduras frescas del agricultor\n\nEvita restaurantes en la Kramgasse turística — son caros.',tag:'💰 Ahorro'},
+      {emoji:'🌸',title:'Elfenaupark — cómo llegar',text:'Tram 9 hasta Elfenau, luego 5 minutos a pie. O en bicicleta por el carril del Aare — una de las rutas más bonitas de Berna. La Orangerie está dentro del parque. Entrada al parque: gratuita. Mejor en primavera y verano.',tag:'🗺️ Cómo llegar'},
+    ]
+  },
+
 };
 
 
@@ -3605,20 +3765,23 @@ function renderHome(){
 function renderLevelStrips(){
   const trackData=TRACKS[state.track];
   const strips=document.getElementById('level-strips');
+  const t=LANG[state.lang||'es']||LANG.es;
+  const isEN=state.lang==='en';
   strips.innerHTML='';
   trackData.levels.forEach((lv,i)=>{
     const isUnlocked=i===0||state.completed.filter(id=>LOCATIONS[id]&&LOCATIONS[id].level===trackData.levels[i-1].id).length>0;
-    const isDone=lv.locations.every(id=>state.completed.includes(id));
+    const isDone=lv.locations.filter(id=>LOCATIONS[id]).every(id=>state.completed.includes(id));
+    const displayName=t.levels[lv.id]||lv.name;
     const strip=document.createElement('div');
     strip.className='level-strip'+(isDone?' ls-done':isUnlocked?' ls-current':' ls-locked');
     strip.innerHTML=`
       <div class="ls-emoji">${lv.emoji}</div>
       <div class="ls-info">
-        <div class="ls-name">${lv.name}</div>
+        <div class="ls-name">${displayName}</div>
         <div class="ls-sub">${lv.sub}</div>
       </div>
-      <span class="ls-badge ${isDone?'comp':isUnlocked?'curr':'lock'}">${isDone?'✓ Hecho':isUnlocked?'Activo':'🔒'}</span>`;
-    if(isUnlocked) strip.onclick=()=>openLevel(lv);
+      <span class="ls-badge ${isDone?'comp':isUnlocked?'curr':'lock'}">${isDone?(isEN?'✓ Done':'✓ Hecho'):isUnlocked?(isEN?'Active':'Activo'):'🔒'}</span>`;
+    if(isUnlocked||isDone) strip.onclick=()=>openLevel(lv);
     strips.appendChild(strip);
   });
 }
@@ -3693,35 +3856,41 @@ function renderTab(tab){
 
 // ── GRAMMAR ──
 function renderGrammar(){
+  // Pull examples from current location's words by artikel
+  const derWords = currentLoc.words.filter(w=>w.artikel==='der').slice(0,2).map(w=>`der ${w.word}`).join(', ') || 'der Mann, der Hund';
+  const dieWords = currentLoc.words.filter(w=>w.artikel==='die').slice(0,2).map(w=>`die ${w.word}`).join(', ') || 'die Frau, die Straße';
+  const dasWords = currentLoc.words.filter(w=>w.artikel==='das').slice(0,2).map(w=>`das ${w.word}`).join(', ') || 'das Kind, das Haus';
+  const isEN = state.lang==='en';
+
   return `<div>
     <div style="margin-bottom:16px">
-      <div class="art-badge der">🔵 DER — masculino</div>
+      <div class="art-badge der">🔵 DER — ${isEN?'masculine':'masculino'}</div>
       <ul class="rule-list">
-        <li><span class="arrow">→</span>Termina en <strong>-er, -el, -en</strong> → der Lehrer, der Apfel <span class="ltag en">EN</span></li>
-        <li><span class="arrow">→</span>Días, meses, estaciones → der Montag, der Sommer, der Januar</li>
-        <li><span class="arrow">→</span>Termina en <strong>-ismus, -or, -ig, -ling</strong> → der König, der Frühling</li>
-        <li><span class="arrow">→</span>Bebidas alcohólicas → der Wein, der Whisky, der Kaffee</li>
-        <li><span class="arrow">→</span>Masculinos vivos → der Mann, der Hund <span class="ltag es">ES: como "el"</span></li>
+        <li><span class="arrow">→</span>${isEN?'Ends in':'Termina en'} <strong>-er, -el, -en</strong> → ${derWords} <span class="ltag en">EN</span></li>
+        <li><span class="arrow">→</span>${isEN?'Days, months, seasons':'Días, meses, estaciones'} → der Montag, der Sommer, der Januar</li>
+        <li><span class="arrow">→</span>${isEN?'Ends in':'Termina en'} <strong>-ismus, -or, -ig, -ling</strong> → der König, der Frühling</li>
+        <li><span class="arrow">→</span>${isEN?'Alcoholic drinks':'Bebidas alcohólicas'} → der Wein, der Whisky, der Kaffee</li>
+        <li><span class="arrow">→</span>${isEN?'Living males':'Masculinos vivos'} → der Mann, der Hund <span class="ltag es">ES: "el"</span></li>
       </ul>
-      <div class="art-badge die">🔴 DIE — femenino</div>
+      <div class="art-badge die">🔴 DIE — ${isEN?'feminine':'femenino'}</div>
       <ul class="rule-list">
-        <li><span class="arrow">→</span>Termina en <strong>-ung, -heit, -keit, -schaft</strong> → die Zeitung, die Freiheit <span class="ltag es">ES: siempre</span></li>
-        <li><span class="arrow">→</span>Termina en <strong>-tion, -sion, -tät, -ie</strong> → die Nation, die Allergie <span class="ltag en">EN: -tion!</span></li>
-        <li><span class="arrow">→</span>Termina en <strong>-e</strong> (muchos) → die Schule, die Straße, die Brücke</li>
-        <li><span class="arrow">→</span>Termina en <strong>-in</strong> (femenino) → die Lehrerin, die Ärztin</li>
-        <li><span class="arrow">→</span>Femeninas vivas → die Frau, die Mutter, die Katze</li>
+        <li><span class="arrow">→</span>${isEN?'Ends in':'Termina en'} <strong>-ung, -heit, -keit, -schaft</strong> → ${dieWords} <span class="ltag es">ES: siempre</span></li>
+        <li><span class="arrow">→</span>${isEN?'Ends in':'Termina en'} <strong>-tion, -sion, -tät, -ie</strong> → die Nation, die Allergie <span class="ltag en">EN: -tion!</span></li>
+        <li><span class="arrow">→</span>${isEN?'Ends in -e (many)':'Termina en -e (muchos)'} → die Schule, die Straße, die Brücke</li>
+        <li><span class="arrow">→</span>${isEN?'Ends in -in (feminine)':'Termina en -in (femenino)'} → die Lehrerin, die Ärztin</li>
+        <li><span class="arrow">→</span>${isEN?'Living females':'Femeninas vivas'} → die Frau, die Mutter, die Katze</li>
       </ul>
-      <div class="art-badge das">🟢 DAS — neutro</div>
+      <div class="art-badge das">🟢 DAS — ${isEN?'neuter':'neutro'}</div>
       <ul class="rule-list">
-        <li><span class="arrow">→</span>Termina en <strong>-chen, -lein</strong> → das Mädchen, das Büchlein <span class="ltag es">ES: sin equiv.</span></li>
-        <li><span class="arrow">→</span>Termina en <strong>-um, -ment, -tum</strong> → das Museum, das Dokument</li>
-        <li><span class="arrow">→</span>Infinitivos como sustantivos → das Essen, das Leben, das Lernen</li>
-        <li><span class="arrow">→</span>Con prefijo <strong>Ge-</strong> → das Gebäude, das Gesicht, das Gespräch</li>
-        <li><span class="arrow">→</span>Colores, metales, elementos → das Gold, das Blau, das Eisen</li>
+        <li><span class="arrow">→</span>${isEN?'Ends in -chen, -lein':'Termina en -chen, -lein'} → ${dasWords} <span class="ltag es">ES: ${isEN?'no equivalent':'sin equiv.'}</span></li>
+        <li><span class="arrow">→</span>${isEN?'Ends in -um, -ment':'Termina en -um, -ment'} → das Museum, das Dokument</li>
+        <li><span class="arrow">→</span>${isEN?'Infinitives as nouns':'Infinitivos como sustantivos'} → das Essen, das Leben, das Lernen</li>
+        <li><span class="arrow">→</span>${isEN?'Prefix Ge-':'Con prefijo Ge-'} → das Gebäude, das Gesicht, das Gespräch</li>
+        <li><span class="arrow">→</span>${isEN?'Colors, metals':'Colores, metales'} → das Gold, das Blau, das Eisen</li>
       </ul>
     </div>
     <div style="background:rgba(232,168,56,0.08);border:1px solid rgba(232,168,56,0.25);border-radius:12px;padding:14px">
-      <div style="font-weight:800;color:var(--bear);margin-bottom:8px">💡 Palabras clave de ${currentLoc.name}</div>
+      <div style="font-weight:800;color:var(--bear);margin-bottom:8px">💡 ${isEN?'Key words from':'Palabras clave de'} ${currentLoc.name}</div>
       <div style="display:flex;flex-wrap:wrap;gap:8px">
         ${currentLoc.words.slice(0,8).map(w=>`<span style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:0.82rem"><span style="color:${w.artikel==='der'?'var(--masc)':w.artikel==='die'?'var(--fem)':'var(--neut)'};font-weight:700">${w.artikel}</span> ${w.word}</span>`).join('')}
       </div>
@@ -3810,7 +3979,7 @@ function renderFCHTML(){
         <div class="card-face card-front">
           <div class="fc-word" id="fc-word">—</div>
           <div class="fc-trans" id="fc-trans">—</div>
-          <div class="fc-tap">Toca para ver el artículo</div>
+          <div class="fc-tap" id="fc-tap-lbl">Toca para ver el artículo</div>
         </div>
         <div class="card-face card-back" id="fc-back">
           <div class="fc-art" id="fc-art">—</div>
@@ -3901,44 +4070,45 @@ function checkQ(chosen){
   if(qAnswered)return;
   qAnswered=true;
   const w=qDeck[qIndex];
+  const isEN=state.lang==='en';
   document.querySelectorAll('.opt').forEach(b=>{b.disabled=true;if(b.textContent.trim()===w.artikel)b.classList.add('correct-a');});
   const fb=document.getElementById('qz-fb');
   const isCorrect=chosen===w.artikel;
   const delay=isCorrect?1400:2800;
   if(isCorrect){
     qCorrect++;
-    fb.textContent='✓ ¡Correcto! '+w.tip;
+    fb.textContent=`✓ ${isEN?'Correct!':'¡Correcto!'} ${w.tip}`;
     fb.className='fb-box ok';
     addXP(10);
   } else {
     qWrong++;
-    fb.innerHTML=`✗ Era <strong>${w.artikel} ${w.word}</strong>. ${w.tip}`;
+    fb.innerHTML=`✗ ${isEN?'It was':'Era'} <strong>${w.artikel} ${w.word}</strong>. ${w.tip}`;
     fb.className='fb-box no';
     document.querySelectorAll('.opt').forEach(b=>{if(b.textContent.trim()===chosen)b.classList.add('wrong-a');});
   }
   setTimeout(()=>{
     qIndex++;
-    if(qWrong > 3){ showQDone(); return; }
+    if(qWrong>3){showQDone();return;}
     loadQ();
   },delay);
 }
 
 function showQDone(){
-  const passed = qWrong <= 3;
-  const pct=Math.round(qCorrect/qDeck.length*100);
+  const passed=qWrong<=3;
+  const isEN=state.lang==='en';
   let html=`<div class="finished">
     <span class="big">${passed?'🏆':qWrong<=5?'💪':'📚'}</span>
-    <h2>${qCorrect}/${qDeck.length} correctas</h2>
-    <p>${passed?'¡Superaste! Máximo 3 errores permitidos.':'Necesitas máximo 3 errores para pasar. ¡Casi!'}</p>
-    <p style="font-size:0.78rem;color:var(--muted);margin-top:-12px">Errores: ${qWrong}/3 permitidos</p>`;
+    <h2>${qCorrect}/${qDeck.length} ${isEN?'correct':'correctas'}</h2>
+    <p>${passed?(isEN?'You passed! Max 3 errors allowed.':'¡Superaste! Máximo 3 errores permitidos.'):(isEN?'Max 3 errors to pass. Almost!':'Necesitas máximo 3 errores. ¡Casi!')}</p>
+    <p style="font-size:0.78rem;color:var(--muted);margin-top:-12px">${isEN?'Errors':'Errores'}: ${qWrong}/3 ${isEN?'allowed':'permitidos'}</p>`;
   if(passed&&!state.completed.includes(currentLoc.id)){
     state.completed.push(currentLoc.id);
     addXP(100); saveState();
-    html+=`<button class="btn-primary" style="margin-bottom:8px" onclick="showUnlock()">🏆 Ver recompensa</button>`;
-  } else if(passed && state.completed.includes(currentLoc.id)){
-    html+=`<p style="color:var(--neut);font-size:0.85rem">✓ Ya completaste este lugar</p>`;
+    html+=`<button class="btn-primary" style="margin-bottom:8px" onclick="showUnlock()">🏆 ${isEN?'See reward':'Ver recompensa'}</button>`;
+  } else if(passed&&state.completed.includes(currentLoc.id)){
+    html+=`<p style="color:var(--neut);font-size:0.85rem">✓ ${isEN?'Already completed!':'¡Ya completado!'}</p>`;
   }
-  html+=`<button class="btn-secondary" onclick="restartQ()">↺ Volver a intentar</button></div>`;
+  html+=`<button class="btn-secondary" onclick="restartQ()">↺ ${isEN?'Try again':'Volver a intentar'}</button></div>`;
   document.getElementById('qz-wrap').innerHTML=html;
 }
 
@@ -3985,12 +4155,12 @@ function checkB(){
   const fb=document.getElementById('bl-fb');
   if(val===s.a.toLowerCase()){
     bCorrect++;inp.className='blank-in ok';
-    fb.textContent='✓ ¡Correcto!';fb.className='fb-box ok';
+    fb.textContent=state.lang==='en'?'✓ Correct!':'✓ ¡Correcto!';fb.className='fb-box ok';
     addXP(15);
     setTimeout(()=>{bIndex++;loadB();},1200);
   } else {
     bWrong++;inp.className='blank-in no';
-    fb.innerHTML=`✗ Era "<strong>${s.a}</strong>" — ${s.trans}`;
+    fb.innerHTML=`✗ ${state.lang==='en'?'It was':'Era'} "<strong>${s.a}</strong>" — ${s.trans}`;
     fb.className='fb-box no';
     setTimeout(()=>{bIndex++;loadB();},2800);
   }
@@ -4035,13 +4205,67 @@ function renderSurvival(){
 }
 
 // ── UNLOCK ──
+// ── XP REWARD SYSTEM ──
+const XP_REWARDS = {
+  quiz:     { xp:100, type:'location',     icon:'📍' },
+  flashcard:{ xp:50,  type:'dialogue',     icon:'⚡' },
+  blank:    { xp:75,  type:'conversation', icon:'🎮' },
+  verbspiel:{ xp:80,  type:'cultural',     icon:'⏰' },
+  satzspiel:{ xp:60,  type:'story',        icon:'🔗' },
+};
+
+const UNLOCK_REWARDS = {
+  // After completing location quiz → unlocks a dialogue scenario
+  altstadt:   { type:'dialogue', title:'Altstadt Dialogue', titleEN:'Altstadt Dialogue', desc:'Ein Tourist fragt dich nach dem Weg.', descEN:'A tourist asks you for directions.', icon:'🏰' },
+  bahnhof:    { type:'dialogue', title:'Am Bahnhof', titleEN:'At the Train Station', desc:'Du kaufst ein Ticket nach Zürich.', descEN:'You buy a ticket to Zurich.', icon:'🚉' },
+  marit:      { type:'dialogue', title:'Am Märit', titleEN:'At the Market', desc:'Du kaufst Gemüse beim Bauern.', descEN:'You buy vegetables from the farmer.', icon:'🛒' },
+  cafe:       { type:'dialogue', title:'Im Café', titleEN:'At the Café', desc:'Du bestellst Kaffee und Gipfeli.', descEN:'You order coffee and a croissant.', icon:'☕' },
+  confiserie: { type:'dialogue', title:'In der Confiserie', titleEN:'At the Confectionery', desc:'Du kaufst Mandelbärli als Geschenk.', descEN:'You buy Mandelbärli as a gift.', icon:'🍫' },
+  inselspital:{ type:'dialogue', title:'Beim Arzt', titleEN:'At the Doctor', desc:'Du erklärst deine Symptome.', descEN:'You explain your symptoms.', icon:'🏥' },
+  migration:  { type:'dialogue', title:'Im Büro', titleEN:'At the Office', desc:'Du beantragst deine Bewilligung.', descEN:'You apply for your permit.', icon:'🏛️' },
+  baerenpark: { type:'cultural', title:'Bärenpark Guide', titleEN:'Bärenpark Guide', desc:'Du weißt alles über Berns Wahrzeichen.', descEN:'You know everything about Bern\'s symbol.', icon:'🐻' },
+  velo:       { type:'cultural', title:'Velöle in Bern', titleEN:'Biking in Bern', desc:'Du kennst die besten Velowege.', descEN:'You know the best bike routes.', icon:'🚲' },
+  hidden_gems:{ type:'cultural', title:'Geheimtipps', titleEN:'Hidden Gems', desc:'Du bist ein echter Berner Insider.', descEN:'You are a true Bern insider.', icon:'💎' },
+};
+
 function showUnlock(){
   const loc=currentLoc;
+  const isEN=state.lang==='en';
+  const reward=UNLOCK_REWARDS[loc.id];
+
   document.getElementById('ul-emoji').textContent=loc.emoji;
-  document.getElementById('ul-title').textContent='¡Desbloqueaste '+loc.name+'!';
-  document.getElementById('ul-desc').textContent=(loc.culture&&loc.culture[0])?loc.culture[0].text.slice(0,120)+'...':'¡Excelente trabajo!';
-  const phrases=[...(loc.phrases.formal||[]).slice(0,3),...(loc.phrases.casual||[]).slice(0,2)];
-  document.getElementById('ul-phrases').innerHTML=`<h4>🗣️ Tus 5 frases clave:</h4>${phrases.map(p=>`<div class="unlock-phrase"><div class="up-de">${p.de}</div><div class="up-es">${p.es}</div></div>`).join('')}`;
+  document.getElementById('ul-title').textContent=isEN?`You unlocked ${loc.name}!`:`¡Desbloqueaste ${loc.name}!`;
+
+  // Show reward description
+  let rewardHTML='';
+  if(reward){
+    rewardHTML=`
+      <div style="background:rgba(232,168,56,0.1);border:1px solid rgba(232,168,56,0.3);border-radius:12px;padding:12px;margin-bottom:12px;text-align:left">
+        <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:4px">
+          ${reward.icon} ${isEN?'Reward unlocked':'Recompensa desbloqueada'}
+        </div>
+        <div style="font-weight:800;color:var(--bear);margin-bottom:4px">${isEN?reward.titleEN:reward.title}</div>
+        <div style="font-size:0.82rem;color:var(--muted)">${isEN?reward.descEN:reward.desc}</div>
+      </div>`;
+  }
+
+  const desc=(loc.culture&&loc.culture[0])?loc.culture[0].text.slice(0,100)+'...':isEN?'Great work!':'¡Excelente trabajo!';
+  document.getElementById('ul-desc').textContent=desc;
+
+  const phrases=[...(loc.phrases.formal||[]).slice(0,2),...(loc.phrases.casual||[]).slice(0,2)];
+  const phraseLabel=isEN?'🗣️ Your key phrases:':'🗣️ Tus frases clave:';
+  const transField=isEN?'en':'es';
+
+  document.getElementById('ul-phrases').innerHTML=rewardHTML+`
+    <h4>${phraseLabel}</h4>
+    ${phrases.map(p=>`<div class="unlock-phrase">
+      <div class="up-de">${p.de}</div>
+      <div class="up-es">${p[transField]||p.es}</div>
+    </div>`).join('')}`;
+
+  const btn=document.querySelector('#unlock .btn-primary');
+  if(btn) btn.textContent=isEN?'Wunderbar! Keep going! 🎉':'¡Wunderbar! ¡Sigue! 🎉';
+
   document.getElementById('unlock').classList.add('show');
 }
 
@@ -4050,53 +4274,175 @@ function closeUnlock(){document.getElementById('unlock').classList.remove('show'
 // ── LANGUAGE ──
 const LANG = {
   es: {
-    days:'🔥 Días', places:'🏆 Lugares', testBtn:'¿No sabes tu nivel? Haz el test →',
+    // Nav & home
+    days:'🔥 Días', places:'🏆 Lugares', xp:'⭐ XP',
     trackNames:{leben:'🗺️ Leben in Bern',kinder:'🐨 Kinder in Bern',work:'💼 Work in Bern'},
     active:'Activo', done:'✓ Hecho', locked:'🔒',
+    // Module tabs
     grammar:'📖 Gramática', cards:'🃏 Cards', quiz:'🎯 Quiz',
     blanks:'✍️ Espacios', phrases:'🗣️ Frases', culture:'🏛️ Cultura', survival:'🧡 Survival',
+    // Phrase toggles
     formal:'🎩 Formal', casual:'😎 Bernés casual',
+    // Buttons
     knew:'✓ Lo sabía', didnt:'✗ No sabía', flip:'🔄 Ver artículo',
     restart:'↺ Reiniciar', check:'Comprobar →', back:'← Volver',
     coming:'Próximamente',
+    // Greeting
+    hello:'Hallo',
+    // Quiz feedback
+    correct:'¡Correcto!', wrong:'Era',
+    passed:'¡Superaste el quiz!', failed:'Necesitas máximo 3 errores para pasar.',
+    errors:'Errores', allowed:'permitidos',
+    reward:'🏆 Ver recompensa', tryAgain:'↺ Volver a intentar',
+    // Flashcard
+    tapToSee:'Toca para ver el artículo',
+    // Blank
+    placeholder:'der / die / das',
+    // Verbspiel
+    verbTitle:'⚡ Elige un verbo', conjTitle:'📐 Conjugación', exTitle:'💬 Frases de ejemplo',
+    verbSubtitle:'Conjuga verbos · ¡Las 6 formas!',
+    // Satzspiel
+    satzTitle:'Construye frases · Watch everything change!',
+    caseNom:'Nominativ', caseAkk:'Akkusativ', caseDat:'Dativ',
+    // Level names
+    levels:{
+      a1:'Mit Karte bitte!', a2:'Sobrevivo...', b1:'Veo luz!', b2:'Nadie me saca de aquí',
+      k1:'Babycino bitte!', k2:'Wir sind dabei!',
+      w1:'Grüezi, ich bin neu!', w2:'Ich kenne meine Rechte',
+    },
+    // Grammar section labels
+    grammarMasc:'🔵 DER — masculino', grammarFem:'🔴 DIE — femenino', grammarNeut:'🟢 DAS — neutro',
+    grammarKey:'💡 Palabras clave de',
+    connTitle:'🔗 Konnektoren — Conectores',
+    connCoord:'Koordinierende (no cambian el orden)',
+    connSub:'Subordinierende (verb goes to END ⚠️)',
+    connAdv:'Adverbiale Konnektoren (verb 2nd, inversion)',
+    connRule:'⚠️ La regla más importante: VERB AT THE END',
+    // Onboarding
+    obSub:'Aprende alemán viviendo Berna.',
+    obTagline:'"weil das Leben nicht wartet"',
+    obPlaceholder:'Tu nombre',
+    obBtn:'Los geht\'s! 🐻',
+    // Bottom nav
+    bnHome:'Inicio', bnTracks:'Tracks', bnSpiel:'Satzspiel', bnVerb:'Verbspiel',
   },
   en: {
-    days:'🔥 Days', places:'🏆 Places', testBtn:'Don\'t know your level? Take the test →',
+    // Nav & home
+    days:'🔥 Days', places:'🏆 Places', xp:'⭐ XP',
     trackNames:{leben:'🗺️ Life in Bern',kinder:'🐨 Kids in Bern',work:'💼 Work in Bern'},
     active:'Active', done:'✓ Done', locked:'🔒',
+    // Module tabs
     grammar:'📖 Grammar', cards:'🃏 Cards', quiz:'🎯 Quiz',
     blanks:'✍️ Fill in', phrases:'🗣️ Phrases', culture:'🏛️ Culture', survival:'🧡 Survival',
+    // Phrase toggles
     formal:'🎩 Formal', casual:'😎 Bernese casual',
+    // Buttons
     knew:'✓ I knew it', didnt:'✗ Didn\'t know', flip:'🔄 See article',
     restart:'↺ Restart', check:'Check →', back:'← Back',
     coming:'Coming soon',
+    // Greeting
+    hello:'Hey',
+    // Quiz feedback
+    correct:'Correct!', wrong:'It was',
+    passed:'You passed the quiz!', failed:'You need at most 3 wrong answers to pass.',
+    errors:'Errors', allowed:'allowed',
+    reward:'🏆 See reward', tryAgain:'↺ Try again',
+    // Flashcard
+    tapToSee:'Tap to see the article',
+    // Blank
+    placeholder:'der / die / das',
+    // Verbspiel
+    verbTitle:'⚡ Pick a verb', conjTitle:'📐 Conjugation', exTitle:'💬 Example sentences',
+    verbSubtitle:'Conjugate verbs · All 6 forms!',
+    // Satzspiel
+    satzTitle:'Build sentences · Watch everything change!',
+    caseNom:'Nominative', caseAkk:'Accusative', caseDat:'Dative',
+    // Level names
+    levels:{
+      a1:'Mit Karte bitte!', a2:'I\'m surviving...', b1:'I see light!', b2:'Nobody\'s kicking me out',
+      k1:'Babycino bitte!', k2:'We\'re getting there!',
+      w1:'Grüezi, I\'m new!', w2:'I know my rights',
+    },
+    // Grammar section labels
+    grammarMasc:'🔵 DER — masculine', grammarFem:'🔴 DIE — feminine', grammarNeut:'🟢 DAS — neuter',
+    grammarKey:'💡 Key words for',
+    connTitle:'🔗 Konnektoren — Connectors',
+    connCoord:'Coordinating (no word order change)',
+    connSub:'Subordinating (verb goes to END ⚠️)',
+    connAdv:'Adverbial connectors (verb 2nd, inversion)',
+    connRule:'⚠️ Most important rule: VERB AT THE END',
+    // Onboarding
+    obSub:'Learn German living in Bern.',
+    obTagline:'"because life doesn\'t wait"',
+    obPlaceholder:'Your name',
+    obBtn:'Let\'s go! 🐻',
+    // Bottom nav
+    bnHome:'Home', bnTracks:'Tracks', bnSpiel:'Satzspiel', bnVerb:'Verbspiel',
   }
 };
+
+function T(key){ return (LANG[state.lang||'es']||LANG.es)[key]||key; }
 
 function setLang(lang){
   state.lang=lang;
   localStorage.setItem('dib_lang',lang);
-  const t=LANG[lang];
-  // update buttons
-  document.getElementById('lang-es').style.borderColor=lang==='es'?'var(--bear)':'var(--border)';
-  document.getElementById('lang-es').style.background=lang==='es'?'rgba(232,168,56,0.15)':'transparent';
-  document.getElementById('lang-es').style.color=lang==='es'?'var(--bear)':'var(--muted)';
-  document.getElementById('lang-en').style.borderColor=lang==='en'?'var(--masc)':'var(--border)';
-  document.getElementById('lang-en').style.background=lang==='en'?'rgba(68,147,248,0.15)':'transparent';
-  document.getElementById('lang-en').style.color=lang==='en'?'var(--masc)':'var(--muted)';
-  // update labels
-  document.getElementById('lbl-days').textContent=t.days;
-  document.getElementById('lbl-places').textContent=t.places;
-  // update tabs
-  document.querySelector('.mtab')&&updateTabLabels();
+  const t=LANG[lang]||LANG.es;
+
+  // Language toggle buttons
+  const esBtn=document.getElementById('lang-es');
+  const enBtn=document.getElementById('lang-en');
+  if(esBtn){
+    esBtn.style.borderColor=lang==='es'?'var(--bear)':'var(--border)';
+    esBtn.style.background=lang==='es'?'rgba(232,168,56,0.15)':'transparent';
+    esBtn.style.color=lang==='es'?'var(--bear)':'var(--muted)';
+  }
+  if(enBtn){
+    enBtn.style.borderColor=lang==='en'?'var(--masc)':'var(--border)';
+    enBtn.style.background=lang==='en'?'rgba(68,147,248,0.15)':'transparent';
+    enBtn.style.color=lang==='en'?'var(--masc)':'var(--muted)';
+  }
+
+  // Home stats labels
+  const d=document.getElementById('lbl-days');
+  const p=document.getElementById('lbl-places');
+  if(d) d.textContent=t.days;
+  if(p) p.textContent=t.places;
+
+  // Bottom nav labels
+  const bnHome=document.getElementById('bn-lbl-home');
+  const bnTracks=document.getElementById('bn-tracks');
+  const bnSpiel=document.getElementById('bn-spiel');
+  const bnVerb=document.getElementById('bn-verb');
+  if(bnHome) bnHome.textContent=t.bnHome;
+  if(bnTracks) bnTracks.textContent=t.bnTracks;
+
+  // Module tabs
+  updateTabLabels();
+  // Verbspiel labels
+  updateVerbLabels();
+  // Re-render strips with new level names
   renderLevelStrips();
+  // Update greeting
+  updateGreeting();
 }
 
 function updateTabLabels(){
-  const t=LANG[state.lang||'es'];
+  const t=LANG[state.lang||'es']||LANG.es;
   const tabs=document.querySelectorAll('.mtab');
   const labels=[t.grammar,t.cards,t.quiz,t.blanks,t.phrases,t.culture,t.survival];
   tabs.forEach((tab,i)=>{ if(labels[i]) tab.textContent=labels[i]; });
+}
+
+function updateVerbLabels(){
+  const t=LANG[state.lang||'es']||LANG.es;
+  const lbl1=document.getElementById('vb-lbl-conj');
+  const lbl2=document.getElementById('vb-lbl-ex');
+  const lbl3=document.getElementById('vb-lbl-pick');
+  const sub=document.getElementById('vb-subtitle');
+  if(lbl1) lbl1.textContent=t.conjTitle;
+  if(lbl2) lbl2.textContent=t.exTitle;
+  if(lbl3) lbl3.textContent=t.verbTitle;
+  if(sub) sub.textContent=t.verbSubtitle;
 }
 
 // ── ONBOARDING ──
@@ -4136,7 +4482,8 @@ function startApp(){
 function updateGreeting(){
   const el=document.getElementById('home-greeting');
   if(!el||!state.username) return;
-  el.textContent=state.lang==='es'?`Hallo, ${state.username}! 👋`:`Hello, ${state.username}! 👋`;
+  const isEN=state.lang==='en';
+  el.textContent=isEN?`Hey, ${state.username}! 👋`:`Hallo, ${state.username}! 👋`;
 }
 
 // ── INIT ──
