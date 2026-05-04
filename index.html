@@ -5362,8 +5362,8 @@ function loadFC(){
   document.getElementById('fc-c').textContent=fCorrect;
   document.getElementById('fc-w').textContent=fWrong;
   fFlipped=false;
-  // Auto-speak word after short delay
-  setTimeout(()=>{ try{ speak(w.word); }catch(e){} }, 400);
+  // Note: no auto-speak on load — mobile browsers block speech without user gesture
+  // User taps the 🔊 button instead
   document.getElementById('fc-scene').classList.remove('flipped');
   document.getElementById('fc-btns').style.display='none';
   document.getElementById('fc-flip-btn').style.display='block';
@@ -5878,44 +5878,80 @@ function updateGreeting(){
 
 
 // ── TEXT TO SPEECH ──
+// ── TEXT TO SPEECH (mobile-safe) ──
 let ttsVoice = null;
-let ttsSpeaking = false;
+let ttsReady = false;
 
 function initTTS(){
   if(!window.speechSynthesis) return;
-  // Load voices — may need a small delay on Android
   const load = () => {
     const voices = speechSynthesis.getVoices();
-    // Prefer German voices
-    ttsVoice = voices.find(v=>v.lang==='de-DE' && v.name.includes('Google'))
+    if(!voices.length) return; // not ready yet
+    ttsVoice = voices.find(v=>v.lang==='de-DE' && v.name.toLowerCase().includes('google'))
       || voices.find(v=>v.lang==='de-DE')
+      || voices.find(v=>v.lang.startsWith('de-'))
       || voices.find(v=>v.lang.startsWith('de'))
       || null;
+    ttsReady = true;
   };
+  // Android: voices load async — need both approaches
   load();
   speechSynthesis.onvoiceschanged = load;
+  // Fallback: try again after 1s (Android Chrome sometimes slow)
+  setTimeout(load, 1000);
 }
 
 function speak(text, btnEl){
-  if(!window.speechSynthesis){ alert('Tu navegador no soporta voz. Usa Chrome.'); return; }
-  // Cancel any current speech
-  speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'de-DE';
-  u.rate = 0.82;   // slightly slower — better for learning
-  u.pitch = 1.0;
-  if(ttsVoice) u.voice = ttsVoice;
-
-  // Visual feedback on button
-  if(btnEl){
-    btnEl.classList.add('speaking');
-    u.onend = () => btnEl.classList.remove('speaking');
-    u.onerror = () => btnEl.classList.remove('speaking');
+  if(!window.speechSynthesis){
+    if(btnEl){ btnEl.textContent='❌'; setTimeout(()=>btnEl.textContent='🔊 Escuchar',1500); }
+    return;
   }
-  speechSynthesis.speak(u);
+
+  // Android bug: speechSynthesis gets stuck after a few uses
+  // Fix: cancel + small pause before speaking
+  speechSynthesis.cancel();
+
+  const doSpeak = () => {
+    // If voices still not loaded, try loading again
+    if(!ttsReady){ initTTS(); }
+
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'de-DE';
+    u.rate = 0.82;
+    u.pitch = 1.0;
+    u.volume = 1.0;
+
+    // Apply German voice if found
+    if(ttsVoice) u.voice = ttsVoice;
+
+    // Visual feedback
+    const allBtns = document.querySelectorAll('.speak-btn.speaking');
+    allBtns.forEach(b=>b.classList.remove('speaking'));
+    if(btnEl) btnEl.classList.add('speaking');
+
+    u.onend = () => { if(btnEl) btnEl.classList.remove('speaking'); };
+    u.onerror = (e) => {
+      if(btnEl) btnEl.classList.remove('speaking');
+      // If error is "interrupted" it's fine (we cancelled previous), otherwise log
+      if(e.error !== 'interrupted') console.log('TTS error:', e.error);
+    };
+
+    speechSynthesis.speak(u);
+
+    // Android keepalive hack: speechSynthesis pauses after ~15s on Android
+    // Resume it periodically while speaking
+    const keepAlive = setInterval(()=>{
+      if(!speechSynthesis.speaking){ clearInterval(keepAlive); return; }
+      speechSynthesis.pause();
+      speechSynthesis.resume();
+    }, 10000);
+    u.onend = () => { clearInterval(keepAlive); if(btnEl) btnEl.classList.remove('speaking'); };
+  };
+
+  // Small delay after cancel so Android doesn't get confused
+  setTimeout(doSpeak, 100);
 }
 
-// Call on init
 try { initTTS(); } catch(e){}
 
 // ── INIT ──
