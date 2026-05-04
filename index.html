@@ -2,12 +2,12 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Deutsch im Bärn">
-<meta name="theme-color" content="#e8a838">
+<meta name="theme-color" content="#0d1117">
 <link rel="manifest" href="manifest.json">
 <title>Deutsch im Bärn 🐻</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -26,12 +26,29 @@
   --bear: #e8a838;
   --radius: 16px;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-/* SCREENS */
-.screen { display: none; min-height: 100vh; padding-bottom: 80px; }
+/* iOS font zoom fix */
+input, select, textarea { font-size: 16px !important; }
+
+/* ── SCREEN TRANSITIONS ── */
+.screen {
+  display: none;
+  min-height: 100vh;
+  padding-bottom: calc(80px + env(safe-area-inset-bottom));
+  animation: slideIn 0.25s ease;
+}
 .screen.active { display: block; }
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideBack {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.screen.back { animation: slideBack 0.25s ease; }
 
 /* ── ONBOARDING ── */
 #onboarding {
@@ -182,6 +199,46 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--te
 .vb-ex-trans { font-size:0.78rem; color:var(--muted); }
 .vb-highlight { color:var(--bear); }
 
+/* ── MOBILE TOUCH IMPROVEMENTS ── */
+
+/* Active press states for all buttons */
+button:active { opacity: 0.75; transform: scale(0.97); }
+
+/* Ensure all buttons meet 44px minimum touch target */
+.btn-primary, .btn-secondary, .btn-check,
+.fc-btn, .opt, .vb-tense-btn, .sz-case-btn,
+.mtab, .ttab, .level-strip, .loc-card,
+.track-card, .vb-verb-btn, .sz-noun-btn, .sz-adj-btn {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Prevent double-tap zoom on buttons */
+.opt, .fc-btn, .btn-primary, .btn-secondary {
+  touch-action: manipulation;
+}
+
+/* Smooth card interactions */
+.loc-card, .level-strip, .track-card {
+  transition: transform 0.15s, border-color 0.2s;
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+
+/* Better scroll feel */
+.mod-tabs, .module-tabs {
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+}
+
+/* Larger tap area for back buttons */
+.lm-back, .mod-back {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
 /* ── WELCOME ── */
 #welcome {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -197,9 +254,11 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--te
 .track-cards { display:flex; flex-direction:column; gap:14px; width:100%; max-width:360px; }
 .track-card {
   background:var(--surface); border:2px solid var(--border); border-radius:20px;
-  padding:20px; cursor:pointer; transition:all 0.25s; text-align:left;
+  padding:20px; cursor:pointer; transition:all 0.2s; text-align:left;
+  position:relative;
 }
-.track-card:hover { transform:translateY(-3px); }
+.track-card:hover { transform:translateY(-2px); }
+.track-card:active { transform:scale(0.98); }
 .track-card.leben:hover { border-color:var(--bear); }
 .track-card.kinder:hover { border-color:#ff9ecd; }
 .track-card.work:hover { border-color:var(--neut); }
@@ -421,6 +480,120 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--te
 .btn-secondary { width:100%; padding:12px; background:var(--surface); border:1px solid var(--border); color:var(--muted); border-radius:12px; font-family:'Nunito',sans-serif; font-size:0.88rem; font-weight:700; cursor:pointer; }
 .btn-check { width:100%; padding:14px; background:var(--bear); color:#000; border:none; border-radius:12px; font-family:'Nunito',sans-serif; font-size:1rem; font-weight:800; cursor:pointer; }
 
+/* ── SCREEN TRANSITIONS ── */
+.screen {
+  display: none !important;
+  min-height: 100vh;
+  padding-bottom: calc(80px + env(safe-area-inset-bottom));
+  animation: slideIn 0.25s ease;
+}
+.screen.active {
+  display: block !important;
+}
+.screen.slide-back { animation: slideBack 0.25s ease; }
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideBack {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ── TRACK SELECT SCREEN ── */
+#trackselect {
+  background: radial-gradient(ellipse at top, #1a2744 0%, #0d1117 70%);
+  padding: 0 0 80px;
+}
+.ts-header {
+  text-align: center;
+  padding: 50px 20px 30px;
+}
+.ts-bear { font-size: 3rem; display: block; animation: bearBob 3s ease-in-out infinite; margin-bottom: 10px; }
+.ts-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; line-height: 1.1; margin-bottom: 6px; }
+.ts-title span { color: var(--bear); }
+.ts-sub { color: var(--muted); font-size: 0.85rem; }
+.ts-cards { display: flex; flex-direction: column; gap: 14px; padding: 0 20px; }
+.ts-card {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  padding: 22px 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.ts-card:active { transform: scale(0.97); }
+.ts-card.leben:hover, .ts-card.leben:active { border-color: var(--bear); background: rgba(232,168,56,0.06); }
+.ts-card.kinder:hover, .ts-card.kinder:active { border-color: #ff9ecd; background: rgba(255,158,205,0.06); }
+.ts-card.work:hover, .ts-card.work:active { border-color: var(--neut); background: rgba(63,185,80,0.06); }
+.ts-emoji { font-size: 2.2rem; flex-shrink: 0; }
+.ts-info { flex: 1; }
+.ts-name { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 4px; }
+.ts-name.leben { color: var(--bear); }
+.ts-name.kinder { color: #ff9ecd; }
+.ts-name.work { color: var(--neut); }
+.ts-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.4; }
+.ts-arrow { color: var(--muted); font-size: 1.2rem; }
+
+/* ── LEVEL SELECT SCREEN ── */
+#levelselect {
+  background: var(--bg);
+  padding: 0 0 80px;
+}
+.ls-screen-header {
+  padding: 20px 16px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.ls-back-btn {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+.ls-screen-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  flex: 1;
+}
+.ls-level-list { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.ls-level-card {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  padding: 18px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.ls-level-card:active { transform: scale(0.97); }
+.ls-level-card.lc-active { border-color: var(--bear); }
+.ls-level-card.lc-locked { opacity: 0.4; cursor: not-allowed; }
+.ls-level-card.lc-done { border-color: var(--neut); }
+.lc-emoji { font-size: 2rem; flex-shrink: 0; }
+.lc-info { flex: 1; }
+.lc-name { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 3px; }
+.lc-sub { font-size: 0.72rem; color: var(--muted); }
+.lc-badge { font-size: 0.65rem; font-weight: 700; padding: 4px 10px; border-radius: 99px; }
+.lc-badge.b-active { background: var(--bear); color: #000; }
+.lc-badge.b-done { background: var(--neut); color: #000; }
+.lc-badge.b-locked { background: var(--border); color: var(--muted); }
+
 /* home nav */
 #homescreen { padding:0 0 80px; background:radial-gradient(ellipse at top,#1a2744 0%,#0d1117 70%); }
 .home-hero { text-align:center; padding:40px 20px 20px; }
@@ -449,16 +622,46 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--te
 .ls-badge.lock { background:var(--border); color:var(--muted); }
 
 /* bottom nav */
-.bottom-nav { position:fixed; bottom:0; left:0; right:0; background:var(--surface); border-top:1px solid var(--border); display:flex; justify-content:space-around; padding:8px 0 14px; z-index:50; }
-.bnav { display:flex; flex-direction:column; align-items:center; gap:3px; background:transparent; border:none; color:var(--muted); font-family:'Nunito',sans-serif; font-size:0.62rem; font-weight:700; cursor:pointer; padding:4px 10px; border-radius:8px; transition:color 0.2s; }
-.bnav .bicon { font-size:1.3rem; }
-.bnav.active { color:var(--bear); }
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  /* iPhone home bar safe area */
+  padding-bottom: calc(10px + env(safe-area-inset-bottom));
+  z-index: 50;
+}
+
+.bnav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  cursor: pointer;
+  /* Minimum 44px touch target (Apple guidelines) */
+  min-height: 44px;
+  min-width: 44px;
+  padding: 4px 12px;
+  border-radius: 10px;
+  transition: color 0.2s;
+}
+.bnav .bicon { font-size: 1.3rem; }
+.bnav.active { color: var(--bear); }
 </style>
 </head>
 <body>
 
 <!-- ══ ONBOARDING ══ -->
-<div id="onboarding" class="screen active">
+<div id="onboarding" class="screen">
   <span class="ob-bear">🐻</span>
   <h1 class="ob-title">Deutsch<br><span>im Bärn</span></h1>
   <p class="ob-sub" id="ob-sub">Aprende alemán viviendo Berna.<br>Learn German living in Bern.</p>
@@ -509,17 +712,60 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--te
 
 <!-- ══ PLACEMENT TEST removed ══ -->
 
+<!-- ══ TRACK SELECT ══ -->
+<div id="trackselect" class="screen">
+  <div class="ts-header">
+    <span class="ts-bear">🐻</span>
+    <h1 class="ts-title">Deutsch <span>im Bärn</span></h1>
+    <p class="ts-sub" id="ts-sub">¿Qué quieres aprender hoy?</p>
+  </div>
+  <div class="ts-cards">
+    <div class="ts-card leben" onclick="selectTrack('leben')">
+      <span class="ts-emoji">🗺️</span>
+      <div class="ts-info">
+        <div class="ts-name leben" id="ts-leben-name">Leben in Bern</div>
+        <div class="ts-desc" id="ts-leben-desc">Explora la ciudad, aprende la cultura. A1 → B2.</div>
+      </div>
+      <span class="ts-arrow">›</span>
+    </div>
+    <div class="ts-card kinder" onclick="selectTrack('kinder')">
+      <span class="ts-emoji">🐨</span>
+      <div class="ts-info">
+        <div class="ts-name kinder" id="ts-kinder-name">Kinder in Bern</div>
+        <div class="ts-desc" id="ts-kinder-desc">Babycino, Spielplatz, Kita, Kibon.</div>
+      </div>
+      <span class="ts-arrow">›</span>
+    </div>
+    <div class="ts-card work" onclick="selectTrack('work')">
+      <span class="ts-emoji">💼</span>
+      <div class="ts-info">
+        <div class="ts-name work" id="ts-work-name">Work in Bern</div>
+        <div class="ts-desc" id="ts-work-desc">Alemán para trabajar. Desde el día uno.</div>
+      </div>
+      <span class="ts-arrow">›</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ LEVEL SELECT ══ -->
+<div id="levelselect" class="screen">
+  <div class="ls-screen-header">
+    <button class="ls-back-btn" onclick="goTrackSelect()">←</button>
+    <div class="ls-screen-title" id="ls-track-title">Leben in Bern</div>
+  </div>
+  <div class="ls-level-list" id="ls-level-list"></div>
+</div>
+
 <!-- ══ HOME SCREEN ══ -->
 <div id="homescreen" class="screen">
   <div class="home-hero">
     <span class="home-bear">🐻</span>
     <h1>Deutsch <span>im Bärn</span></h1>
     <p id="home-greeting" style="color:var(--bear);font-weight:700;font-size:1rem;margin-top:4px"></p>
-    <p id="home-track-label" style="color:var(--muted);font-size:0.85rem;margin-top:2px">Leben in Bern</p>
   </div>
 
   <!-- Language selector -->
-  <div style="display:flex;gap:8px;justify-content:center;margin-bottom:12px">
+  <div style="display:flex;gap:8px;justify-content:center;margin-bottom:14px">
     <button id="lang-es" onclick="setLang('es')" style="padding:7px 18px;border-radius:99px;border:2px solid var(--bear);background:rgba(232,168,56,0.15);color:var(--bear);font-family:'Nunito',sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer">🇪🇸 Español</button>
     <button id="lang-en" onclick="setLang('en')" style="padding:7px 18px;border-radius:99px;border:2px solid var(--border);background:transparent;color:var(--muted);font-family:'Nunito',sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer">🇬🇧 English</button>
   </div>
@@ -532,20 +778,21 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--te
     <div><div class="si-val" id="h-done">0</div><div class="si-lbl" id="lbl-places">🏆 Lugares</div></div>
   </div>
 
-  <div class="track-tabs">
-    <button class="ttab active-leben" id="ttab-leben" onclick="setHomeTrack('leben')">🗺️ Leben</button>
-    <button class="ttab" id="ttab-kinder" onclick="setHomeTrack('kinder')">🐨 Kinder</button>
-    <button class="ttab" id="ttab-work" onclick="setHomeTrack('work')">💼 Work</button>
+  <!-- Big START button -->
+  <div style="padding:16px">
+    <button onclick="goTrackSelect()" class="btn-primary" style="font-size:1.1rem;padding:18px">
+      🗺️ <span id="home-start-btn">Empezar a aprender →</span>
+    </button>
   </div>
 
-  <div class="section-title" id="home-level-label">☕ MIT KARTE BITTE</div>
-  <div class="level-strips" id="level-strips"></div>
+  <!-- Last played shortcut -->
+  <div style="padding:0 16px" id="home-last-played"></div>
 </div>
 
 <!-- ══ LOCATION MAP ══ -->
 <div id="locationmap" class="screen">
   <div style="padding:16px">
-    <button class="lm-back" onclick="goHome()">← Volver</button>
+    <button class="lm-back" onclick="goLevelSelect()">← <span id="loc-back-lbl">Volver</span></button>
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
       <div class="lm-title" id="lm-title">A1 — Mit Karte bitte</div>
       <div class="lm-level-tag" id="lm-tag">☕</div>
@@ -558,7 +805,7 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--te
 <div id="module" class="screen">
   <div class="mod-hero" id="mod-hero">
     <div class="mod-hero-bg" id="mod-hero-bg"></div>
-    <button class="mod-back" onclick="goLocationMap()">← Volver</button>
+    <button class="mod-back" onclick="goLocationMap()">← <span id="mod-back-lbl">Volver</span></button>
     <div class="mod-hero-content">
       <h2 id="mod-title">—</h2>
       <p id="mod-sub">—</p>
@@ -590,7 +837,7 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--te
 <!-- Bottom Nav -->
 <div class="bottom-nav" id="bottom-nav" style="display:none">
   <button class="bnav active" id="bn-home" onclick="goHome()"><span class="bicon">🏠</span><span id="bn-lbl-home">Inicio</span></button>
-  <button class="bnav" onclick="showScreen('welcome');document.getElementById('bottom-nav').style.display='flex'"><span class="bicon">🗺️</span><span id="bn-tracks">Tracks</span></button>
+  <button class="bnav" id="bn-tracks" onclick="goTrackSelect()"><span class="bicon">🗺️</span><span>Tracks</span></button>
   <button class="bnav" id="bn-spiel" onclick="showSatzspiel()"><span class="bicon">🎮</span>Satzspiel</button>
   <button class="bnav" id="bn-verb" onclick="showVerbspiel()"><span class="bicon">⚡</span>Verbspiel</button>
 </div>
@@ -3654,22 +3901,63 @@ function updateStreak(){
 // ════════════════════════════════════════════
 // SCREENS
 // ════════════════════════════════════════════
-function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  const showNav=['homescreen','locationmap','module','welcome'].includes(id);
+// ── NAVIGATION ──
+let navHistory = [];
+
+function showScreen(id, isBack=false){
+  document.querySelectorAll('.screen').forEach(s=>{ s.classList.remove('active','slide-back'); });
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.classList.add('active');
+  if(isBack) el.classList.add('slide-back');
+  const showNav=['homescreen','trackselect','levelselect','locationmap','module','satzspiel','verbspiel'].includes(id);
   document.getElementById('bottom-nav').style.display=showNav?'flex':'none';
+  document.querySelectorAll('.bnav').forEach(b=>b.classList.remove('active'));
+  if(['homescreen','trackselect','levelselect','locationmap','module'].includes(id)){
+    const hn=document.getElementById('bn-home'); if(hn) hn.classList.add('active');
+  }
+  window.scrollTo(0,0);
 }
+
+function goHome(){ navHistory=[]; showScreen('homescreen',true); renderHome(); }
+function goTrackSelect(){ navHistory=['homescreen']; showScreen('trackselect'); }
+
+function selectTrack(track){
+  state.track=track;
+  navHistory.push('trackselect');
+  showLevelSelect(track);
+}
+
+function showLevelSelect(track){
+  state.track=track;
+  const isEN=state.lang==='en';
+  const trackData=TRACKS[track];
+  const t=LANG[state.lang||'es']||LANG.es;
+  const icons={leben:'🗺️',kinder:'🐨',work:'💼'};
+  document.getElementById('ls-track-title').textContent=icons[track]+' '+(t.trackNames[track]||trackData.name);
+  const list=document.getElementById('ls-level-list');
+  list.innerHTML='';
+  trackData.levels.forEach((lv,i)=>{
+    const isUnlocked=i===0||state.completed.filter(id=>LOCATIONS[id]&&LOCATIONS[id].level===trackData.levels[i-1].id).length>0;
+    const isDone=lv.locations.filter(id=>LOCATIONS[id]).every(id=>state.completed.includes(id));
+    const displayName=t.levels[lv.id]||lv.name;
+    const card=document.createElement('div');
+    card.className='ls-level-card'+(isDone?' lc-done':isUnlocked?' lc-active':' lc-locked');
+    card.innerHTML=`<div class="lc-emoji">${lv.emoji}</div><div class="lc-info"><div class="lc-name">${displayName}</div><div class="lc-sub">${lv.sub}</div></div><span class="lc-badge ${isDone?'b-done':isUnlocked?'b-active':'b-locked'}">${isDone?(isEN?'✓ Done':'✓ Hecho'):isUnlocked?(isEN?'Active':'Activo'):'🔒'}</span>`;
+    if(isUnlocked||isDone) card.onclick=()=>{ navHistory.push('levelselect'); openLevel(lv); };
+    list.appendChild(card);
+  });
+  showScreen('levelselect');
+}
+
+function goLevelSelect(){ showLevelSelect(state.track); }
 
 function startTrack(track){
-  state.track=track;
-  localStorage.setItem('dib_visited','1');
-  showScreen('homescreen');
-  document.getElementById('bottom-nav').style.display='flex';
-  renderHome();
+  state.track=track; localStorage.setItem('dib_visited','1');
+  showScreen('homescreen'); document.getElementById('bottom-nav').style.display='flex'; renderHome();
 }
 
-function showTrackSelect(){showScreen('welcome');}
+function showTrackSelect(){ goTrackSelect(); }
 
 // ════════════════════════════════════════════
 // PLACEMENT TEST
@@ -3757,47 +4045,31 @@ function setHomeTrack(track){
 
 function renderHome(){
   updateHomeStats();
-  setHomeTrack(state.track);
   setLang(state.lang||'es');
   updateGreeting();
+  const isEN=state.lang==='en';
+  // Update start button
+  const hsb=document.getElementById('home-start-btn');
+  if(hsb) hsb.textContent=isEN?'Start learning →':'Empezar a aprender →';
+  // Update track select descriptions
+  const ts=document.getElementById('ts-sub');
+  if(ts) ts.textContent=isEN?'What do you want to learn today?':'¿Qué quieres aprender hoy?';
 }
 
-function renderLevelStrips(){
-  const trackData=TRACKS[state.track];
-  const strips=document.getElementById('level-strips');
-  const t=LANG[state.lang||'es']||LANG.es;
-  const isEN=state.lang==='en';
-  strips.innerHTML='';
-  trackData.levels.forEach((lv,i)=>{
-    const isUnlocked=i===0||state.completed.filter(id=>LOCATIONS[id]&&LOCATIONS[id].level===trackData.levels[i-1].id).length>0;
-    const isDone=lv.locations.filter(id=>LOCATIONS[id]).every(id=>state.completed.includes(id));
-    const displayName=t.levels[lv.id]||lv.name;
-    const strip=document.createElement('div');
-    strip.className='level-strip'+(isDone?' ls-done':isUnlocked?' ls-current':' ls-locked');
-    strip.innerHTML=`
-      <div class="ls-emoji">${lv.emoji}</div>
-      <div class="ls-info">
-        <div class="ls-name">${displayName}</div>
-        <div class="ls-sub">${lv.sub}</div>
-      </div>
-      <span class="ls-badge ${isDone?'comp':isUnlocked?'curr':'lock'}">${isDone?(isEN?'✓ Done':'✓ Hecho'):isUnlocked?(isEN?'Active':'Activo'):'🔒'}</span>`;
-    if(isUnlocked||isDone) strip.onclick=()=>openLevel(lv);
-    strips.appendChild(strip);
-  });
-}
+function renderLevelStrips(){ /* handled by showLevelSelect */ }
 
 function openLevel(level){
-  document.getElementById('lm-title').textContent=level.emoji+' '+level.name;
+  const isEN=state.lang==='en';
+  document.getElementById('lm-title').textContent=level.emoji+' '+(LANG[state.lang||'es'].levels[level.id]||level.name);
   document.getElementById('lm-tag').textContent=level.sub;
   const grid=document.getElementById('loc-grid');
   grid.innerHTML='';
   level.locations.forEach((id,i)=>{
     const loc=LOCATIONS[id];
     if(!loc){
-      // placeholder
       const card=document.createElement('div');
       card.className='loc-card loc-locked';
-      card.innerHTML=`<span class="loc-emoji">🔒</span><div class="loc-name">Próximamente</div><div class="loc-sub">En desarrollo</div>`;
+      card.innerHTML=`<span class="loc-emoji">🔒</span><div class="loc-name">${isEN?'Coming soon':'Próximamente'}</div>`;
       grid.appendChild(card);
       return;
     }
@@ -3813,11 +4085,34 @@ function openLevel(level){
     if(isUnlocked||isDone) card.onclick=()=>openModule(loc,id);
     grid.appendChild(card);
   });
+  // Back button goes to level screen
+  const backBtn=document.querySelector('#locationmap .lm-back');
+  if(backBtn){ backBtn.textContent=`← ${isEN?'Levels':'Niveles'}`; backBtn.onclick=()=>showScreen('levelscreen'); }
   showScreen('locationmap');
 }
 
-function goHome(){showScreen('homescreen');renderHome();}
-function goLocationMap(){showScreen('locationmap');}
+function goToTrack(track){
+  state.track=track;
+  const t=LANG[state.lang||'es']||LANG.es;
+  const isEN=state.lang==='en';
+  const trackEmojis={leben:'🗺️',kinder:'🐨',work:'💼'};
+  const trackNames=t.trackNames;
+  const trackSubs={
+    leben: isEN?'Choose your level':'Elige tu nivel',
+    kinder: isEN?'Choose your level':'Elige tu nivel',
+    work: isEN?'Choose your level':'Elige tu nivel',
+  };
+  document.getElementById('level-track-emoji').textContent=trackEmojis[track];
+  document.getElementById('level-track-name').textContent=trackNames[track];
+  document.getElementById('level-track-sub').textContent=trackSubs[track];
+  document.getElementById('level-back').textContent=`← ${isEN?'Back':'Volver'}`;
+  renderLevelStrips();
+  showScreen('levelscreen');
+}
+
+function goLocationMap(){
+  showScreen('locationmap');
+}
 
 // ════════════════════════════════════════════
 // MODULE
@@ -4411,19 +4706,13 @@ function setLang(lang){
   // Bottom nav labels
   const bnHome=document.getElementById('bn-lbl-home');
   const bnTracks=document.getElementById('bn-tracks');
-  const bnSpiel=document.getElementById('bn-spiel');
-  const bnVerb=document.getElementById('bn-verb');
   if(bnHome) bnHome.textContent=t.bnHome;
   if(bnTracks) bnTracks.textContent=t.bnTracks;
 
-  // Module tabs
-  updateTabLabels();
-  // Verbspiel labels
-  updateVerbLabels();
-  // Re-render strips with new level names
-  renderLevelStrips();
-  // Update greeting
-  updateGreeting();
+  // Safely update optional elements
+  try { updateTabLabels(); } catch(e){}
+  try { updateVerbLabels(); } catch(e){}
+  try { updateGreeting(); } catch(e){}
 }
 
 function updateTabLabels(){
@@ -4463,20 +4752,57 @@ function obSetLang(lang){
 }
 
 function startApp(){
-  const nameInput=document.getElementById('ob-name');
-  const name=nameInput.value.trim();
-  if(!name){
-    nameInput.style.borderColor='var(--fem)';
-    nameInput.placeholder=obLang==='es'?'¡Escribe tu nombre!':'Please enter your name!';
-    setTimeout(()=>{nameInput.style.borderColor='var(--border)';nameInput.placeholder=obLang==='es'?'Tu nombre':'Your name';},1500);
-    return;
+  try {
+    const nameInput=document.getElementById('ob-name');
+    const name=nameInput.value.trim();
+
+    if(!name){
+      nameInput.style.borderColor='var(--fem)';
+      nameInput.style.background='rgba(248,81,73,0.08)';
+      nameInput.placeholder=obLang==='es'?'¡Escribe tu nombre!':'Please enter your name!';
+      setTimeout(()=>{
+        nameInput.style.borderColor='var(--border)';
+        nameInput.style.background='var(--surface)';
+        nameInput.placeholder=obLang==='es'?'Tu nombre':'Your name';
+      },1500);
+      return;
+    }
+
+    // Save to state and localStorage
+    state.username=name;
+    state.lang=obLang;
+    localStorage.setItem('dib_username',name);
+    localStorage.setItem('dib_lang',obLang);
+
+    // Directly switch screens — no function calls that could fail
+    const allScreens=document.querySelectorAll('.screen');
+    allScreens.forEach(s=>{ s.classList.remove('active'); s.style.display='none'; });
+
+    const home=document.getElementById('homescreen');
+    home.style.display='block';
+    home.classList.add('active');
+
+    const nav=document.getElementById('bottom-nav');
+    nav.style.display='flex';
+
+    // Update greeting directly
+    const greet=document.getElementById('home-greeting');
+    if(greet) greet.textContent=obLang==='en'?`Hey, ${name}! 👋`:`Hallo, ${name}! 👋`;
+
+    // Update start button
+    const sb=document.getElementById('home-start-btn');
+    if(sb) sb.textContent=obLang==='en'?'Start learning →':'Empezar a aprender →';
+
+    // Update stats
+    try { updateHomeStats(); } catch(e){}
+
+  } catch(err){
+    console.error('startApp error:', err);
+    // Fallback — force navigate
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById('homescreen').classList.add('active');
+    document.getElementById('bottom-nav').style.display='flex';
   }
-  state.username=name; state.lang=obLang;
-  localStorage.setItem('dib_username',name);
-  localStorage.setItem('dib_lang',obLang);
-  showScreen('homescreen');
-  document.getElementById('bottom-nav').style.display='flex';
-  renderHome();
 }
 
 function updateGreeting(){
@@ -4487,14 +4813,16 @@ function updateGreeting(){
 }
 
 // ── INIT ──
-updateStreak();
+try { updateStreak(); } catch(e){}
+document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+document.getElementById('bottom-nav').style.display='none';
 if(state.username){
-  document.getElementById('onboarding').classList.remove('active');
   document.getElementById('homescreen').classList.add('active');
   document.getElementById('bottom-nav').style.display='flex';
-  renderHome();
+  try { renderHome(); } catch(e){ console.log('renderHome error:',e); }
 } else {
-  obSetLang(state.lang||'es');
+  document.getElementById('onboarding').classList.add('active');
+  try { obSetLang(state.lang||'es'); } catch(e){}
 }
 
 // Register service worker for PWA
