@@ -258,7 +258,7 @@ input, select, textarea { font-size: 16px !important; }
 .gq-sub { font-size:0.82rem; color:var(--muted); margin-bottom:20px; }
 .gq-opts { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px; }
 .gq-opt { padding:14px 10px; border-radius:12px; border:1.5px solid var(--border);
-  background:var(--card); font-size:0.9rem; font-weight:700; cursor:pointer;
+  background:var(--card); color:var(--text); font-size:0.9rem; font-weight:700; cursor:pointer;
   transition:all 0.15s; min-height:52px; display:flex; align-items:center; justify-content:center; }
 .gq-opt:active { transform:scale(0.96); }
 .gq-opt.correct { border-color:var(--neut); background:rgba(63,185,80,0.15); color:var(--neut); }
@@ -273,7 +273,8 @@ input, select, textarea { font-size: 16px !important; }
 .gq-sentence-gap { display:inline-block; min-width:80px; border-bottom:2px solid var(--bear);
   color:var(--bear); font-weight:700; padding:0 4px; font-size:1.1rem; }
 .gq-feedback { font-size:0.85rem; padding:10px 14px; border-radius:10px; margin-top:8px;
-  background:var(--card); border:1px solid var(--border); text-align:left; line-height:1.5; }
+  background:var(--card); border:1px solid var(--border); text-align:left; line-height:1.5;
+  color:var(--text); }
 
 /* ── MOBILE TOUCH IMPROVEMENTS ── */
 
@@ -987,7 +988,7 @@ button:active { opacity: 0.75; transform: scale(0.97); }
 <!-- ══ SATZSPIEL ══ -->
 <div id="satzspiel" class="screen" style="background:var(--bg)">
   <div style="padding:16px 16px 0">
-    <button class="lm-back" onclick="goHome()">← Volver</button>
+    <button class="lm-back" onclick="goHome()">← <span id="sz-back-lbl">Inicio</span></button>
     <div style="text-align:center;padding:8px 0 16px">
       <div style="font-size:2rem">🎮</div>
       <div style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700">Satzspiel</div>
@@ -5260,8 +5261,12 @@ function goLocationMap(){
   // Re-render the location grid so newly completed locations show as done
   if(state.currentLevel){
     openLevel(state.currentLevel);
-  } else {
     showScreen('locationmap');
+  } else if(state.track){
+    // fallback: re-open level select
+    showLevelSelect(state.track);
+  } else {
+    goHome();
   }
 }
 
@@ -6072,7 +6077,7 @@ let vbqTense = 'present';
 let vbqCorrect = 0, vbqWrong = 0, vbqTotal = 0;
 
 function vbSetMode(mode, btn){
-  document.querySelectorAll('.gq-tab','#verbspiel .gq-tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('#verbspiel .gq-tab').forEach(b=>b.classList.remove('active'));
   if(btn) btn.classList.add('active');
   document.getElementById('vb-learn-mode').style.display = mode==='learn'?'':'none';
   document.getElementById('vb-quiz-mode').style.display = mode==='quiz'?'':'none';
@@ -6088,9 +6093,11 @@ function vbqSetTense(tense, btn){
 
 function vbqNext(){
   const isEN = state.lang==='en';
-  // Pick a random verb
-  const verb = VERBS[Math.floor(Math.random()*VERBS.length)];
-  if(!verb[vbqTense]){ vbqNext(); return; }
+  // Pick a random verb that has this tense (with retry limit to avoid infinite loop)
+  let verb, attempts=0;
+  do { verb = VERBS[Math.floor(Math.random()*VERBS.length)]; attempts++; } 
+  while(!verb[vbqTense] && attempts<50);
+  if(!verb[vbqTense]) return; // no verbs with this tense
   // Pick a random pronoun
   const pronKeys = ['ich','du','er','wir','ihr','sie'];
   const pronLabels = {ich:'ich',du:'du',er:'er/sie/es',wir:'wir',ihr:'ihr',sie:'sie (pl.)'};
