@@ -199,6 +199,41 @@ input, select, textarea { font-size: 16px !important; }
 .vb-ex-trans { font-size:0.78rem; color:var(--muted); }
 .vb-highlight { color:var(--bear); }
 
+
+/* ── TTS SPEAK BUTTON ── */
+.speak-btn {
+  background: transparent;
+  border: 1.5px solid var(--border);
+  border-radius: 99px;
+  color: var(--muted);
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 32px;
+  touch-action: manipulation;
+}
+.speak-btn:active, .speak-btn.speaking {
+  border-color: var(--bear);
+  color: var(--bear);
+  background: rgba(232,168,56,0.1);
+  transform: scale(0.96);
+}
+.speak-btn.big {
+  font-size: 1rem;
+  padding: 8px 16px;
+  border-radius: 12px;
+  width: 100%;
+  justify-content: center;
+  margin-top: 8px;
+  border-color: rgba(232,168,56,0.4);
+  color: var(--bear);
+}
+.speak-btn.big:active { background: rgba(232,168,56,0.15); }
+
 /* ── MOBILE TOUCH IMPROVEMENTS ── */
 
 /* Active press states for all buttons */
@@ -2114,7 +2149,7 @@ function renderExamples(){
 
   document.getElementById('vb-examples').innerHTML = `
     <div class="vb-example-card">
-      <div class="vb-ex-de">${highlighted}</div>
+      <div class="vb-ex-de" onclick="speak(\`${examples.de}\`,this)" style="cursor:pointer">${highlighted} <span style="color:var(--bear);font-size:0.75rem">🔊</span></div>
       <div class="vb-ex-trans">${trans}</div>
     </div>`;
 }
@@ -3938,12 +3973,37 @@ function showLevelSelect(track){
   const list=document.getElementById('ls-level-list');
   list.innerHTML='';
   trackData.levels.forEach((lv,i)=>{
-    const isUnlocked=i===0||state.completed.filter(id=>LOCATIONS[id]&&LOCATIONS[id].level===trackData.levels[i-1].id).length>0;
-    const isDone=lv.locations.filter(id=>LOCATIONS[id]).every(id=>state.completed.includes(id));
+    // Level is unlocked only if ALL real locations in the previous level are completed
+    let isUnlocked = false;
+    if(i===0){
+      isUnlocked = true;
+    } else {
+      const prevLevel = trackData.levels[i-1];
+      const prevRealLocs = prevLevel.locations.filter(id=>LOCATIONS[id]);
+      const prevAllDone = prevRealLocs.length>0 && prevRealLocs.every(id=>state.completed.includes(id));
+      isUnlocked = prevAllDone;
+    }
+    const realLocs = lv.locations.filter(id=>LOCATIONS[id]);
+    const isDone = realLocs.length>0 && realLocs.every(id=>state.completed.includes(id));
+    const completedCount = realLocs.filter(id=>state.completed.includes(id)).length;
     const displayName=t.levels[lv.id]||lv.name;
     const card=document.createElement('div');
     card.className='ls-level-card'+(isDone?' lc-done':isUnlocked?' lc-active':' lc-locked');
-    card.innerHTML=`<div class="lc-emoji">${lv.emoji}</div><div class="lc-info"><div class="lc-name">${displayName}</div><div class="lc-sub">${lv.sub}</div></div><span class="lc-badge ${isDone?'b-done':isUnlocked?'b-active':'b-locked'}">${isDone?(isEN?'✓ Done':'✓ Hecho'):isUnlocked?(isEN?'Active':'Activo'):'🔒'}</span>`;
+
+    // Progress indicator for current level
+    const progressTxt = isDone
+      ? (isEN?'✓ Done':'✓ Hecho')
+      : isUnlocked
+        ? `${completedCount}/${realLocs.length} ${isEN?'done':'hechos'}`
+        : '🔒';
+    const badgeClass = isDone?'b-done':isUnlocked?'b-active':'b-locked';
+
+    // Lock message
+    const lockMsg = !isUnlocked && i>0
+      ? `<div style="font-size:0.68rem;color:var(--muted);margin-top:4px">${isEN?'Complete level '+trackData.levels[i-1].name+' first':'Completa el nivel anterior primero'}</div>`
+      : '';
+
+    card.innerHTML=`<div class="lc-emoji">${lv.emoji}</div><div class="lc-info"><div class="lc-name">${displayName}</div><div class="lc-sub">${lv.sub}</div>${lockMsg}</div><span class="lc-badge ${badgeClass}">${progressTxt}</span>`;
     if(isUnlocked||isDone) card.onclick=()=>{ navHistory.push('levelselect'); openLevel(lv); };
     list.appendChild(card);
   });
@@ -4274,11 +4334,12 @@ function renderFCHTML(){
         <div class="card-face card-front">
           <div class="fc-word" id="fc-word">—</div>
           <div class="fc-trans" id="fc-trans">—</div>
-          <div class="fc-tap" id="fc-tap-lbl">Toca para ver el artículo</div>
+          <button class="speak-btn" onclick="event.stopPropagation();speak(document.getElementById('fc-word').textContent,this)" style="margin:8px auto 0;display:block">🔊 Escuchar</button>
+          <div class="fc-tap" id="fc-tap-lbl" style="margin-top:6px">Toca para ver el artículo</div>
         </div>
         <div class="card-face card-back" id="fc-back">
           <div class="fc-art" id="fc-art">—</div>
-          <div class="fc-full" id="fc-full">—</div>
+          <div class="fc-full" id="fc-full" style="cursor:pointer" onclick="speak(document.getElementById('fc-word').textContent,this)">—</div>
           <div class="fc-tip" id="fc-tip">—</div>
         </div>
       </div>
@@ -4306,6 +4367,8 @@ function loadFC(){
   document.getElementById('fc-c').textContent=fCorrect;
   document.getElementById('fc-w').textContent=fWrong;
   fFlipped=false;
+  // Auto-speak word after short delay
+  setTimeout(()=>{ try{ speak(w.word); }catch(e){} }, 400);
   document.getElementById('fc-scene').classList.remove('flipped');
   document.getElementById('fc-btns').style.display='none';
   document.getElementById('fc-flip-btn').style.display='block';
@@ -4399,9 +4462,10 @@ function showQDone(){
   if(passed&&!state.completed.includes(currentLoc.id)){
     state.completed.push(currentLoc.id);
     addXP(100); saveState();
-    html+=`<button class="btn-primary" style="margin-bottom:8px" onclick="showUnlock()">🏆 ${isEN?'See reward':'Ver recompensa'}</button>`;
+    html+=`<button class="btn-primary" style="margin-bottom:8px" onclick="showUnlock()">🏆 ${isEN?'See reward & next location':'Ver recompensa y siguiente lugar'}</button>`;
   } else if(passed&&state.completed.includes(currentLoc.id)){
     html+=`<p style="color:var(--neut);font-size:0.85rem">✓ ${isEN?'Already completed!':'¡Ya completado!'}</p>`;
+    html+=`<button class="btn-primary" style="margin-bottom:8px" onclick="goLocationMap()">🗺️ ${isEN?'Back to map':'Ver el mapa'}</button>`;
   }
   html+=`<button class="btn-secondary" onclick="restartQ()">↺ ${isEN?'Try again':'Volver a intentar'}</button></div>`;
   document.getElementById('qz-wrap').innerHTML=html;
@@ -4478,6 +4542,7 @@ function renderPhrases(){
     </div>
     ${phrases.map(p=>`<div class="phrase-card">
       <div class="ph-de">${p.de}</div>
+      <button class="speak-btn big" onclick="speak('${p.de.replace(/'/g,"\'")}',this)">🔊 ${state.lang==='en'?'Listen':'Escuchar'}</button>
       <div class="ph-es">🇪🇸 ${p.es}</div>
       <div class="ph-en">🇬🇧 ${p.en||toEnglish(p.es)}</div>
       <div class="ph-ctx">📍 ${p.ctx}</div>
@@ -4559,12 +4624,16 @@ function showUnlock(){
     </div>`).join('')}`;
 
   const btn=document.querySelector('#unlock .btn-primary');
-  if(btn) btn.textContent=isEN?'Wunderbar! Keep going! 🎉':'¡Wunderbar! ¡Sigue! 🎉';
+  if(btn) btn.textContent=isEN?'🗺️ Next location!':'🗺️ ¡Siguiente lugar!';
 
   document.getElementById('unlock').classList.add('show');
 }
 
-function closeUnlock(){document.getElementById('unlock').classList.remove('show');}
+function closeUnlock(){
+  document.getElementById('unlock').classList.remove('show');
+  // After dismissing reward, go back to location map to see what's next
+  goLocationMap();
+}
 
 // ── LANGUAGE ──
 const LANG = {
@@ -4811,6 +4880,48 @@ function updateGreeting(){
   const isEN=state.lang==='en';
   el.textContent=isEN?`Hey, ${state.username}! 👋`:`Hallo, ${state.username}! 👋`;
 }
+
+
+// ── TEXT TO SPEECH ──
+let ttsVoice = null;
+let ttsSpeaking = false;
+
+function initTTS(){
+  if(!window.speechSynthesis) return;
+  // Load voices — may need a small delay on Android
+  const load = () => {
+    const voices = speechSynthesis.getVoices();
+    // Prefer German voices
+    ttsVoice = voices.find(v=>v.lang==='de-DE' && v.name.includes('Google'))
+      || voices.find(v=>v.lang==='de-DE')
+      || voices.find(v=>v.lang.startsWith('de'))
+      || null;
+  };
+  load();
+  speechSynthesis.onvoiceschanged = load;
+}
+
+function speak(text, btnEl){
+  if(!window.speechSynthesis){ alert('Tu navegador no soporta voz. Usa Chrome.'); return; }
+  // Cancel any current speech
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'de-DE';
+  u.rate = 0.82;   // slightly slower — better for learning
+  u.pitch = 1.0;
+  if(ttsVoice) u.voice = ttsVoice;
+
+  // Visual feedback on button
+  if(btnEl){
+    btnEl.classList.add('speaking');
+    u.onend = () => btnEl.classList.remove('speaking');
+    u.onerror = () => btnEl.classList.remove('speaking');
+  }
+  speechSynthesis.speak(u);
+}
+
+// Call on init
+try { initTTS(); } catch(e){}
 
 // ── INIT ──
 try { updateStreak(); } catch(e){}
