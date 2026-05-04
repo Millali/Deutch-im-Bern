@@ -28,6 +28,16 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Nunito', sans-serif;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  overflow-x: hidden;
+  padding-top: env(safe-area-inset-top);
+}
+
 /* iOS font zoom fix */
 input, select, textarea { font-size: 16px !important; }
 
@@ -878,7 +888,7 @@ button:active { opacity: 0.75; transform: scale(0.97); }
 </div>
 
 <!-- ══ VERBSPIEL ══ -->
-<div id="verbspiel" class="screen">
+<div id="verbspiel" class="screen" style="background:var(--bg)">
   <div style="padding:16px 16px 0">
     <button class="lm-back" onclick="goHome()">← <span class="vb-back-lbl">Volver</span></button>
     <div style="text-align:center;padding:8px 0 16px">
@@ -920,7 +930,7 @@ button:active { opacity: 0.75; transform: scale(0.97); }
 </div>
 
 <!-- ══ SATZSPIEL ══ -->
-<div id="satzspiel" class="screen">
+<div id="satzspiel" class="screen" style="background:var(--bg)">
   <div style="padding:16px 16px 0">
     <button class="lm-back" onclick="goHome()">← Volver</button>
     <div style="text-align:center;padding:8px 0 16px">
@@ -1266,7 +1276,7 @@ const VERBS = [
     examples:{
       present:{ de:'Ich bin in Bern.', en:'I am in Bern.', es:'Estoy en Berna.' },
       past:{ de:'Ich bin gestern in Bern gewesen.', en:'I was in Bern yesterday.', es:'Ayer estuve en Berna.' },
-      future:{ de:'Ich werde morgen in Bern sein.', en:'I will be in Bern tomorrow.', es:'Mañana estaré en Berna.' },
+      praet:{ de:'Ich machte meine Hausaufgaben.', en:'I did my homework.', es:'Hice mis deberes.' }, praet:{ de:'Er sagte nichts.', en:'He said nothing.', es:'No dijo nada.' }, praet:{ de:'Ich sah den Film.', en:'I saw the film.', es:'Vi la película.' }, praet:{ de:'Sie wusste die Antwort.', en:'She knew the answer.', es:'Ella sabía la respuesta.' }, praet:{ de:'Ich kannte ihn schon.', en:'I already knew him.', es:'Ya lo conocía.' }, praet:{ de:'Sie dachte an Bern.', en:'She thought of Bern.', es:'Pensó en Berna.' }, praet:{ de:'Er fragte nach dem Weg.', en:'He asked for directions.', es:'Preguntó por el camino.' }, praet:{ de:'Sie antwortete schnell.', en:'She answered quickly.', es:'Respondió rápido.' }, praet:{ de:'Ich verstand kein Deutsch.', en:'I understood no German.', es:'No entendía alemán.' }, praet:{ de:'Er half mir sehr.', en:'He helped me a lot.', es:'Me ayudó mucho.' }, praet:{ de:'Ich brauchte Hilfe.', en:'I needed help.', es:'Necesitaba ayuda.' }, praet:{ de:'Sie wollte nach Bern.', en:'She wanted to go to Bern.', es:'Quería ir a Berna.' }, praet:{ de:'Ich konnte nicht schlafen.', en:'I could not sleep.', es:'No podía dormir.' }, praet:{ de:'Er musste früh aufstehen.', en:'He had to get up early.', es:'Tuvo que levantarse temprano.' }, praet:{ de:'Sie durfte nicht raus.', en:'She was not allowed out.', es:'No le dejaban salir.' }, praet:{ de:'Ich sollte pünktlich sein.', en:'I was supposed to be on time.', es:'Se supone que debía ser puntual.' }, praet:{ de:'Ich mochte Bern sofort.', en:'I liked Bern immediately.', es:'Me gustó Berna enseguida.' }, praet:{ de:'Ich schlief gut.', en:'I slept well.', es:'Dormí bien.' }, praet:{ de:'Sie las ein Buch.', en:'She read a book.', es:'Leyó un libro.' }, praet:{ de:'Ich schrieb eine E-Mail.', en:'I wrote an email.', es:'Escribí un email.' }, praet:{ de:'Er hörte Musik.', en:'He listened to music.', es:'Escuchó música.' }, praet:{ de:'Die Kinder spielten draussen.', en:'The children played outside.', es:'Los niños jugaron afuera.' }, praet:{ de:'Ich lief jeden Morgen.', en:'I ran every morning.', es:'Corría todas las mañanas.' }, praet:{ de:'Wir schwammen im Aare.', en:'We swam in the Aare.', es:'Nadamos en el Aare.' }, praet:{ de:'Sie wanderten auf den Gurten.', en:'They hiked to the Gurten.', es:'Caminaron al Gurten.' }, praet:{ de:'Ich bezahlte mit Twint.', en:'I paid with Twint.', es:'Pagué con Twint.' }, praet:{ de:'Er bestellte einen Kaffee.', en:'He ordered a coffee.', es:'Pidió un café.' }, praet:{ de:'Wir reservierten einen Tisch.', en:'We reserved a table.', es:'Reservamos una mesa.' }, praet:{ de:'Sie rief mich an.', en:'She called me.', es:'Me llamó.' }, praet:{ de:'Er machte die Tür auf.', en:'He opened the door.', es:'Abrió la puerta.' }, praet:{ de:'Sie machte das Fenster zu.', en:'She closed the window.', es:'Cerró la ventana.' }, praet:{ de:'Die Arbeit fing früh an.', en:'Work started early.', es:'El trabajo empezó temprano.' }, praet:{ de:'Es hörte auf zu regnen.', en:'It stopped raining.', es:'Paró de llover.' }, praet:{ de:'Wir zogen nach Bern um.', en:'We moved to Bern.', es:'Nos mudamos a Berna.' }, praet:{ de:'Ich meldete mich an.', en:'I registered.', es:'Me registré.' }, praet:{ de:'Er beantragte das Visum.', en:'He applied for the visa.', es:'Solicitó el visado.' }, praet:{ de:'Sie füllte das Formular aus.', en:'She filled out the form.', es:'Rellenó el formulario.' }, praet:{ de:'Ich unterschrieb den Vertrag.', en:'I signed the contract.', es:'Firmé el contrato.' }, praet:{ de:'Sie lud uns ein.', en:'She invited us.', es:'Nos invitó.' }, praet:{ de:'Wir trafen uns in Bern.', en:'We met in Bern.', es:'Nos encontramos en Berna.' }, praet:{ de:'Ich wartete auf den Bus.', en:'I waited for the bus.', es:'Esperé el bus.' }, praet:{ de:'Er brachte Kaffee mit.', en:'He brought coffee.', es:'Trajo café.' }, praet:{ de:'Ich nahm das Tram.', en:'I took the tram.', es:'Cogí el tranvía.' }, praet:{ de:'Sie gab mir die Karte.', en:'She gave me the ticket.', es:'Me dio la entrada.' }, praet:{ de:'Er stand an der Haltestelle.', en:'He stood at the stop.', es:'Estaba en la parada.' }, praet:{ de:'Bern lag in der Sonne.', en:'Bern lay in the sun.', es:'Berna yacía bajo el sol.' }, praet:{ de:'Ich setzte mich hin.', en:'I sat down.', es:'Me senté.' }, praet:{ de:'Ich fand das Büro nicht.', en:'I could not find the office.', es:'No encontré la oficina.' }, praet:{ de:'Sie suchte eine Wohnung.', en:'She looked for an apartment.', es:'Buscaba un piso.' }, praet:{ de:'Er zeigte mir Bern.', en:'He showed me Bern.', es:'Me mostró Berna.' }, praet:{ de:'Sie erklärte alles.', en:'She explained everything.', es:'Explicó todo.' }, praet:{ de:'Das kostete 10 Franken.', en:'That cost 10 francs.', es:'Costó 10 francos.' }, praet:{ de:'Die Stadt hieß Bern.', en:'The city was called Bern.', es:'La ciudad se llamaba Berna.' }, praet:{ de:'Ich blieb drei Jahre in Bern.', en:'I stayed three years in Bern.', es:'Me quedé tres años en Berna.' }, praet:{ de:'Einstein starb 1955.', en:'Einstein died in 1955.', es:'Einstein murió en 1955.' }, praet:{ de:'Einstein lebte in Bern.', en:'Einstein lived in Bern.', es:'Einstein vivió en Berna.' }, praet:{ de:'Ich fühlte mich wohl.', en:'I felt comfortable.', es:'Me sentí a gusto.' }, praet:{ de:'Wir redeten auf Deutsch.', en:'We spoke in German.', es:'Hablamos en alemán.' }, praet:{ de:'Sie lächelte freundlich.', en:'She smiled kindly.', es:'Sonrió amablemente.' }, praet:{ de:'Wir lachten viel.', en:'We laughed a lot.', es:'Reímos mucho.' }, praet:{ de:'Das Kind weinte.', en:'The child cried.', es:'El niño lloró.' }, praet:{ de:'Ich kochte Rösti.', en:'I cooked Rösti.', es:'Cociné Rösti.' }, praet:{ de:'Ich wusch die Wäsche.', en:'I did the laundry.', es:'Lavé la ropa.' }, praet:{ de:'Sie putzte das Büro.', en:'She cleaned the office.', es:'Limpió la oficina.' }, praet:{ de:'Ich räumte mein Zimmer auf.', en:'I tidied my room.', es:'Ordené mi habitación.' }, praet:{ de:'Das Kind schlief schnell ein.', en:'The child fell asleep quickly.', es:'El niño se durmió rápido.' }, praet:{ de:'Ich wachte früh auf.', en:'I woke up early.', es:'Me desperté temprano.' }, praet:{ de:'Wir frühstückten zusammen.', en:'We had breakfast together.', es:'Desayunamos juntos.' }, praet:{ de:'Sie tanzten am Gurtenfestival.', en:'They danced at the Gurten Festival.', es:'Bailaron en el festival.' }, praet:{ de:'Das Kind sang laut.', en:'The child sang loudly.', es:'El niño cantó fuerte.' }, praet:{ de:'Ich fotografierte das Münster.', en:'I photographed the cathedral.', es:'Fotografié la catedral.' }, praet:{ de:'Wir reisten durch die Schweiz.', en:'We travelled through Switzerland.', es:'Viajamos por Suiza.' }, praet:{ de:'Ich flog nach Bern.', en:'I flew to Bern.', es:'Volé a Berna.' }, praet:{ de:'Ich packte meinen Koffer.', en:'I packed my suitcase.', es:'Hice la maleta.' }, praet:{ de:'Ich vergaß das Ticket.', en:'I forgot the ticket.', es:'Olvidé el billete.' }, praet:{ de:'Ich erinnerte mich an Bern.', en:'I remembered Bern.', es:'Recordé Berna.' }, praet:{ de:'Er gewann das Spiel.', en:'He won the game.', es:'Ganó el juego.' }, praet:{ de:'Wir verloren den Schlüssel.', en:'We lost the key.', es:'Perdimos la llave.' }, praet:{ de:'Sie sparte für Bern.', en:'She saved up for Bern.', es:'Ahorró para Berna.' }, praet:{ de:'Ich wechselte den Job.', en:'I changed jobs.', es:'Cambié de trabajo.' }, praet:{ de:'Wir gingen in der Altstadt spazieren.', en:'We strolled through the old town.', es:'Paseamos por la ciudad vieja.' }, future:{ de:'Ich werde morgen in Bern sein.', en:'I will be in Bern tomorrow.', es:'Mañana estaré en Berna.' },
       praet:{ de:'Ich war gestern in Bern.', en:'I was in Bern yesterday.', es:'Ayer estuve en Berna.' },
       konj2:{ de:'Ich wäre gern in Bern.', en:'I would like to be in Bern.', es:'Me gustaría estar en Berna.' },
     }
@@ -1441,493 +1451,657 @@ const VERBS = [
     present:{ ich:'mache', du:'machst', er:'macht', wir:'machen', ihr:'macht', sie:'machen' },
     past:{ aux:'haben', pp:'gemacht', ich:'habe gemacht', du:'hast gemacht', er:'hat gemacht', wir:'haben gemacht', ihr:'habt gemacht', sie:'haben gemacht' },
     future:{ ich:'werde machen', du:'wirst machen', er:'wird machen', wir:'werden machen', ihr:'werdet machen', sie:'werden machen' },
+    praet:{ ich:'machte', du:'machtest', er:'machte', wir:'machten', ihr:'machtet', sie:'machten' },
+    konj2:{ ich:'würde machen', du:'würdest machen', er:'würde machen', wir:'würden machen', ihr:'würdet machen', sie:'würden machen' },
     examples:{ present:{ de:'Ich mache Hausaufgaben.', en:'I am doing homework.', es:'Hago la tarea.' }, past:{ de:'Wir haben ein Picknick gemacht.', en:'We had a picnic.', es:'Hicimos un picnic.' }, future:{ de:'Was wirst du machen?', en:'What will you do?', es:'¿Qué harás?' } }
   },
   { inf:'sagen', en:'to say', es:'decir', emoji:'💬', type:'regular',
     present:{ ich:'sage', du:'sagst', er:'sagt', wir:'sagen', ihr:'sagt', sie:'sagen' },
     past:{ aux:'haben', pp:'gesagt', ich:'habe gesagt', du:'hast gesagt', er:'hat gesagt', wir:'haben gesagt', ihr:'habt gesagt', sie:'haben gesagt' },
     future:{ ich:'werde sagen', du:'wirst sagen', er:'wird sagen', wir:'werden sagen', ihr:'werdet sagen', sie:'werden sagen' },
+    praet:{ ich:'sagte', du:'sagtest', er:'sagte', wir:'sagten', ihr:'sagtet', sie:'sagten' },
+    konj2:{ ich:'würde sagen', du:'würdest sagen', er:'würde sagen', wir:'würden sagen', ihr:'würdet sagen', sie:'würden sagen' },
     examples:{ present:{ de:'Was sagst du?', en:'What are you saying?', es:'¿Qué dices?' }, past:{ de:'Er hat nichts gesagt.', en:'He said nothing.', es:'Él no dijo nada.' }, future:{ de:'Ich werde es sagen.', en:'I will say it.', es:'Lo diré.' } }
   },
   { inf:'sehen', en:'to see', es:'ver', emoji:'👁️', type:'irregular',
     present:{ ich:'sehe', du:'siehst', er:'sieht', wir:'sehen', ihr:'seht', sie:'sehen' },
     past:{ aux:'haben', pp:'gesehen', ich:'habe gesehen', du:'hast gesehen', er:'hat gesehen', wir:'haben gesehen', ihr:'habt gesehen', sie:'haben gesehen' },
     future:{ ich:'werde sehen', du:'wirst sehen', er:'wird sehen', wir:'werden sehen', ihr:'werdet sehen', sie:'werden sehen' },
+    praet:{ ich:'sah', du:'sahst', er:'sah', wir:'sahen', ihr:'saht', sie:'sahen' },
+    konj2:{ ich:'sähe', du:'sähst', er:'sähe', wir:'sähen', ihr:'säht', sie:'sähen' },
     examples:{ present:{ de:'Ich sehe die Alpen!', en:'I can see the Alps!', es:'¡Veo los Alpes!' }, past:{ de:'Hast du das gesehen?', en:'Did you see that?', es:'¿Viste eso?' }, future:{ de:'Wir werden es sehen.', en:'We will see.', es:'Ya veremos.' } }
   },
   { inf:'wissen', en:'to know (facts)', es:'saber', emoji:'🧠', type:'irregular',
     present:{ ich:'weiß', du:'weißt', er:'weiß', wir:'wissen', ihr:'wisst', sie:'wissen' },
     past:{ aux:'haben', pp:'gewusst', ich:'habe gewusst', du:'hast gewusst', er:'hat gewusst', wir:'haben gewusst', ihr:'habt gewusst', sie:'haben gewusst' },
     future:{ ich:'werde wissen', du:'wirst wissen', er:'wird wissen', wir:'werden wissen', ihr:'werdet wissen', sie:'werden wissen' },
+    praet:{ ich:'wusste', du:'wusstest', er:'wusste', wir:'wussten', ihr:'wusstet', sie:'wussten' },
+    konj2:{ ich:'würde wissen', du:'würdest wissen', er:'würde wissen', wir:'würden wissen', ihr:'würdet wissen', sie:'würden wissen' },
     examples:{ present:{ de:'Ich weiß es nicht.', en:'I don\'t know.', es:'No lo sé.' }, past:{ de:'Sie hat es gewusst.', en:'She knew it.', es:'Ella lo sabía.' }, future:{ de:'Du wirst es wissen.', en:'You will know.', es:'Lo sabrás.' } }
   },
   { inf:'kennen', en:'to know (people/places)', es:'conocer', emoji:'🤝', type:'irregular',
     present:{ ich:'kenne', du:'kennst', er:'kennt', wir:'kennen', ihr:'kennt', sie:'kennen' },
     past:{ aux:'haben', pp:'gekannt', ich:'habe gekannt', du:'hast gekannt', er:'hat gekannt', wir:'haben gekannt', ihr:'habt gekannt', sie:'haben gekannt' },
     future:{ ich:'werde kennen', du:'wirst kennen', er:'wird kennen', wir:'werden kennen', ihr:'werdet kennen', sie:'werden kennen' },
+    praet:{ ich:'kannte', du:'kanntest', er:'kannte', wir:'kannten', ihr:'kanntet', sie:'kannten' },
+    konj2:{ ich:'würde kennen', du:'würdest kennen', er:'würde kennen', wir:'würden kennen', ihr:'würdet kennen', sie:'würden kennen' },
     examples:{ present:{ de:'Kennst du Bern?', en:'Do you know Bern?', es:'¿Conoces Berna?' }, past:{ de:'Ich habe sie lange gekannt.', en:'I have known her for a long time.', es:'La he conocido por mucho tiempo.' }, future:{ de:'Du wirst viele Leute kennen.', en:'You will know many people.', es:'Conocerás a mucha gente.' } }
   },
   { inf:'denken', en:'to think', es:'pensar', emoji:'💭', type:'irregular',
     present:{ ich:'denke', du:'denkst', er:'denkt', wir:'denken', ihr:'denkt', sie:'denken' },
     past:{ aux:'haben', pp:'gedacht', ich:'habe gedacht', du:'hast gedacht', er:'hat gedacht', wir:'haben gedacht', ihr:'habt gedacht', sie:'haben gedacht' },
     future:{ ich:'werde denken', du:'wirst denken', er:'wird denken', wir:'werden denken', ihr:'werdet denken', sie:'werden denken' },
+    praet:{ ich:'dachte', du:'dachtest', er:'dachte', wir:'dachten', ihr:'dachtet', sie:'dachten' },
+    konj2:{ ich:'würde denken', du:'würdest denken', er:'würde denken', wir:'würden denken', ihr:'würdet denken', sie:'würden denken' },
     examples:{ present:{ de:'Ich denke auf Deutsch.', en:'I think in German.', es:'Pienso en alemán.' }, past:{ de:'Ich habe an dich gedacht.', en:'I thought of you.', es:'Pensé en ti.' }, future:{ de:'Denk mal nach!', en:'Think about it!', es:'¡Piénsalo!' } }
   },
   { inf:'fragen', en:'to ask', es:'preguntar', emoji:'❓', type:'regular',
     present:{ ich:'frage', du:'fragst', er:'fragt', wir:'fragen', ihr:'fragt', sie:'fragen' },
     past:{ aux:'haben', pp:'gefragt', ich:'habe gefragt', du:'hast gefragt', er:'hat gefragt', wir:'haben gefragt', ihr:'habt gefragt', sie:'haben gefragt' },
     future:{ ich:'werde fragen', du:'wirst fragen', er:'wird fragen', wir:'werden fragen', ihr:'werdet fragen', sie:'werden fragen' },
+    praet:{ ich:'fragte', du:'fragtest', er:'fragte', wir:'fragten', ihr:'fragtet', sie:'fragten' },
+    konj2:{ ich:'würde fragen', du:'würdest fragen', er:'würde fragen', wir:'würden fragen', ihr:'würdet fragen', sie:'würden fragen' },
     examples:{ present:{ de:'Ich frage den Arzt.', en:'I ask the doctor.', es:'Le pregunto al médico.' }, past:{ de:'Sie hat nach dem Weg gefragt.', en:'She asked for directions.', es:'Ella preguntó el camino.' }, future:{ de:'Ich werde fragen.', en:'I will ask.', es:'Preguntaré.' } }
   },
   { inf:'antworten', en:'to answer', es:'responder', emoji:'↩️', type:'regular',
     present:{ ich:'antworte', du:'antwortest', er:'antwortet', wir:'antworten', ihr:'antwortet', sie:'antworten' },
     past:{ aux:'haben', pp:'geantwortet', ich:'habe geantwortet', du:'hast geantwortet', er:'hat geantwortet', wir:'haben geantwortet', ihr:'habt geantwortet', sie:'haben geantwortet' },
     future:{ ich:'werde antworten', du:'wirst antworten', er:'wird antworten', wir:'werden antworten', ihr:'werdet antworten', sie:'werden antworten' },
+    praet:{ ich:'antwortete', du:'antwortetest', er:'antwortete', wir:'antworteten', ihr:'antwortetet', sie:'antworteten' },
+    konj2:{ ich:'würde antworten', du:'würdest antworten', er:'würde antworten', wir:'würden antworten', ihr:'würdet antworten', sie:'würden antworten' },
     examples:{ present:{ de:'Bitte antworte auf Deutsch.', en:'Please answer in German.', es:'Por favor responde en alemán.' }, past:{ de:'Er hat nicht geantwortet.', en:'He didn\'t answer.', es:'Él no respondió.' }, future:{ de:'Sie wird antworten.', en:'She will answer.', es:'Ella responderá.' } }
   },
   { inf:'verstehen', en:'to understand', es:'entender', emoji:'💡', type:'irregular',
     present:{ ich:'verstehe', du:'verstehst', er:'versteht', wir:'verstehen', ihr:'versteht', sie:'verstehen' },
     past:{ aux:'haben', pp:'verstanden', ich:'habe verstanden', du:'hast verstanden', er:'hat verstanden', wir:'haben verstanden', ihr:'habt verstanden', sie:'haben verstanden' },
     future:{ ich:'werde verstehen', du:'wirst verstehen', er:'wird verstehen', wir:'werden verstehen', ihr:'werdet verstehen', sie:'werden verstehen' },
+    praet:{ ich:'verstand', du:'verstandst', er:'verstand', wir:'verstanden', ihr:'verstandet', sie:'verstanden' },
+    konj2:{ ich:'verstände', du:'verstündest', er:'verstände', wir:'verstänten', ihr:'verstäntet', sie:'verstänten' },
     examples:{ present:{ de:'Ich verstehe kein Berndeutsch.', en:'I don\'t understand Bernese German.', es:'No entiendo el bernés.' }, past:{ de:'Hast du alles verstanden?', en:'Did you understand everything?', es:'¿Entendiste todo?' }, future:{ de:'Du wirst es verstehen.', en:'You will understand it.', es:'Lo entenderás.' } }
   },
   { inf:'helfen', en:'to help', es:'ayudar', emoji:'🤝', type:'irregular',
     present:{ ich:'helfe', du:'hilfst', er:'hilft', wir:'helfen', ihr:'helft', sie:'helfen' },
     past:{ aux:'haben', pp:'geholfen', ich:'habe geholfen', du:'hast geholfen', er:'hat geholfen', wir:'haben geholfen', ihr:'habt geholfen', sie:'haben geholfen' },
     future:{ ich:'werde helfen', du:'wirst helfen', er:'wird helfen', wir:'werden helfen', ihr:'werdet helfen', sie:'werden helfen' },
+    praet:{ ich:'half', du:'halfst', er:'half', wir:'halfen', ihr:'halft', sie:'halfen' },
+    konj2:{ ich:'hülfe', du:'hülfest', er:'hülfe', wir:'hülfen', ihr:'hülfet', sie:'hülfen' },
     examples:{ present:{ de:'Kannst du mir helfen?', en:'Can you help me?', es:'¿Puedes ayudarme?' }, past:{ de:'Sie hat mir sehr geholfen.', en:'She helped me a lot.', es:'Ella me ayudó mucho.' }, future:{ de:'Ich werde dir helfen.', en:'I will help you.', es:'Te ayudaré.' } }
   },
   { inf:'brauchen', en:'to need', es:'necesitar', emoji:'📋', type:'regular',
     present:{ ich:'brauche', du:'brauchst', er:'braucht', wir:'brauchen', ihr:'braucht', sie:'brauchen' },
     past:{ aux:'haben', pp:'gebraucht', ich:'habe gebraucht', du:'hast gebraucht', er:'hat gebraucht', wir:'haben gebraucht', ihr:'habt gebraucht', sie:'haben gebraucht' },
     future:{ ich:'werde brauchen', du:'wirst brauchen', er:'wird brauchen', wir:'werden brauchen', ihr:'werdet brauchen', sie:'werden brauchen' },
+    praet:{ ich:'brauchte', du:'brauchtest', er:'brauchte', wir:'brauchten', ihr:'brauchtet', sie:'brauchten' },
+    konj2:{ ich:'würde brauchen', du:'würdest brauchen', er:'würde brauchen', wir:'würden brauchen', ihr:'würdet brauchen', sie:'würden brauchen' },
     examples:{ present:{ de:'Ich brauche ein Visum.', en:'I need a visa.', es:'Necesito una visa.' }, past:{ de:'Wir haben Hilfe gebraucht.', en:'We needed help.', es:'Necesitamos ayuda.' }, future:{ de:'Du wirst es brauchen.', en:'You will need it.', es:'Lo necesitarás.' } }
   },
   { inf:'wollen', en:'to want', es:'querer', emoji:'⭐', type:'irregular',
     present:{ ich:'will', du:'willst', er:'will', wir:'wollen', ihr:'wollt', sie:'wollen' },
     past:{ aux:'haben', pp:'gewollt', ich:'habe gewollt', du:'hast gewollt', er:'hat gewollt', wir:'haben gewollt', ihr:'habt gewollt', sie:'haben gewollt' },
     future:{ ich:'werde wollen', du:'wirst wollen', er:'wird wollen', wir:'werden wollen', ihr:'werdet wollen', sie:'werden wollen' },
+    praet:{ ich:'wollte', du:'wolltest', er:'wollte', wir:'wollten', ihr:'wolltet', sie:'wollten' },
+    konj2:{ ich:'wollte', du:'wolltest', er:'wollte', wir:'wollten', ihr:'wolltet', sie:'wollten' },
     examples:{ present:{ de:'Ich will Deutsch lernen.', en:'I want to learn German.', es:'Quiero aprender alemán.' }, past:{ de:'Sie hat nicht gewollt.', en:'She didn\'t want to.', es:'Ella no quiso.' }, future:{ de:'Was wirst du wollen?', en:'What will you want?', es:'¿Qué querrás?' } }
   },
   { inf:'können', en:'can/to be able', es:'poder', emoji:'💪', type:'irregular',
     present:{ ich:'kann', du:'kannst', er:'kann', wir:'können', ihr:'könnt', sie:'können' },
     past:{ aux:'haben', pp:'gekonnt', ich:'habe gekonnt', du:'hast gekonnt', er:'hat gekonnt', wir:'haben gekonnt', ihr:'habt gekonnt', sie:'haben gekonnt' },
     future:{ ich:'werde können', du:'wirst können', er:'wird können', wir:'werden können', ihr:'werdet können', sie:'werden können' },
+    praet:{ ich:'konnte', du:'konntest', er:'konnte', wir:'konnten', ihr:'konntet', sie:'konnten' },
+    konj2:{ ich:'könnte', du:'könntest', er:'könnte', wir:'könnten', ihr:'könntet', sie:'könnten' },
     examples:{ present:{ de:'Ich kann Deutsch sprechen.', en:'I can speak German.', es:'Puedo hablar alemán.' }, past:{ de:'Sie hat es nicht gekonnt.', en:'She wasn\'t able to.', es:'Ella no pudo.' }, future:{ de:'Du wirst es können.', en:'You will be able to.', es:'Podrás hacerlo.' } }
   },
   { inf:'müssen', en:'must/to have to', es:'deber/tener que', emoji:'⚠️', type:'irregular',
     present:{ ich:'muss', du:'musst', er:'muss', wir:'müssen', ihr:'müsst', sie:'müssen' },
     past:{ aux:'haben', pp:'gemusst', ich:'habe gemusst', du:'hast gemusst', er:'hat gemusst', wir:'haben gemusst', ihr:'habt gemusst', sie:'haben gemusst' },
     future:{ ich:'werde müssen', du:'wirst müssen', er:'wird müssen', wir:'werden müssen', ihr:'werdet müssen', sie:'werden müssen' },
+    praet:{ ich:'musste', du:'musstest', er:'musste', wir:'mussten', ihr:'musstet', sie:'mussten' },
+    konj2:{ ich:'müsste', du:'müsstest', er:'müsste', wir:'müssten', ihr:'müsstet', sie:'müssten' },
     examples:{ present:{ de:'Ich muss Deutsch lernen.', en:'I have to learn German.', es:'Debo aprender alemán.' }, past:{ de:'Sie hat früh aufstehen müssen.', en:'She had to get up early.', es:'Ella tuvo que levantarse temprano.' }, future:{ de:'Du wirst warten müssen.', en:'You will have to wait.', es:'Tendrás que esperar.' } }
   },
   { inf:'dürfen', en:'may/to be allowed', es:'poder (permiso)', emoji:'✅', type:'irregular',
     present:{ ich:'darf', du:'darfst', er:'darf', wir:'dürfen', ihr:'dürft', sie:'dürfen' },
     past:{ aux:'haben', pp:'gedurft', ich:'habe gedurft', du:'hast gedurft', er:'hat gedurft', wir:'haben gedurft', ihr:'habt gedurft', sie:'haben gedurft' },
     future:{ ich:'werde dürfen', du:'wirst dürfen', er:'wird dürfen', wir:'werden dürfen', ihr:'werdet dürfen', sie:'werden dürfen' },
+    praet:{ ich:'durfte', du:'durftest', er:'durfte', wir:'durften', ihr:'durftet', sie:'durften' },
+    konj2:{ ich:'dürfte', du:'dürftest', er:'dürfte', wir:'dürften', ihr:'dürftet', sie:'dürften' },
     examples:{ present:{ de:'Darf ich fragen?', en:'May I ask?', es:'¿Puedo preguntar?' }, past:{ de:'Sie hat nicht gedurft.', en:'She wasn\'t allowed.', es:'Ella no tenía permiso.' }, future:{ de:'Du wirst dürfen.', en:'You will be allowed.', es:'Tendrás permiso.' } }
   },
   { inf:'sollen', en:'should/to be supposed to', es:'deber (obligación)', emoji:'📌', type:'irregular',
     present:{ ich:'soll', du:'sollst', er:'soll', wir:'sollen', ihr:'sollt', sie:'sollen' },
     past:{ aux:'haben', pp:'gesollt', ich:'habe gesollt', du:'hast gesollt', er:'hat gesollt', wir:'haben gesollt', ihr:'habt gesollt', sie:'haben gesollt' },
     future:{ ich:'werde sollen', du:'wirst sollen', er:'wird sollen', wir:'werden sollen', ihr:'werdet sollen', sie:'werden sollen' },
+    praet:{ ich:'sollte', du:'solltest', er:'sollte', wir:'sollten', ihr:'solltet', sie:'sollten' },
+    konj2:{ ich:'sollte', du:'solltest', er:'sollte', wir:'sollten', ihr:'solltet', sie:'sollten' },
     examples:{ present:{ de:'Ich soll um 8 da sein.', en:'I\'m supposed to be there at 8.', es:'Debo estar ahí a las 8.' }, past:{ de:'Er hat es tun sollen.', en:'He was supposed to do it.', es:'Se suponía que él lo haría.' }, future:{ de:'Was soll ich tun?', en:'What should I do?', es:'¿Qué debería hacer?' } }
   },
   { inf:'mögen', en:'to like', es:'gustar/querer', emoji:'❤️', type:'irregular',
     present:{ ich:'mag', du:'magst', er:'mag', wir:'mögen', ihr:'mögt', sie:'mögen' },
     past:{ aux:'haben', pp:'gemocht', ich:'habe gemocht', du:'hast gemocht', er:'hat gemocht', wir:'haben gemocht', ihr:'habt gemocht', sie:'haben gemocht' },
     future:{ ich:'werde mögen', du:'wirst mögen', er:'wird mögen', wir:'werden mögen', ihr:'werdet mögen', sie:'werden mögen' },
+    praet:{ ich:'mochte', du:'mochtest', er:'mochte', wir:'mochten', ihr:'mochtet', sie:'mochten' },
+    konj2:{ ich:'möchte', du:'möchtest', er:'möchte', wir:'möchten', ihr:'möchtet', sie:'möchten' },
     examples:{ present:{ de:'Ich mag Bern sehr.', en:'I really like Bern.', es:'Me gusta mucho Berna.' }, past:{ de:'Sie hat ihn gemocht.', en:'She liked him.', es:'Ella le caía bien.' }, future:{ de:'Du wirst es mögen.', en:'You will like it.', es:'Te gustará.' } }
   },
   { inf:'schlafen', en:'to sleep', es:'dormir', emoji:'😴', type:'irregular',
     present:{ ich:'schlafe', du:'schläfst', er:'schläft', wir:'schlafen', ihr:'schlaft', sie:'schlafen' },
     past:{ aux:'haben', pp:'geschlafen', ich:'habe geschlafen', du:'hast geschlafen', er:'hat geschlafen', wir:'haben geschlafen', ihr:'habt geschlafen', sie:'haben geschlafen' },
     future:{ ich:'werde schlafen', du:'wirst schlafen', er:'wird schlafen', wir:'werden schlafen', ihr:'werdet schlafen', sie:'werden schlafen' },
+    praet:{ ich:'schlief', du:'schliefst', er:'schlief', wir:'schliefen', ihr:'schlieft', sie:'schliefen' },
+    konj2:{ ich:'schliefe', du:'schliefest', er:'schliefe', wir:'schliefen', ihr:'schliefet', sie:'schliefen' },
     examples:{ present:{ de:'Das Kind schläft.', en:'The child is sleeping.', es:'El niño duerme.' }, past:{ de:'Ich habe gut geschlafen.', en:'I slept well.', es:'Dormí bien.' }, future:{ de:'Wir werden früh schlafen.', en:'We will sleep early.', es:'Dormiremos temprano.' } }
   },
   { inf:'lesen', en:'to read', es:'leer', emoji:'📖', type:'irregular',
     present:{ ich:'lese', du:'liest', er:'liest', wir:'lesen', ihr:'lest', sie:'lesen' },
     past:{ aux:'haben', pp:'gelesen', ich:'habe gelesen', du:'hast gelesen', er:'hat gelesen', wir:'haben gelesen', ihr:'habt gelesen', sie:'haben gelesen' },
     future:{ ich:'werde lesen', du:'wirst lesen', er:'wird lesen', wir:'werden lesen', ihr:'werdet lesen', sie:'werden lesen' },
+    praet:{ ich:'las', du:'lasest', er:'las', wir:'lasen', ihr:'last', sie:'lasen' },
+    konj2:{ ich:'läse', du:'läsest', er:'läse', wir:'läsen', ihr:'läset', sie:'läsen' },
     examples:{ present:{ de:'Ich lese die Zeitung.', en:'I read the newspaper.', es:'Leo el periódico.' }, past:{ de:'Sie hat das Buch gelesen.', en:'She read the book.', es:'Ella leyó el libro.' }, future:{ de:'Ich werde mehr lesen.', en:'I will read more.', es:'Leeré más.' } }
   },
   { inf:'schreiben', en:'to write', es:'escribir', emoji:'✍️', type:'irregular',
     present:{ ich:'schreibe', du:'schreibst', er:'schreibt', wir:'schreiben', ihr:'schreibt', sie:'schreiben' },
     past:{ aux:'haben', pp:'geschrieben', ich:'habe geschrieben', du:'hast geschrieben', er:'hat geschrieben', wir:'haben geschrieben', ihr:'habt geschrieben', sie:'haben geschrieben' },
     future:{ ich:'werde schreiben', du:'wirst schreiben', er:'wird schreiben', wir:'werden schreiben', ihr:'werdet schreiben', sie:'werden schreiben' },
+    praet:{ ich:'schrieb', du:'schriebst', er:'schrieb', wir:'schrieben', ihr:'schriebt', sie:'schrieben' },
+    konj2:{ ich:'schriebe', du:'schriebest', er:'schriebe', wir:'schrieben', ihr:'schriebet', sie:'schrieben' },
     examples:{ present:{ de:'Ich schreibe eine E-Mail.', en:'I am writing an email.', es:'Escribo un correo.' }, past:{ de:'Er hat einen Brief geschrieben.', en:'He wrote a letter.', es:'Él escribió una carta.' }, future:{ de:'Ich werde schreiben.', en:'I will write.', es:'Escribiré.' } }
   },
   { inf:'hören', en:'to hear/listen', es:'escuchar/oír', emoji:'👂', type:'regular',
     present:{ ich:'höre', du:'hörst', er:'hört', wir:'hören', ihr:'hört', sie:'hören' },
     past:{ aux:'haben', pp:'gehört', ich:'habe gehört', du:'hast gehört', er:'hat gehört', wir:'haben gehört', ihr:'habt gehört', sie:'haben gehört' },
     future:{ ich:'werde hören', du:'wirst hören', er:'wird hören', wir:'werden hören', ihr:'werdet hören', sie:'werden hören' },
+    praet:{ ich:'hörte', du:'hörtest', er:'hörte', wir:'hörten', ihr:'hörtet', sie:'hörten' },
+    konj2:{ ich:'würde hören', du:'würdest hören', er:'würde hören', wir:'würden hören', ihr:'würdet hören', sie:'würden hören' },
     examples:{ present:{ de:'Ich höre Musik.', en:'I am listening to music.', es:'Escucho música.' }, past:{ de:'Hast du das gehört?', en:'Did you hear that?', es:'¿Escuchaste eso?' }, future:{ de:'Du wirst davon hören.', en:'You will hear about it.', es:'Escucharás sobre eso.' } }
   },
   { inf:'spielen', en:'to play', es:'jugar/tocar', emoji:'🎮', type:'regular',
     present:{ ich:'spiele', du:'spielst', er:'spielt', wir:'spielen', ihr:'spielt', sie:'spielen' },
     past:{ aux:'haben', pp:'gespielt', ich:'habe gespielt', du:'hast gespielt', er:'hat gespielt', wir:'haben gespielt', ihr:'habt gespielt', sie:'haben gespielt' },
     future:{ ich:'werde spielen', du:'wirst spielen', er:'wird spielen', wir:'werden spielen', ihr:'werdet spielen', sie:'werden spielen' },
+    praet:{ ich:'spielte', du:'spieltest', er:'spielte', wir:'spielten', ihr:'spieltet', sie:'spielten' },
+    konj2:{ ich:'würde spielen', du:'würdest spielen', er:'würde spielen', wir:'würden spielen', ihr:'würdet spielen', sie:'würden spielen' },
     examples:{ present:{ de:'Die Kinder spielen im Park.', en:'The children play in the park.', es:'Los niños juegan en el parque.' }, past:{ de:'Wir haben Fußball gespielt.', en:'We played soccer.', es:'Jugamos fútbol.' }, future:{ de:'Sie werden draußen spielen.', en:'They will play outside.', es:'Jugarán afuera.' } }
   },
   { inf:'laufen', en:'to run/walk', es:'correr/caminar', emoji:'🏃', type:'irregular',
     present:{ ich:'laufe', du:'läufst', er:'läuft', wir:'laufen', ihr:'lauft', sie:'laufen' },
     past:{ aux:'sein', pp:'gelaufen', ich:'bin gelaufen', du:'bist gelaufen', er:'ist gelaufen', wir:'sind gelaufen', ihr:'seid gelaufen', sie:'sind gelaufen' },
     future:{ ich:'werde laufen', du:'wirst laufen', er:'wird laufen', wir:'werden laufen', ihr:'werdet laufen', sie:'werden laufen' },
+    praet:{ ich:'lief', du:'liefst', er:'lief', wir:'liefen', ihr:'lieft', sie:'liefen' },
+    konj2:{ ich:'liefe', du:'liefest', er:'liefe', wir:'liefen', ihr:'liefet', sie:'liefen' },
     examples:{ present:{ de:'Ich laufe jeden Morgen.', en:'I run every morning.', es:'Corro cada mañana.' }, past:{ de:'Sie ist zum Bahnhof gelaufen.', en:'She ran to the station.', es:'Ella corrió a la estación.' }, future:{ de:'Wir werden laufen.', en:'We will run.', es:'Correremos.' } }
   },
   { inf:'schwimmen', en:'to swim', es:'nadar', emoji:'🏊', type:'irregular',
     present:{ ich:'schwimme', du:'schwimmst', er:'schwimmt', wir:'schwimmen', ihr:'schwimmt', sie:'schwimmen' },
     past:{ aux:'sein', pp:'geschwommen', ich:'bin geschwommen', du:'bist geschwommen', er:'ist geschwommen', wir:'sind geschwommen', ihr:'seid geschwommen', sie:'sind geschwommen' },
     future:{ ich:'werde schwimmen', du:'wirst schwimmen', er:'wird schwimmen', wir:'werden schwimmen', ihr:'werdet schwimmen', sie:'werden schwimmen' },
+    praet:{ ich:'schwamm', du:'schwammst', er:'schwamm', wir:'schwammen', ihr:'schwammt', sie:'schwammen' },
+    konj2:{ ich:'schwömme', du:'schwömmest', er:'schwömme', wir:'schwömmen', ihr:'schwömmet', sie:'schwömmen' },
     examples:{ present:{ de:'Ich schwimme im Aare.', en:'I swim in the Aare.', es:'Nado en el Aare.' }, past:{ de:'Wir sind im Fluss geschwommen.', en:'We swam in the river.', es:'Nadamos en el río.' }, future:{ de:'Ich werde morgen schwimmen.', en:'I will swim tomorrow.', es:'Nadaré mañana.' } }
   },
   { inf:'wandern', en:'to hike', es:'hacer senderismo', emoji:'🥾', type:'regular',
     present:{ ich:'wandere', du:'wanderst', er:'wandert', wir:'wandern', ihr:'wandert', sie:'wandern' },
     past:{ aux:'sein', pp:'gewandert', ich:'bin gewandert', du:'bist gewandert', er:'ist gewandert', wir:'sind gewandert', ihr:'seid gewandert', sie:'sind gewandert' },
     future:{ ich:'werde wandern', du:'wirst wandern', er:'wird wandern', wir:'werden wandern', ihr:'werdet wandern', sie:'werden wandern' },
+    praet:{ ich:'wanderte', du:'wandertest', er:'wanderte', wir:'wanderten', ihr:'wandertet', sie:'wanderten' },
+    konj2:{ ich:'würde wandern', du:'würdest wandern', er:'würde wandern', wir:'würden wandern', ihr:'würdet wandern', sie:'würden wandern' },
     examples:{ present:{ de:'Wir wandern auf dem Gurten.', en:'We hike on the Gurten.', es:'Hacemos senderismo en el Gurten.' }, past:{ de:'Sie sind durch die Alpen gewandert.', en:'They hiked through the Alps.', es:'Ellos hicieron senderismo por los Alpes.' }, future:{ de:'Wir werden am Wochenende wandern.', en:'We will hike on the weekend.', es:'Haremos senderismo el fin de semana.' } }
   },
   { inf:'bezahlen', en:'to pay', es:'pagar', emoji:'💳', type:'regular',
     present:{ ich:'bezahle', du:'bezahlst', er:'bezahlt', wir:'bezahlen', ihr:'bezahlt', sie:'bezahlen' },
     past:{ aux:'haben', pp:'bezahlt', ich:'habe bezahlt', du:'hast bezahlt', er:'hat bezahlt', wir:'haben bezahlt', ihr:'habt bezahlt', sie:'haben bezahlt' },
     future:{ ich:'werde bezahlen', du:'wirst bezahlen', er:'wird bezahlen', wir:'werden bezahlen', ihr:'werdet bezahlen', sie:'werden bezahlen' },
+    praet:{ ich:'bezahlte', du:'bezahltest', er:'bezahlte', wir:'bezahlten', ihr:'bezahltet', sie:'bezahlten' },
+    konj2:{ ich:'würde bezahlen', du:'würdest bezahlen', er:'würde bezahlen', wir:'würden bezahlen', ihr:'würdet bezahlen', sie:'würden bezahlen' },
     examples:{ present:{ de:'Ich bezahle mit Karte.', en:'I pay by card.', es:'Pago con tarjeta.' }, past:{ de:'Wer hat bezahlt?', en:'Who paid?', es:'¿Quién pagó?' }, future:{ de:'Ich werde es bezahlen.', en:'I will pay for it.', es:'Lo pagaré.' } }
   },
   { inf:'bestellen', en:'to order', es:'pedir/ordenar', emoji:'🛎️', type:'regular',
     present:{ ich:'bestelle', du:'bestellst', er:'bestellt', wir:'bestellen', ihr:'bestellt', sie:'bestellen' },
     past:{ aux:'haben', pp:'bestellt', ich:'habe bestellt', du:'hast bestellt', er:'hat bestellt', wir:'haben bestellt', ihr:'habt bestellt', sie:'haben bestellt' },
     future:{ ich:'werde bestellen', du:'wirst bestellen', er:'wird bestellen', wir:'werden bestellen', ihr:'werdet bestellen', sie:'werden bestellen' },
+    praet:{ ich:'bestellte', du:'bestelltest', er:'bestellte', wir:'bestellten', ihr:'bestelltet', sie:'bestellten' },
+    konj2:{ ich:'würde bestellen', du:'würdest bestellen', er:'würde bestellen', wir:'würden bestellen', ihr:'würdet bestellen', sie:'würden bestellen' },
     examples:{ present:{ de:'Ich bestelle einen Kaffee.', en:'I order a coffee.', es:'Pido un café.' }, past:{ de:'Sie hat Pasta bestellt.', en:'She ordered pasta.', es:'Ella pidió pasta.' }, future:{ de:'Was wirst du bestellen?', en:'What will you order?', es:'¿Qué pedirás?' } }
   },
   { inf:'reservieren', en:'to reserve', es:'reservar', emoji:'📅', type:'regular',
     present:{ ich:'reserviere', du:'reservierst', er:'reserviert', wir:'reservieren', ihr:'reserviert', sie:'reservieren' },
     past:{ aux:'haben', pp:'reserviert', ich:'habe reserviert', du:'hast reserviert', er:'hat reserviert', wir:'haben reserviert', ihr:'habt reserviert', sie:'haben reserviert' },
     future:{ ich:'werde reservieren', du:'wirst reservieren', er:'wird reservieren', wir:'werden reservieren', ihr:'werdet reservieren', sie:'werden reservieren' },
+    praet:{ ich:'reservierte', du:'reserviertest', er:'reservierte', wir:'reservierten', ihr:'reserviertet', sie:'reservierten' },
+    konj2:{ ich:'würde reservieren', du:'würdest reservieren', er:'würde reservieren', wir:'würden reservieren', ihr:'würdet reservieren', sie:'würden reservieren' },
     examples:{ present:{ de:'Ich reserviere einen Tisch.', en:'I reserve a table.', es:'Reservo una mesa.' }, past:{ de:'Hast du reserviert?', en:'Did you make a reservation?', es:'¿Reservaste?' }, future:{ de:'Ich werde reservieren.', en:'I will make a reservation.', es:'Reservaré.' } }
   },
   { inf:'anrufen', en:'to call (phone)', es:'llamar por teléfono', emoji:'📞', type:'irregular',
     present:{ ich:'rufe an', du:'rufst an', er:'ruft an', wir:'rufen an', ihr:'ruft an', sie:'rufen an' },
     past:{ aux:'haben', pp:'angerufen', ich:'habe angerufen', du:'hast angerufen', er:'hat angerufen', wir:'haben angerufen', ihr:'habt angerufen', sie:'haben angerufen' },
     future:{ ich:'werde anrufen', du:'wirst anrufen', er:'wird anrufen', wir:'werden anrufen', ihr:'werdet anrufen', sie:'werden anrufen' },
+    praet:{ ich:'rief an', du:'riefst an', er:'rief an', wir:'riefen an', ihr:'rieft an', sie:'riefen an' },
+    konj2:{ ich:'würde anrufen', du:'würdest anrufen', er:'würde anrufen', wir:'würden anrufen', ihr:'würdet anrufen', sie:'würden anrufen' },
     examples:{ present:{ de:'Ich rufe den Arzt an.', en:'I call the doctor.', es:'Llamo al médico.' }, past:{ de:'Sie hat mich angerufen.', en:'She called me.', es:'Ella me llamó.' }, future:{ de:'Ich werde anrufen.', en:'I will call.', es:'Llamaré.' } }
   },
   { inf:'aufmachen', en:'to open', es:'abrir', emoji:'🔓', type:'regular',
     present:{ ich:'mache auf', du:'machst auf', er:'macht auf', wir:'machen auf', ihr:'macht auf', sie:'machen auf' },
     past:{ aux:'haben', pp:'aufgemacht', ich:'habe aufgemacht', du:'hast aufgemacht', er:'hat aufgemacht', wir:'haben aufgemacht', ihr:'habt aufgemacht', sie:'haben aufgemacht' },
     future:{ ich:'werde aufmachen', du:'wirst aufmachen', er:'wird aufmachen', wir:'werden aufmachen', ihr:'werdet aufmachen', sie:'werden aufmachen' },
+    praet:{ ich:'machte auf', du:'machtest auf', er:'machte auf', wir:'machten auf', ihr:'machtet auf', sie:'machten auf' },
+    konj2:{ ich:'würde aufmachen', du:'würdest aufmachen', er:'würde aufmachen', wir:'würden aufmachen', ihr:'würdet aufmachen', sie:'würden aufmachen' },
     examples:{ present:{ de:'Ich mache die Tür auf.', en:'I open the door.', es:'Abro la puerta.' }, past:{ de:'Sie hat den Brief aufgemacht.', en:'She opened the letter.', es:'Ella abrió la carta.' }, future:{ de:'Wer macht auf?', en:'Who will open up?', es:'¿Quién abre?' } }
   },
   { inf:'zumachen', en:'to close', es:'cerrar', emoji:'🔒', type:'regular',
     present:{ ich:'mache zu', du:'machst zu', er:'macht zu', wir:'machen zu', ihr:'macht zu', sie:'machen zu' },
     past:{ aux:'haben', pp:'zugemacht', ich:'habe zugemacht', du:'hast zugemacht', er:'hat zugemacht', wir:'haben zugemacht', ihr:'habt zugemacht', sie:'haben zugemacht' },
     future:{ ich:'werde zumachen', du:'wirst zumachen', er:'wird zumachen', wir:'werden zumachen', ihr:'werdet zumachen', sie:'werden zumachen' },
+    praet:{ ich:'machte zu', du:'machtest zu', er:'machte zu', wir:'machten zu', ihr:'machtet zu', sie:'machten zu' },
+    konj2:{ ich:'würde zumachen', du:'würdest zumachen', er:'würde zumachen', wir:'würden zumachen', ihr:'würdet zumachen', sie:'würden zumachen' },
     examples:{ present:{ de:'Ich mache das Fenster zu.', en:'I close the window.', es:'Cierro la ventana.' }, past:{ de:'Er hat den Laden zugemacht.', en:'He closed the shop.', es:'Él cerró la tienda.' }, future:{ de:'Wann macht es zu?', en:'When does it close?', es:'¿Cuándo cierra?' } }
   },
   { inf:'anfangen', en:'to begin/start', es:'empezar/comenzar', emoji:'🚀', type:'irregular',
     present:{ ich:'fange an', du:'fängst an', er:'fängt an', wir:'fangen an', ihr:'fangt an', sie:'fangen an' },
     past:{ aux:'haben', pp:'angefangen', ich:'habe angefangen', du:'hast angefangen', er:'hat angefangen', wir:'haben angefangen', ihr:'habt angefangen', sie:'haben angefangen' },
     future:{ ich:'werde anfangen', du:'wirst anfangen', er:'wird anfangen', wir:'werden anfangen', ihr:'werdet anfangen', sie:'werden anfangen' },
+    praet:{ ich:'fing an', du:'fingst an', er:'fing an', wir:'fingen an', ihr:'fingt an', sie:'fingen an' },
+    konj2:{ ich:'finge an', du:'fingest an', er:'finge an', wir:'fingen an', ihr:'finget an', sie:'fingen an' },
     examples:{ present:{ de:'Der Kurs fängt um 9 an.', en:'The class starts at 9.', es:'El curso empieza a las 9.' }, past:{ de:'Wann hat es angefangen?', en:'When did it start?', es:'¿Cuándo empezó?' }, future:{ de:'Wann werden wir anfangen?', en:'When will we start?', es:'¿Cuándo empezaremos?' } }
   },
   { inf:'aufhören', en:'to stop/quit', es:'dejar/parar', emoji:'🛑', type:'regular',
     present:{ ich:'höre auf', du:'hörst auf', er:'hört auf', wir:'hören auf', ihr:'hört auf', sie:'hören auf' },
     past:{ aux:'haben', pp:'aufgehört', ich:'habe aufgehört', du:'hast aufgehört', er:'hat aufgehört', wir:'haben aufgehört', ihr:'habt aufgehört', sie:'haben aufgehört' },
     future:{ ich:'werde aufhören', du:'wirst aufhören', er:'wird aufhören', wir:'werden aufhören', ihr:'werdet aufhören', sie:'werden aufhören' },
+    praet:{ ich:'hörte auf', du:'hörtest auf', er:'hörte auf', wir:'hörten auf', ihr:'hörtet auf', sie:'hörten auf' },
+    konj2:{ ich:'würde aufhören', du:'würdest aufhören', er:'würde aufhören', wir:'würden aufhören', ihr:'würdet aufhören', sie:'würden aufhören' },
     examples:{ present:{ de:'Hör auf!', en:'Stop it!', es:'¡Para!' }, past:{ de:'Es hat aufgehört zu regnen.', en:'It stopped raining.', es:'Paró de llover.' }, future:{ de:'Wann hört es auf?', en:'When will it stop?', es:'¿Cuándo para?' } }
   },
   { inf:'umziehen', en:'to move (home)', es:'mudarse', emoji:'📦', type:'irregular',
     present:{ ich:'ziehe um', du:'ziehst um', er:'zieht um', wir:'ziehen um', ihr:'zieht um', sie:'ziehen um' },
     past:{ aux:'sein', pp:'umgezogen', ich:'bin umgezogen', du:'bist umgezogen', er:'ist umgezogen', wir:'sind umgezogen', ihr:'seid umgezogen', sie:'sind umgezogen' },
     future:{ ich:'werde umziehen', du:'wirst umziehen', er:'wird umziehen', wir:'werden umziehen', ihr:'werdet umziehen', sie:'werden umziehen' },
+    praet:{ ich:'zog um', du:'zogst um', er:'zog um', wir:'zogen um', ihr:'zogt um', sie:'zogen um' },
+    konj2:{ ich:'würde umziehen', du:'würdest umziehen', er:'würde umziehen', wir:'würden umziehen', ihr:'würdet umziehen', sie:'würden umziehen' },
     examples:{ present:{ de:'Wir ziehen nach Bern um.', en:'We are moving to Bern.', es:'Nos mudamos a Berna.' }, past:{ de:'Ich bin letztes Jahr umgezogen.', en:'I moved last year.', es:'Me mudé el año pasado.' }, future:{ de:'Wann ziehst du um?', en:'When are you moving?', es:'¿Cuándo te mudas?' } }
   },
   { inf:'anmelden', en:'to register', es:'registrarse', emoji:'📝', type:'regular',
     present:{ ich:'melde an', du:'meldest an', er:'meldet an', wir:'melden an', ihr:'meldet an', sie:'melden an' },
     past:{ aux:'haben', pp:'angemeldet', ich:'habe angemeldet', du:'hast angemeldet', er:'hat angemeldet', wir:'haben angemeldet', ihr:'habt angemeldet', sie:'haben angemeldet' },
     future:{ ich:'werde anmelden', du:'wirst anmelden', er:'wird anmelden', wir:'werden anmelden', ihr:'werdet anmelden', sie:'werden anmelden' },
+    praet:{ ich:'meldete an', du:'meldetest an', er:'meldete an', wir:'meldeten an', ihr:'meldetet an', sie:'meldeten an' },
+    konj2:{ ich:'würde anmelden', du:'würdest anmelden', er:'würde anmelden', wir:'würden anmelden', ihr:'würdet anmelden', sie:'würden anmelden' },
     examples:{ present:{ de:'Ich melde mich an.', en:'I register.', es:'Me registro.' }, past:{ de:'Wir haben uns in Bern angemeldet.', en:'We registered in Bern.', es:'Nos registramos en Berna.' }, future:{ de:'Du musst dich anmelden.', en:'You need to register.', es:'Debes registrarte.' } }
   },
   { inf:'beantragen', en:'to apply for', es:'solicitar', emoji:'📄', type:'regular',
     present:{ ich:'beantrage', du:'beantragst', er:'beantragt', wir:'beantragen', ihr:'beantragt', sie:'beantragen' },
     past:{ aux:'haben', pp:'beantragt', ich:'habe beantragt', du:'hast beantragt', er:'hat beantragt', wir:'haben beantragt', ihr:'habt beantragt', sie:'haben beantragt' },
     future:{ ich:'werde beantragen', du:'wirst beantragen', er:'wird beantragen', wir:'werden beantragen', ihr:'werdet beantragen', sie:'werden beantragen' },
+    praet:{ ich:'beantragte', du:'beantragtest', er:'beantragte', wir:'beantragten', ihr:'beantragtet', sie:'beantragten' },
+    konj2:{ ich:'würde beantragen', du:'würdest beantragen', er:'würde beantragen', wir:'würden beantragen', ihr:'würdet beantragen', sie:'würden beantragen' },
     examples:{ present:{ de:'Ich beantrage ein Visum.', en:'I apply for a visa.', es:'Solicito una visa.' }, past:{ de:'Sie hat die Kibon Card beantragt.', en:'She applied for the Kibon Card.', es:'Ella solicitó la Kibon Card.' }, future:{ de:'Ich werde es beantragen.', en:'I will apply for it.', es:'Lo solicitaré.' } }
   },
   { inf:'ausfüllen', en:'to fill out', es:'rellenar/completar', emoji:'📋', type:'regular',
     present:{ ich:'fülle aus', du:'füllst aus', er:'füllt aus', wir:'füllen aus', ihr:'füllt aus', sie:'füllen aus' },
     past:{ aux:'haben', pp:'ausgefüllt', ich:'habe ausgefüllt', du:'hast ausgefüllt', er:'hat ausgefüllt', wir:'haben ausgefüllt', ihr:'habt ausgefüllt', sie:'haben ausgefüllt' },
     future:{ ich:'werde ausfüllen', du:'wirst ausfüllen', er:'wird ausfüllen', wir:'werden ausfüllen', ihr:'werdet ausfüllen', sie:'werden ausfüllen' },
+    praet:{ ich:'füllte aus', du:'fülltest aus', er:'füllte aus', wir:'füllten aus', ihr:'fülltet aus', sie:'füllten aus' },
+    konj2:{ ich:'würde ausfüllen', du:'würdest ausfüllen', er:'würde ausfüllen', wir:'würden ausfüllen', ihr:'würdet ausfüllen', sie:'würden ausfüllen' },
     examples:{ present:{ de:'Ich fülle das Formular aus.', en:'I fill out the form.', es:'Relleno el formulario.' }, past:{ de:'Hast du das ausgefüllt?', en:'Did you fill that out?', es:'¿Completaste eso?' }, future:{ de:'Du wirst es ausfüllen müssen.', en:'You will have to fill it out.', es:'Tendrás que completarlo.' } }
   },
   { inf:'unterschreiben', en:'to sign', es:'firmar', emoji:'✍️', type:'irregular',
     present:{ ich:'unterschreibe', du:'unterschreibst', er:'unterschreibt', wir:'unterschreiben', ihr:'unterschreibt', sie:'unterschreiben' },
     past:{ aux:'haben', pp:'unterschrieben', ich:'habe unterschrieben', du:'hast unterschrieben', er:'hat unterschrieben', wir:'haben unterschrieben', ihr:'habt unterschrieben', sie:'haben unterschrieben' },
     future:{ ich:'werde unterschreiben', du:'wirst unterschreiben', er:'wird unterschreiben', wir:'werden unterschreiben', ihr:'werdet unterschreiben', sie:'werden unterschreiben' },
+    praet:{ ich:'unterschrieb', du:'unterschriebst', er:'unterschrieb', wir:'unterschrieben', ihr:'unterschriebt', sie:'unterschrieben' },
+    konj2:{ ich:'würde unterschreiben', du:'würdest unterschreiben', er:'würde unterschreiben', wir:'würden unterschreiben', ihr:'würdet unterschreiben', sie:'würden unterschreiben' },
     examples:{ present:{ de:'Bitte unterschreiben Sie hier.', en:'Please sign here.', es:'Por favor firme aquí.' }, past:{ de:'Ich habe den Vertrag unterschrieben.', en:'I signed the contract.', es:'Firmé el contrato.' }, future:{ de:'Wirst du unterschreiben?', en:'Will you sign?', es:'¿Firmarás?' } }
   },
   { inf:'einladen', en:'to invite', es:'invitar', emoji:'🎉', type:'irregular',
     present:{ ich:'lade ein', du:'lädst ein', er:'lädt ein', wir:'laden ein', ihr:'ladet ein', sie:'laden ein' },
     past:{ aux:'haben', pp:'eingeladen', ich:'habe eingeladen', du:'hast eingeladen', er:'hat eingeladen', wir:'haben eingeladen', ihr:'habt eingeladen', sie:'haben eingeladen' },
     future:{ ich:'werde einladen', du:'wirst einladen', er:'wird einladen', wir:'werden einladen', ihr:'werdet einladen', sie:'werden einladen' },
+    praet:{ ich:'lud ein', du:'ludst ein', er:'lud ein', wir:'luden ein', ihr:'ludt ein', sie:'luden ein' },
+    konj2:{ ich:'würde einladen', du:'würdest einladen', er:'würde einladen', wir:'würden einladen', ihr:'würdet einladen', sie:'würden einladen' },
     examples:{ present:{ de:'Ich lade dich ein.', en:'I invite you.', es:'Te invito.' }, past:{ de:'Sie hat uns zum Essen eingeladen.', en:'She invited us for dinner.', es:'Ella nos invitó a cenar.' }, future:{ de:'Ich werde dich einladen.', en:'I will invite you.', es:'Te invitaré.' } }
   },
   { inf:'treffen', en:'to meet', es:'encontrarse/conocer', emoji:'🤝', type:'irregular',
     present:{ ich:'treffe', du:'triffst', er:'trifft', wir:'treffen', ihr:'trefft', sie:'treffen' },
     past:{ aux:'haben', pp:'getroffen', ich:'habe getroffen', du:'hast getroffen', er:'hat getroffen', wir:'haben getroffen', ihr:'habt getroffen', sie:'haben getroffen' },
     future:{ ich:'werde treffen', du:'wirst treffen', er:'wird treffen', wir:'werden treffen', ihr:'werdet treffen', sie:'werden treffen' },
+    praet:{ ich:'traf', du:'trafst', er:'traf', wir:'trafen', ihr:'traft', sie:'trafen' },
+    konj2:{ ich:'träfe', du:'träfest', er:'träfe', wir:'träfen', ihr:'träfet', sie:'träfen' },
     examples:{ present:{ de:'Ich treffe meine Freunde.', en:'I meet my friends.', es:'Me encuentro con mis amigos.' }, past:{ de:'Wo habt ihr euch getroffen?', en:'Where did you meet?', es:'¿Dónde se conocieron?' }, future:{ de:'Wir werden uns treffen.', en:'We will meet.', es:'Nos encontraremos.' } }
   },
   { inf:'warten', en:'to wait', es:'esperar', emoji:'⏳', type:'regular',
     present:{ ich:'warte', du:'wartest', er:'wartet', wir:'warten', ihr:'wartet', sie:'warten' },
     past:{ aux:'haben', pp:'gewartet', ich:'habe gewartet', du:'hast gewartet', er:'hat gewartet', wir:'haben gewartet', ihr:'habt gewartet', sie:'haben gewartet' },
     future:{ ich:'werde warten', du:'wirst warten', er:'wird warten', wir:'werden warten', ihr:'werdet warten', sie:'werden warten' },
+    praet:{ ich:'wartete', du:'wartetest', er:'wartete', wir:'warteten', ihr:'wartetet', sie:'warteten' },
+    konj2:{ ich:'würde warten', du:'würdest warten', er:'würde warten', wir:'würden warten', ihr:'würdet warten', sie:'würden warten' },
     examples:{ present:{ de:'Ich warte auf den Zug.', en:'I am waiting for the train.', es:'Espero el tren.' }, past:{ de:'Wir haben lange gewartet.', en:'We waited a long time.', es:'Esperamos mucho tiempo.' }, future:{ de:'Du wirst warten müssen.', en:'You will have to wait.', es:'Tendrás que esperar.' } }
   },
   { inf:'bringen', en:'to bring', es:'traer', emoji:'🎁', type:'irregular',
     present:{ ich:'bringe', du:'bringst', er:'bringt', wir:'bringen', ihr:'bringt', sie:'bringen' },
     past:{ aux:'haben', pp:'gebracht', ich:'habe gebracht', du:'hast gebracht', er:'hat gebracht', wir:'haben gebracht', ihr:'habt gebracht', sie:'haben gebracht' },
     future:{ ich:'werde bringen', du:'wirst bringen', er:'wird bringen', wir:'werden bringen', ihr:'werdet bringen', sie:'werden bringen' },
+    praet:{ ich:'brachte', du:'brachtest', er:'brachte', wir:'brachten', ihr:'brachtet', sie:'brachten' },
+    konj2:{ ich:'brächte', du:'brächtest', er:'brächte', wir:'brächten', ihr:'brächtet', sie:'brächten' },
     examples:{ present:{ de:'Ich bringe die Kinder zur Schule.', en:'I bring the kids to school.', es:'Llevo a los niños a la escuela.' }, past:{ de:'Er hat Blumen gebracht.', en:'He brought flowers.', es:'Él trajo flores.' }, future:{ de:'Ich werde es bringen.', en:'I will bring it.', es:'Lo traeré.' } }
   },
   { inf:'nehmen', en:'to take', es:'tomar/coger', emoji:'✋', type:'irregular',
     present:{ ich:'nehme', du:'nimmst', er:'nimmt', wir:'nehmen', ihr:'nehmt', sie:'nehmen' },
     past:{ aux:'haben', pp:'genommen', ich:'habe genommen', du:'hast genommen', er:'hat genommen', wir:'haben genommen', ihr:'habt genommen', sie:'haben genommen' },
     future:{ ich:'werde nehmen', du:'wirst nehmen', er:'wird nehmen', wir:'werden nehmen', ihr:'werdet nehmen', sie:'werden nehmen' },
+    praet:{ ich:'nahm', du:'nahmst', er:'nahm', wir:'nahmen', ihr:'nahmt', sie:'nahmen' },
+    konj2:{ ich:'nähme', du:'nähmest', er:'nähme', wir:'nähmen', ihr:'nähmet', sie:'nähmen' },
     examples:{ present:{ de:'Ich nehme den Bus.', en:'I take the bus.', es:'Tomo el autobús.' }, past:{ de:'Sie hat die falsche Linie genommen.', en:'She took the wrong line.', es:'Ella tomó la línea equivocada.' }, future:{ de:'Welchen Weg wirst du nehmen?', en:'Which way will you take?', es:'¿Qué camino tomarás?' } }
   },
   { inf:'geben', en:'to give', es:'dar', emoji:'🎁', type:'irregular',
     present:{ ich:'gebe', du:'gibst', er:'gibt', wir:'geben', ihr:'gebt', sie:'geben' },
     past:{ aux:'haben', pp:'gegeben', ich:'habe gegeben', du:'hast gegeben', er:'hat gegeben', wir:'haben gegeben', ihr:'habt gegeben', sie:'haben gegeben' },
     future:{ ich:'werde geben', du:'wirst geben', er:'wird geben', wir:'werden geben', ihr:'werdet geben', sie:'werden geben' },
+    praet:{ ich:'gab', du:'gabst', er:'gab', wir:'gaben', ihr:'gabt', sie:'gaben' },
+    konj2:{ ich:'gäbe', du:'gäbest', er:'gäbe', wir:'gäben', ihr:'gäbet', sie:'gäben' },
     examples:{ present:{ de:'Ich gebe dir die Adresse.', en:'I give you the address.', es:'Te doy la dirección.' }, past:{ de:'Er hat mir das Formular gegeben.', en:'He gave me the form.', es:'Él me dio el formulario.' }, future:{ de:'Ich werde es dir geben.', en:'I will give it to you.', es:'Te lo daré.' } }
   },
   { inf:'stehen', en:'to stand', es:'estar de pie/estar', emoji:'🧍', type:'irregular',
     present:{ ich:'stehe', du:'stehst', er:'steht', wir:'stehen', ihr:'steht', sie:'stehen' },
     past:{ aux:'haben', pp:'gestanden', ich:'habe gestanden', du:'hast gestanden', er:'hat gestanden', wir:'haben gestanden', ihr:'habt gestanden', sie:'haben gestanden' },
     future:{ ich:'werde stehen', du:'wirst stehen', er:'wird stehen', wir:'werden stehen', ihr:'werdet stehen', sie:'werden stehen' },
+    praet:{ ich:'stand', du:'standst', er:'stand', wir:'standen', ihr:'standet', sie:'standen' },
+    konj2:{ ich:'stünde', du:'stündest', er:'stünde', wir:'stünden', ihr:'stündet', sie:'stünden' },
     examples:{ present:{ de:'Ich stehe an der Haltestelle.', en:'I am standing at the stop.', es:'Estoy parado en la parada.' }, past:{ de:'Wir haben eine Stunde gestanden.', en:'We stood for an hour.', es:'Estuvimos parados una hora.' }, future:{ de:'Wirst du stehen?', en:'Will you be standing?', es:'¿Estarás parado?' } }
   },
   { inf:'liegen', en:'to lie/be located', es:'estar ubicado/yacer', emoji:'🗺️', type:'irregular',
     present:{ ich:'liege', du:'liegst', er:'liegt', wir:'liegen', ihr:'liegt', sie:'liegen' },
     past:{ aux:'haben', pp:'gelegen', ich:'habe gelegen', du:'hast gelegen', er:'hat gelegen', wir:'haben gelegen', ihr:'habt gelegen', sie:'haben gelegen' },
     future:{ ich:'werde liegen', du:'wirst liegen', er:'wird liegen', wir:'werden liegen', ihr:'werdet liegen', sie:'werden liegen' },
+    praet:{ ich:'lag', du:'lagst', er:'lag', wir:'lagen', ihr:'lagt', sie:'lagen' },
+    konj2:{ ich:'läge', du:'lägest', er:'läge', wir:'lägen', ihr:'läget', sie:'lägen' },
     examples:{ present:{ de:'Das Paket liegt bei der Post.', en:'The package is at the post office.', es:'El paquete está en correos.' }, past:{ de:'Bern hat am Aare gelegen.', en:'Bern was located on the Aare.', es:'Berna estaba ubicada en el Aare.' }, future:{ de:'Es wird auf dem Tisch liegen.', en:'It will be on the table.', es:'Estará sobre la mesa.' } }
   },
   { inf:'setzen', en:'to sit down/place', es:'sentar/poner', emoji:'🪑', type:'regular',
     present:{ ich:'setze', du:'setzt', er:'setzt', wir:'setzen', ihr:'setzt', sie:'setzen' },
     past:{ aux:'haben', pp:'gesetzt', ich:'habe gesetzt', du:'hast gesetzt', er:'hat gesetzt', wir:'haben gesetzt', ihr:'habt gesetzt', sie:'haben gesetzt' },
     future:{ ich:'werde setzen', du:'wirst setzen', er:'wird setzen', wir:'werden setzen', ihr:'werdet setzen', sie:'werden setzen' },
+    praet:{ ich:'setzte', du:'setztest', er:'setzte', wir:'setzten', ihr:'setztet', sie:'setzten' },
+    konj2:{ ich:'würde setzen', du:'würdest setzen', er:'würde setzen', wir:'würden setzen', ihr:'würdet setzen', sie:'würden setzen' },
     examples:{ present:{ de:'Ich setze mich hin.', en:'I sit down.', es:'Me siento.' }, past:{ de:'Sie hat sich ans Fenster gesetzt.', en:'She sat by the window.', es:'Ella se sentó junto a la ventana.' }, future:{ de:'Setz dich!', en:'Sit down!', es:'¡Siéntate!' } }
   },
   { inf:'finden', en:'to find', es:'encontrar', emoji:'🔍', type:'irregular',
     present:{ ich:'finde', du:'findest', er:'findet', wir:'finden', ihr:'findet', sie:'finden' },
     past:{ aux:'haben', pp:'gefunden', ich:'habe gefunden', du:'hast gefunden', er:'hat gefunden', wir:'haben gefunden', ihr:'habt gefunden', sie:'haben gefunden' },
     future:{ ich:'werde finden', du:'wirst finden', er:'wird finden', wir:'werden finden', ihr:'werdet finden', sie:'werden finden' },
+    praet:{ ich:'fand', du:'fandst', er:'fand', wir:'fanden', ihr:'fandet', sie:'fanden' },
+    konj2:{ ich:'fände', du:'fändest', er:'fände', wir:'fänden', ihr:'fändet', sie:'fänden' },
     examples:{ present:{ de:'Ich finde den Weg nicht.', en:'I can\'t find the way.', es:'No encuentro el camino.' }, past:{ de:'Hast du deinen Schlüssel gefunden?', en:'Did you find your key?', es:'¿Encontraste tu llave?' }, future:{ de:'Du wirst es finden.', en:'You will find it.', es:'Lo encontrarás.' } }
   },
   { inf:'suchen', en:'to look for/search', es:'buscar', emoji:'🔎', type:'regular',
     present:{ ich:'suche', du:'suchst', er:'sucht', wir:'suchen', ihr:'sucht', sie:'suchen' },
     past:{ aux:'haben', pp:'gesucht', ich:'habe gesucht', du:'hast gesucht', er:'hat gesucht', wir:'haben gesucht', ihr:'habt gesucht', sie:'haben gesucht' },
     future:{ ich:'werde suchen', du:'wirst suchen', er:'wird suchen', wir:'werden suchen', ihr:'werdet suchen', sie:'werden suchen' },
+    praet:{ ich:'suchte', du:'suchtest', er:'suchte', wir:'suchten', ihr:'suchtet', sie:'suchten' },
+    konj2:{ ich:'würde suchen', du:'würdest suchen', er:'würde suchen', wir:'würden suchen', ihr:'würdet suchen', sie:'würden suchen' },
     examples:{ present:{ de:'Ich suche eine Wohnung in Bern.', en:'I am looking for an apartment in Bern.', es:'Busco un apartamento en Berna.' }, past:{ de:'Wir haben lange gesucht.', en:'We searched for a long time.', es:'Buscamos por mucho tiempo.' }, future:{ de:'Ich werde eine Stelle suchen.', en:'I will look for a job.', es:'Buscaré un trabajo.' } }
   },
   { inf:'zeigen', en:'to show', es:'mostrar', emoji:'👉', type:'regular',
     present:{ ich:'zeige', du:'zeigst', er:'zeigt', wir:'zeigen', ihr:'zeigt', sie:'zeigen' },
     past:{ aux:'haben', pp:'gezeigt', ich:'habe gezeigt', du:'hast gezeigt', er:'hat gezeigt', wir:'haben gezeigt', ihr:'habt gezeigt', sie:'haben gezeigt' },
     future:{ ich:'werde zeigen', du:'wirst zeigen', er:'wird zeigen', wir:'werden zeigen', ihr:'werdet zeigen', sie:'werden zeigen' },
+    praet:{ ich:'zeigte', du:'zeigtest', er:'zeigte', wir:'zeigten', ihr:'zeigtet', sie:'zeigten' },
+    konj2:{ ich:'würde zeigen', du:'würdest zeigen', er:'würde zeigen', wir:'würden zeigen', ihr:'würdet zeigen', sie:'würden zeigen' },
     examples:{ present:{ de:'Kannst du mir den Weg zeigen?', en:'Can you show me the way?', es:'¿Puedes mostrarme el camino?' }, past:{ de:'Sie hat mir die Stadt gezeigt.', en:'She showed me the city.', es:'Ella me mostró la ciudad.' }, future:{ de:'Ich werde es dir zeigen.', en:'I will show you.', es:'Te lo mostraré.' } }
   },
   { inf:'erklären', en:'to explain', es:'explicar', emoji:'📌', type:'regular',
     present:{ ich:'erkläre', du:'erklärst', er:'erklärt', wir:'erklären', ihr:'erklärt', sie:'erklären' },
     past:{ aux:'haben', pp:'erklärt', ich:'habe erklärt', du:'hast erklärt', er:'hat erklärt', wir:'haben erklärt', ihr:'habt erklärt', sie:'haben erklärt' },
     future:{ ich:'werde erklären', du:'wirst erklären', er:'wird erklären', wir:'werden erklären', ihr:'werdet erklären', sie:'werden erklären' },
+    praet:{ ich:'erklärte', du:'erklärtest', er:'erklärte', wir:'erklärten', ihr:'erklärtet', sie:'erklärten' },
+    konj2:{ ich:'würde erklären', du:'würdest erklären', er:'würde erklären', wir:'würden erklären', ihr:'würdet erklären', sie:'würden erklären' },
     examples:{ present:{ de:'Kannst du das erklären?', en:'Can you explain that?', es:'¿Puedes explicar eso?' }, past:{ de:'Der Arzt hat es erklärt.', en:'The doctor explained it.', es:'El médico lo explicó.' }, future:{ de:'Ich werde es erklären.', en:'I will explain it.', es:'Lo explicaré.' } }
   },
   { inf:'kosten', en:'to cost', es:'costar', emoji:'💰', type:'regular',
     present:{ ich:'koste', du:'kostest', er:'kostet', wir:'kosten', ihr:'kostet', sie:'kosten' },
     past:{ aux:'haben', pp:'gekostet', ich:'habe gekostet', du:'hast gekostet', er:'hat gekostet', wir:'haben gekostet', ihr:'habt gekostet', sie:'haben gekostet' },
     future:{ ich:'werde kosten', du:'wirst kosten', er:'wird kosten', wir:'werden kosten', ihr:'werdet kosten', sie:'werden kosten' },
+    praet:{ ich:'kostete', du:'kostest', er:'kostete', wir:'kosteten', ihr:'kostetet', sie:'kosteten' },
+    konj2:{ ich:'würde kosten', du:'würdest kosten', er:'würde kosten', wir:'würden kosten', ihr:'würdet kosten', sie:'würden kosten' },
     examples:{ present:{ de:'Wie viel kostet das?', en:'How much does this cost?', es:'¿Cuánto cuesta esto?' }, past:{ de:'Es hat 20 Franken gekostet.', en:'It cost 20 francs.', es:'Costó 20 francos.' }, future:{ de:'Wie viel wird es kosten?', en:'How much will it cost?', es:'¿Cuánto costará?' } }
   },
   { inf:'heißen', en:'to be called/named', es:'llamarse', emoji:'🏷️', type:'irregular',
     present:{ ich:'heiße', du:'heißt', er:'heißt', wir:'heißen', ihr:'heißt', sie:'heißen' },
     past:{ aux:'haben', pp:'geheißen', ich:'habe geheißen', du:'hast geheißen', er:'hat geheißen', wir:'haben geheißen', ihr:'habt geheißen', sie:'haben geheißen' },
     future:{ ich:'werde heißen', du:'wirst heißen', er:'wird heißen', wir:'werden heißen', ihr:'werdet heißen', sie:'werden heißen' },
+    praet:{ ich:'hieß', du:'hießt', er:'hieß', wir:'hießen', ihr:'hießt', sie:'hießen' },
+    konj2:{ ich:'würde heißen', du:'würdest heißen', er:'würde heißen', wir:'würden heißen', ihr:'würdet heißen', sie:'würden heißen' },
     examples:{ present:{ de:'Wie heißt du?', en:'What is your name?', es:'¿Cómo te llamas?' }, past:{ de:'Die Straße hat früher anders geheißen.', en:'The street used to have a different name.', es:'La calle antes tenía otro nombre.' }, future:{ de:'Wie wird es heißen?', en:'What will it be called?', es:'¿Cómo se llamará?' } }
   },
   { inf:'bleiben', en:'to stay/remain', es:'quedarse/permanecer', emoji:'🏠', type:'irregular',
     present:{ ich:'bleibe', du:'bleibst', er:'bleibt', wir:'bleiben', ihr:'bleibt', sie:'bleiben' },
     past:{ aux:'sein', pp:'geblieben', ich:'bin geblieben', du:'bist geblieben', er:'ist geblieben', wir:'sind geblieben', ihr:'seid geblieben', sie:'sind geblieben' },
     future:{ ich:'werde bleiben', du:'wirst bleiben', er:'wird bleiben', wir:'werden bleiben', ihr:'werdet bleiben', sie:'werden bleiben' },
+    praet:{ ich:'blieb', du:'bliebst', er:'blieb', wir:'blieben', ihr:'bliebt', sie:'blieben' },
+    konj2:{ ich:'bliebe', du:'bliebest', er:'bliebe', wir:'blieben', ihr:'bliebet', sie:'blieben' },
     examples:{ present:{ de:'Ich bleibe in Bern.', en:'I am staying in Bern.', es:'Me quedo en Berna.' }, past:{ de:'Sie ist zu Hause geblieben.', en:'She stayed home.', es:'Ella se quedó en casa.' }, future:{ de:'Wie lange wirst du bleiben?', en:'How long will you stay?', es:'¿Cuánto tiempo te quedarás?' } }
   },
   { inf:'sterben', en:'to die', es:'morir', emoji:'🕯️', type:'irregular',
     present:{ ich:'sterbe', du:'stirbst', er:'stirbt', wir:'sterben', ihr:'sterbt', sie:'sterben' },
     past:{ aux:'sein', pp:'gestorben', ich:'bin gestorben', du:'bist gestorben', er:'ist gestorben', wir:'sind gestorben', ihr:'seid gestorben', sie:'sind gestorben' },
     future:{ ich:'werde sterben', du:'wirst sterben', er:'wird sterben', wir:'werden sterben', ihr:'werdet sterben', sie:'werden sterben' },
+    praet:{ ich:'starb', du:'starbst', er:'starb', wir:'starben', ihr:'starbt', sie:'starben' },
+    konj2:{ ich:'stürbe', du:'stürbest', er:'stürbe', wir:'stürben', ihr:'stürbet', sie:'stürben' },
     examples:{ present:{ de:'Die Pflanze stirbt.', en:'The plant is dying.', es:'La planta se muere.' }, past:{ de:'Einstein ist 1955 gestorben.', en:'Einstein died in 1955.', es:'Einstein murió en 1955.' }, future:{ de:'Die Batterie wird sterben.', en:'The battery will die.', es:'La batería se morirá.' } }
   },
   { inf:'leben', en:'to live', es:'vivir', emoji:'💚', type:'regular',
     present:{ ich:'lebe', du:'lebst', er:'lebt', wir:'leben', ihr:'lebt', sie:'leben' },
     past:{ aux:'haben', pp:'gelebt', ich:'habe gelebt', du:'hast gelebt', er:'hat gelebt', wir:'haben gelebt', ihr:'habt gelebt', sie:'haben gelebt' },
     future:{ ich:'werde leben', du:'wirst leben', er:'wird leben', wir:'werden leben', ihr:'werdet leben', sie:'werden leben' },
+    praet:{ ich:'lebte', du:'lebtest', er:'lebte', wir:'lebten', ihr:'lebtet', sie:'lebten' },
+    konj2:{ ich:'würde leben', du:'würdest leben', er:'würde leben', wir:'würden leben', ihr:'würdet leben', sie:'würden leben' },
     examples:{ present:{ de:'Ich lebe seit 2 Jahren in Bern.', en:'I have been living in Bern for 2 years.', es:'Vivo en Berna desde hace 2 años.' }, past:{ de:'Einstein hat in Bern gelebt.', en:'Einstein lived in Bern.', es:'Einstein vivió en Berna.' }, future:{ de:'Ich werde hier leben.', en:'I will live here.', es:'Viviré aquí.' } }
   },
   { inf:'fühlen', en:'to feel', es:'sentir', emoji:'💗', type:'regular',
     present:{ ich:'fühle', du:'fühlst', er:'fühlt', wir:'fühlen', ihr:'fühlt', sie:'fühlen' },
     past:{ aux:'haben', pp:'gefühlt', ich:'habe gefühlt', du:'hast gefühlt', er:'hat gefühlt', wir:'haben gefühlt', ihr:'habt gefühlt', sie:'haben gefühlt' },
     future:{ ich:'werde fühlen', du:'wirst fühlen', er:'wird fühlen', wir:'werden fühlen', ihr:'werdet fühlen', sie:'werden fühlen' },
+    praet:{ ich:'fühlte', du:'fühltest', er:'fühlte', wir:'fühlten', ihr:'fühltet', sie:'fühlten' },
+    konj2:{ ich:'würde fühlen', du:'würdest fühlen', er:'würde fühlen', wir:'würden fühlen', ihr:'würdet fühlen', sie:'würden fühlen' },
     examples:{ present:{ de:'Ich fühle mich wohl in Bern.', en:'I feel comfortable in Bern.', es:'Me siento bien en Berna.' }, past:{ de:'Ich habe mich krank gefühlt.', en:'I felt sick.', es:'Me sentí enfermo.' }, future:{ de:'Du wirst dich besser fühlen.', en:'You will feel better.', es:'Te sentirás mejor.' } }
   },
   { inf:'reden', en:'to talk', es:'hablar/charlar', emoji:'🗣️', type:'regular',
     present:{ ich:'rede', du:'redest', er:'redet', wir:'reden', ihr:'redet', sie:'reden' },
     past:{ aux:'haben', pp:'geredet', ich:'habe geredet', du:'hast geredet', er:'hat geredet', wir:'haben geredet', ihr:'habt geredet', sie:'haben geredet' },
     future:{ ich:'werde reden', du:'wirst reden', er:'wird reden', wir:'werden reden', ihr:'werdet reden', sie:'werden reden' },
+    praet:{ ich:'redete', du:'redetest', er:'redete', wir:'redeten', ihr:'redetet', sie:'redeten' },
+    konj2:{ ich:'würde reden', du:'würdest reden', er:'würde reden', wir:'würden reden', ihr:'würdet reden', sie:'würden reden' },
     examples:{ present:{ de:'Wir reden auf Deutsch.', en:'We talk in German.', es:'Hablamos en alemán.' }, past:{ de:'Sie haben lange geredet.', en:'They talked for a long time.', es:'Hablaron por mucho tiempo.' }, future:{ de:'Wir müssen reden.', en:'We need to talk.', es:'Tenemos que hablar.' } }
   },
   { inf:'lächeln', en:'to smile', es:'sonreír', emoji:'😊', type:'regular',
     present:{ ich:'lächle', du:'lächelst', er:'lächelt', wir:'lächeln', ihr:'lächelt', sie:'lächeln' },
     past:{ aux:'haben', pp:'gelächelt', ich:'habe gelächelt', du:'hast gelächelt', er:'hat gelächelt', wir:'haben gelächelt', ihr:'habt gelächelt', sie:'haben gelächelt' },
     future:{ ich:'werde lächeln', du:'wirst lächeln', er:'wird lächeln', wir:'werden lächeln', ihr:'werdet lächeln', sie:'werden lächeln' },
+    praet:{ ich:'lächelte', du:'lächeltest', er:'lächelte', wir:'lächelten', ihr:'lächeltet', sie:'lächelten' },
+    konj2:{ ich:'würde lächeln', du:'würdest lächeln', er:'würde lächeln', wir:'würden lächeln', ihr:'würdet lächeln', sie:'würden lächeln' },
     examples:{ present:{ de:'Sie lächelt immer.', en:'She always smiles.', es:'Ella siempre sonríe.' }, past:{ de:'Das Kind hat gelächelt.', en:'The child smiled.', es:'El niño sonrió.' }, future:{ de:'Du wirst lächeln.', en:'You will smile.', es:'Sonreirás.' } }
   },
   { inf:'lachen', en:'to laugh', es:'reírse', emoji:'😂', type:'regular',
     present:{ ich:'lache', du:'lachst', er:'lacht', wir:'lachen', ihr:'lacht', sie:'lachen' },
     past:{ aux:'haben', pp:'gelacht', ich:'habe gelacht', du:'hast gelacht', er:'hat gelacht', wir:'haben gelacht', ihr:'habt gelacht', sie:'haben gelacht' },
     future:{ ich:'werde lachen', du:'wirst lachen', er:'wird lachen', wir:'werden lachen', ihr:'werdet lachen', sie:'werden lachen' },
+    praet:{ ich:'lachte', du:'lachtest', er:'lachte', wir:'lachten', ihr:'lachtet', sie:'lachten' },
+    konj2:{ ich:'würde lachen', du:'würdest lachen', er:'würde lachen', wir:'würden lachen', ihr:'würdet lachen', sie:'würden lachen' },
     examples:{ present:{ de:'Wir lachen viel zusammen.', en:'We laugh a lot together.', es:'Nos reímos mucho juntos.' }, past:{ de:'Alle haben gelacht.', en:'Everyone laughed.', es:'Todos se rieron.' }, future:{ de:'Du wirst lachen!', en:'You will laugh!', es:'¡Te reirás!' } }
   },
   { inf:'weinen', en:'to cry', es:'llorar', emoji:'😢', type:'regular',
     present:{ ich:'weine', du:'weinst', er:'weint', wir:'weinen', ihr:'weint', sie:'weinen' },
     past:{ aux:'haben', pp:'geweint', ich:'habe geweint', du:'hast geweint', er:'hat geweint', wir:'haben geweint', ihr:'habt geweint', sie:'haben geweint' },
     future:{ ich:'werde weinen', du:'wirst weinen', er:'wird weinen', wir:'werden weinen', ihr:'werdet weinen', sie:'werden weinen' },
+    praet:{ ich:'weinte', du:'weintest', er:'weinte', wir:'weinten', ihr:'weintet', sie:'weinten' },
+    konj2:{ ich:'würde weinen', du:'würdest weinen', er:'würde weinen', wir:'würden weinen', ihr:'würdet weinen', sie:'würden weinen' },
     examples:{ present:{ de:'Das Kind weint.', en:'The child is crying.', es:'El niño llora.' }, past:{ de:'Sie hat vor Freude geweint.', en:'She cried with joy.', es:'Ella lloró de alegría.' }, future:{ de:'Niemand wird weinen.', en:'Nobody will cry.', es:'Nadie llorará.' } }
   },
   { inf:'kochen', en:'to cook', es:'cocinar', emoji:'🍳', type:'regular',
     present:{ ich:'koche', du:'kochst', er:'kocht', wir:'kochen', ihr:'kocht', sie:'kochen' },
     past:{ aux:'haben', pp:'gekocht', ich:'habe gekocht', du:'hast gekocht', er:'hat gekocht', wir:'haben gekocht', ihr:'habt gekocht', sie:'haben gekocht' },
     future:{ ich:'werde kochen', du:'wirst kochen', er:'wird kochen', wir:'werden kochen', ihr:'werdet kochen', sie:'werden kochen' },
+    praet:{ ich:'kochte', du:'kochtest', er:'kochte', wir:'kochten', ihr:'kochtet', sie:'kochten' },
+    konj2:{ ich:'würde kochen', du:'würdest kochen', er:'würde kochen', wir:'würden kochen', ihr:'würdet kochen', sie:'würden kochen' },
     examples:{ present:{ de:'Ich koche Rösti.', en:'I am cooking Rösti.', es:'Cocino Rösti.' }, past:{ de:'Sie hat für alle gekocht.', en:'She cooked for everyone.', es:'Ella cocinó para todos.' }, future:{ de:'Ich werde heute kochen.', en:'I will cook today.', es:'Cocinaré hoy.' } }
   },
   { inf:'waschen', en:'to wash', es:'lavar', emoji:'🧼', type:'irregular',
     present:{ ich:'wasche', du:'wäschst', er:'wäscht', wir:'waschen', ihr:'wascht', sie:'waschen' },
     past:{ aux:'haben', pp:'gewaschen', ich:'habe gewaschen', du:'hast gewaschen', er:'hat gewaschen', wir:'haben gewaschen', ihr:'habt gewaschen', sie:'haben gewaschen' },
     future:{ ich:'werde waschen', du:'wirst waschen', er:'wird waschen', wir:'werden waschen', ihr:'werdet waschen', sie:'werden waschen' },
+    praet:{ ich:'wusch', du:'wuschst', er:'wusch', wir:'wuschen', ihr:'wuscht', sie:'wuschen' },
+    konj2:{ ich:'würde waschen', du:'würdest waschen', er:'würde waschen', wir:'würden waschen', ihr:'würdet waschen', sie:'würden waschen' },
     examples:{ present:{ de:'Ich wasche die Wäsche.', en:'I am doing laundry.', es:'Lavo la ropa.' }, past:{ de:'Hast du dir die Hände gewaschen?', en:'Did you wash your hands?', es:'¿Te lavaste las manos?' }, future:{ de:'Ich werde das Auto waschen.', en:'I will wash the car.', es:'Lavaré el carro.' } }
   },
   { inf:'putzen', en:'to clean/brush', es:'limpiar/cepillar', emoji:'🧹', type:'regular',
     present:{ ich:'putze', du:'putzt', er:'putzt', wir:'putzen', ihr:'putzt', sie:'putzen' },
     past:{ aux:'haben', pp:'geputzt', ich:'habe geputzt', du:'hast geputzt', er:'hat geputzt', wir:'haben geputzt', ihr:'habt geputzt', sie:'haben geputzt' },
     future:{ ich:'werde putzen', du:'wirst putzen', er:'wird putzen', wir:'werden putzen', ihr:'werdet putzen', sie:'werden putzen' },
+    praet:{ ich:'putzte', du:'putztest', er:'putzte', wir:'putzten', ihr:'putztet', sie:'putzten' },
+    konj2:{ ich:'würde putzen', du:'würdest putzen', er:'würde putzen', wir:'würden putzen', ihr:'würdet putzen', sie:'würden putzen' },
     examples:{ present:{ de:'Ich putze die Wohnung.', en:'I am cleaning the apartment.', es:'Limpio el apartamento.' }, past:{ de:'Sie hat Zähne geputzt.', en:'She brushed her teeth.', es:'Ella se cepilló los dientes.' }, future:{ de:'Wir werden putzen.', en:'We will clean.', es:'Limpiaremos.' } }
   },
   { inf:'aufräumen', en:'to tidy up', es:'ordenar/recoger', emoji:'🧺', type:'regular',
     present:{ ich:'räume auf', du:'räumst auf', er:'räumt auf', wir:'räumen auf', ihr:'räumt auf', sie:'räumen auf' },
     past:{ aux:'haben', pp:'aufgeräumt', ich:'habe aufgeräumt', du:'hast aufgeräumt', er:'hat aufgeräumt', wir:'haben aufgeräumt', ihr:'habt aufgeräumt', sie:'haben aufgeräumt' },
     future:{ ich:'werde aufräumen', du:'wirst aufräumen', er:'wird aufräumen', wir:'werden aufräumen', ihr:'werdet aufräumen', sie:'werden aufräumen' },
+    praet:{ ich:'räumte auf', du:'räumtest auf', er:'räumte auf', wir:'räumten auf', ihr:'räumtet auf', sie:'räumten auf' },
+    konj2:{ ich:'würde aufräumen', du:'würdest aufräumen', er:'würde aufräumen', wir:'würden aufräumen', ihr:'würdet aufräumen', sie:'würden aufräumen' },
     examples:{ present:{ de:'Räum dein Zimmer auf!', en:'Clean up your room!', es:'¡Ordena tu cuarto!' }, past:{ de:'Ich habe aufgeräumt.', en:'I tidied up.', es:'Ordené.' }, future:{ de:'Ich werde aufräumen.', en:'I will tidy up.', es:'Ordenaré.' } }
   },
   { inf:'einschlafen', en:'to fall asleep', es:'dormirse', emoji:'😪', type:'irregular',
     present:{ ich:'schlafe ein', du:'schläfst ein', er:'schläft ein', wir:'schlafen ein', ihr:'schlaft ein', sie:'schlafen ein' },
     past:{ aux:'sein', pp:'eingeschlafen', ich:'bin eingeschlafen', du:'bist eingeschlafen', er:'ist eingeschlafen', wir:'sind eingeschlafen', ihr:'seid eingeschlafen', sie:'sind eingeschlafen' },
     future:{ ich:'werde einschlafen', du:'wirst einschlafen', er:'wird einschlafen', wir:'werden einschlafen', ihr:'werdet einschlafen', sie:'werden einschlafen' },
+    praet:{ ich:'schlief ein', du:'schliefst ein', er:'schlief ein', wir:'schliefen ein', ihr:'schlieft ein', sie:'schliefen ein' },
+    konj2:{ ich:'würde einschlafen', du:'würdest einschlafen', er:'würde einschlafen', wir:'würden einschlafen', ihr:'würdet einschlafen', sie:'würden einschlafen' },
     examples:{ present:{ de:'Das Baby schläft ein.', en:'The baby is falling asleep.', es:'El bebé se duerme.' }, past:{ de:'Er ist im Zug eingeschlafen.', en:'He fell asleep on the train.', es:'Él se durmió en el tren.' }, future:{ de:'Du wirst schnell einschlafen.', en:'You will fall asleep quickly.', es:'Te dormirás rápido.' } }
   },
   { inf:'aufwachen', en:'to wake up', es:'despertarse', emoji:'⏰', type:'regular',
     present:{ ich:'wache auf', du:'wachst auf', er:'wacht auf', wir:'wachen auf', ihr:'wacht auf', sie:'wachen auf' },
     past:{ aux:'sein', pp:'aufgewacht', ich:'bin aufgewacht', du:'bist aufgewacht', er:'ist aufgewacht', wir:'sind aufgewacht', ihr:'seid aufgewacht', sie:'sind aufgewacht' },
     future:{ ich:'werde aufwachen', du:'wirst aufwachen', er:'wird aufwachen', wir:'werden aufwachen', ihr:'werdet aufwachen', sie:'werden aufwachen' },
+    praet:{ ich:'wachte auf', du:'wachtest auf', er:'wachte auf', wir:'wachten auf', ihr:'wachtet auf', sie:'wachten auf' },
+    konj2:{ ich:'würde aufwachen', du:'würdest aufwachen', er:'würde aufwachen', wir:'würden aufwachen', ihr:'würdet aufwachen', sie:'würden aufwachen' },
     examples:{ present:{ de:'Ich wache um 7 auf.', en:'I wake up at 7.', es:'Me despierto a las 7.' }, past:{ de:'Sie ist früh aufgewacht.', en:'She woke up early.', es:'Ella se despertó temprano.' }, future:{ de:'Du wirst pünktlich aufwachen.', en:'You will wake up on time.', es:'Te despertarás a tiempo.' } }
   },
   { inf:'frühstücken', en:'to have breakfast', es:'desayunar', emoji:'🥐', type:'regular',
     present:{ ich:'frühstücke', du:'frühstückst', er:'frühstückt', wir:'frühstücken', ihr:'frühstückt', sie:'frühstücken' },
     past:{ aux:'haben', pp:'gefrühstückt', ich:'habe gefrühstückt', du:'hast gefrühstückt', er:'hat gefrühstückt', wir:'haben gefrühstückt', ihr:'habt gefrühstückt', sie:'haben gefrühstückt' },
     future:{ ich:'werde frühstücken', du:'wirst frühstücken', er:'wird frühstücken', wir:'werden frühstücken', ihr:'werdet frühstücken', sie:'werden frühstücken' },
+    praet:{ ich:'frühstückte', du:'frühstücktest', er:'frühstückte', wir:'frühstückten', ihr:'frühstücktet', sie:'frühstückten' },
+    konj2:{ ich:'würde frühstücken', du:'würdest frühstücken', er:'würde frühstücken', wir:'würden frühstücken', ihr:'würdet frühstücken', sie:'würden frühstücken' },
     examples:{ present:{ de:'Ich frühstücke im Café.', en:'I have breakfast at the café.', es:'Desayuno en el café.' }, past:{ de:'Hast du gefrühstückt?', en:'Did you have breakfast?', es:'¿Desayunaste?' }, future:{ de:'Wir werden zusammen frühstücken.', en:'We will have breakfast together.', es:'Desayunaremos juntos.' } }
   },
   { inf:'spazieren gehen', en:'to go for a walk', es:'dar un paseo', emoji:'🚶', type:'irregular',
     present:{ ich:'gehe spazieren', du:'gehst spazieren', er:'geht spazieren', wir:'gehen spazieren', ihr:'geht spazieren', sie:'gehen spazieren' },
     past:{ aux:'sein', pp:'spazieren gegangen', ich:'bin spazieren gegangen', du:'bist spazieren gegangen', er:'ist spazieren gegangen', wir:'sind spazieren gegangen', ihr:'seid spazieren gegangen', sie:'sind spazieren gegangen' },
     future:{ ich:'werde spazieren gehen', du:'wirst spazieren gehen', er:'wird spazieren gehen', wir:'werden spazieren gehen', ihr:'werdet spazieren gehen', sie:'werden spazieren gehen' },
+    praet:{ ich:'ging spazieren', du:'gingst spazieren', er:'ging spazieren', wir:'gingen spazieren', ihr:'gingt spazieren', sie:'gingen spazieren' },
+    konj2:{ ich:'würde spazieren gehen', du:'würdest spazieren gehen', er:'würde spazieren gehen', wir:'würden spazieren gehen', ihr:'würdet spazieren gehen', sie:'würden spazieren gehen' },
     examples:{ present:{ de:'Wir gehen am Aare spazieren.', en:'We go for a walk along the Aare.', es:'Paseamos por el Aare.' }, past:{ de:'Ich bin durch die Altstadt spazieren gegangen.', en:'I walked through the old town.', es:'Caminé por la ciudad vieja.' }, future:{ de:'Wir werden spazieren gehen.', en:'We will go for a walk.', es:'Daremos un paseo.' } }
   },
   { inf:'tanzen', en:'to dance', es:'bailar', emoji:'💃', type:'regular',
     present:{ ich:'tanze', du:'tanzt', er:'tanzt', wir:'tanzen', ihr:'tanzt', sie:'tanzen' },
     past:{ aux:'haben', pp:'getanzt', ich:'habe getanzt', du:'hast getanzt', er:'hat getanzt', wir:'haben getanzt', ihr:'habt getanzt', sie:'haben getanzt' },
     future:{ ich:'werde tanzen', du:'wirst tanzen', er:'wird tanzen', wir:'werden tanzen', ihr:'werdet tanzen', sie:'werden tanzen' },
+    praet:{ ich:'tanzte', du:'tanztest', er:'tanzte', wir:'tanzten', ihr:'tanztet', sie:'tanzten' },
+    konj2:{ ich:'würde tanzen', du:'würdest tanzen', er:'würde tanzen', wir:'würden tanzen', ihr:'würdet tanzen', sie:'würden tanzen' },
     examples:{ present:{ de:'Wir tanzen auf dem Gurtenfestival.', en:'We dance at the Gurten Festival.', es:'Bailamos en el festival del Gurten.' }, past:{ de:'Sie hat die ganze Nacht getanzt.', en:'She danced all night.', es:'Bailó toda la noche.' }, future:{ de:'Wirst du tanzen?', en:'Will you dance?', es:'¿Bailarás?' } }
   },
   { inf:'singen', en:'to sing', es:'cantar', emoji:'🎵', type:'irregular',
     present:{ ich:'singe', du:'singst', er:'singt', wir:'singen', ihr:'singt', sie:'singen' },
     past:{ aux:'haben', pp:'gesungen', ich:'habe gesungen', du:'hast gesungen', er:'hat gesungen', wir:'haben gesungen', ihr:'habt gesungen', sie:'haben gesungen' },
     future:{ ich:'werde singen', du:'wirst singen', er:'wird singen', wir:'werden singen', ihr:'werdet singen', sie:'werden singen' },
+    praet:{ ich:'sang', du:'sangst', er:'sang', wir:'sangen', ihr:'sangt', sie:'sangen' },
+    konj2:{ ich:'sänge', du:'sängest', er:'sänge', wir:'sängen', ihr:'sänget', sie:'sängen' },
     examples:{ present:{ de:'Die Kinder singen ein Lied.', en:'The children sing a song.', es:'Los niños cantan una canción.' }, past:{ de:'Sie hat schön gesungen.', en:'She sang beautifully.', es:'Ella cantó hermoso.' }, future:{ de:'Wir werden zusammen singen.', en:'We will sing together.', es:'Cantaremos juntos.' } }
   },
   { inf:'fotografieren', en:'to photograph', es:'fotografiar', emoji:'📸', type:'regular',
     present:{ ich:'fotografiere', du:'fotografierst', er:'fotografiert', wir:'fotografieren', ihr:'fotografiert', sie:'fotografieren' },
     past:{ aux:'haben', pp:'fotografiert', ich:'habe fotografiert', du:'hast fotografiert', er:'hat fotografiert', wir:'haben fotografiert', ihr:'habt fotografiert', sie:'haben fotografiert' },
     future:{ ich:'werde fotografieren', du:'wirst fotografieren', er:'wird fotografieren', wir:'werden fotografieren', ihr:'werdet fotografieren', sie:'werden fotografieren' },
+    praet:{ ich:'fotografierte', du:'fotografiertest', er:'fotografierte', wir:'fotografierten', ihr:'fotografiertet', sie:'fotografierten' },
+    konj2:{ ich:'würde fotografieren', du:'würdest fotografieren', er:'würde fotografieren', wir:'würden fotografieren', ihr:'würdet fotografieren', sie:'würden fotografieren' },
     examples:{ present:{ de:'Ich fotografiere den Zytglogge.', en:'I photograph the Zytglogge.', es:'Fotografío el Zytglogge.' }, past:{ de:'Wir haben die Alpen fotografiert.', en:'We photographed the Alps.', es:'Fotografiamos los Alpes.' }, future:{ de:'Ich werde viel fotografieren.', en:'I will take lots of photos.', es:'Fotografiaré mucho.' } }
   },
   { inf:'reisen', en:'to travel', es:'viajar', emoji:'✈️', type:'regular',
     present:{ ich:'reise', du:'reist', er:'reist', wir:'reisen', ihr:'reist', sie:'reisen' },
     past:{ aux:'sein', pp:'gereist', ich:'bin gereist', du:'bist gereist', er:'ist gereist', wir:'sind gereist', ihr:'seid gereist', sie:'sind gereist' },
     future:{ ich:'werde reisen', du:'wirst reisen', er:'wird reisen', wir:'werden reisen', ihr:'werdet reisen', sie:'werden reisen' },
+    praet:{ ich:'reiste', du:'reistest', er:'reiste', wir:'reisten', ihr:'reistet', sie:'reisten' },
+    konj2:{ ich:'würde reisen', du:'würdest reisen', er:'würde reisen', wir:'würden reisen', ihr:'würdet reisen', sie:'würden reisen' },
     examples:{ present:{ de:'Ich reise viel in der Schweiz.', en:'I travel a lot in Switzerland.', es:'Viajo mucho por Suiza.' }, past:{ de:'Wir sind nach Zürich gereist.', en:'We traveled to Zurich.', es:'Viajamos a Zúrich.' }, future:{ de:'Wirst du nach Hause reisen?', en:'Will you travel home?', es:'¿Viajarás a casa?' } }
   },
   { inf:'fliegen', en:'to fly', es:'volar', emoji:'✈️', type:'irregular',
     present:{ ich:'fliege', du:'fliegst', er:'fliegt', wir:'fliegen', ihr:'fliegt', sie:'fliegen' },
     past:{ aux:'sein', pp:'geflogen', ich:'bin geflogen', du:'bist geflogen', er:'ist geflogen', wir:'sind geflogen', ihr:'seid geflogen', sie:'sind geflogen' },
     future:{ ich:'werde fliegen', du:'wirst fliegen', er:'wird fliegen', wir:'werden fliegen', ihr:'werdet fliegen', sie:'werden fliegen' },
+    praet:{ ich:'flog', du:'flogst', er:'flog', wir:'flogen', ihr:'flogt', sie:'flogen' },
+    konj2:{ ich:'flöge', du:'flögest', er:'flöge', wir:'flögen', ihr:'flöget', sie:'flögen' },
     examples:{ present:{ de:'Ich fliege nach Hause.', en:'I am flying home.', es:'Vuelo a casa.' }, past:{ de:'Sie ist nach Kolumbien geflogen.', en:'She flew to Colombia.', es:'Ella voló a Colombia.' }, future:{ de:'Wir werden fliegen.', en:'We will fly.', es:'Volaremos.' } }
   },
   { inf:'packen', en:'to pack', es:'empacar', emoji:'🧳', type:'regular',
     present:{ ich:'packe', du:'packst', er:'packt', wir:'packen', ihr:'packt', sie:'packen' },
     past:{ aux:'haben', pp:'gepackt', ich:'habe gepackt', du:'hast gepackt', er:'hat gepackt', wir:'haben gepackt', ihr:'habt gepackt', sie:'haben gepackt' },
     future:{ ich:'werde packen', du:'wirst packen', er:'wird packen', wir:'werden packen', ihr:'werdet packen', sie:'werden packen' },
+    praet:{ ich:'packte', du:'packtest', er:'packte', wir:'packten', ihr:'packtet', sie:'packten' },
+    konj2:{ ich:'würde packen', du:'würdest packen', er:'würde packen', wir:'würden packen', ihr:'würdet packen', sie:'würden packen' },
     examples:{ present:{ de:'Ich packe meinen Koffer.', en:'I am packing my suitcase.', es:'Empaco mi maleta.' }, past:{ de:'Hast du alles gepackt?', en:'Did you pack everything?', es:'¿Empacaste todo?' }, future:{ de:'Ich werde morgen packen.', en:'I will pack tomorrow.', es:'Empacaré mañana.' } }
   },
   { inf:'vergessen', en:'to forget', es:'olvidar', emoji:'🤔', type:'irregular',
     present:{ ich:'vergesse', du:'vergisst', er:'vergisst', wir:'vergessen', ihr:'vergesst', sie:'vergessen' },
     past:{ aux:'haben', pp:'vergessen', ich:'habe vergessen', du:'hast vergessen', er:'hat vergessen', wir:'haben vergessen', ihr:'habt vergessen', sie:'haben vergessen' },
     future:{ ich:'werde vergessen', du:'wirst vergessen', er:'wird vergessen', wir:'werden vergessen', ihr:'werdet vergessen', sie:'werden vergessen' },
+    praet:{ ich:'vergaß', du:'vergaßt', er:'vergaß', wir:'vergaßen', ihr:'vergaßt', sie:'vergaßen' },
+    konj2:{ ich:'vergäße', du:'vergäßest', er:'vergäße', wir:'vergäßen', ihr:'vergäßet', sie:'vergäßen' },
     examples:{ present:{ de:'Ich vergesse immer die Wörter.', en:'I always forget the words.', es:'Siempre olvido las palabras.' }, past:{ de:'Ich habe das Ticket vergessen.', en:'I forgot the ticket.', es:'Olvidé el boleto.' }, future:{ de:'Du wirst es nicht vergessen.', en:'You won\'t forget it.', es:'No lo olvidarás.' } }
   },
   { inf:'erinnern', en:'to remember', es:'recordar', emoji:'🧠', type:'regular',
     present:{ ich:'erinnere', du:'erinnerst', er:'erinnert', wir:'erinnern', ihr:'erinnert', sie:'erinnern' },
     past:{ aux:'haben', pp:'erinnert', ich:'habe erinnert', du:'hast erinnert', er:'hat erinnert', wir:'haben erinnert', ihr:'habt erinnert', sie:'haben erinnert' },
     future:{ ich:'werde erinnern', du:'wirst erinnern', er:'wird erinnern', wir:'werden erinnern', ihr:'werdet erinnern', sie:'werden erinnern' },
+    praet:{ ich:'erinnerte', du:'erinnertest', er:'erinnerte', wir:'erinnerten', ihr:'erinnertet', sie:'erinnerten' },
+    konj2:{ ich:'würde erinnern', du:'würdest erinnern', er:'würde erinnern', wir:'würden erinnern', ihr:'würdet erinnern', sie:'würden erinnern' },
     examples:{ present:{ de:'Ich erinnere mich an Bern.', en:'I remember Bern.', es:'Recuerdo Berna.' }, past:{ de:'Erinnerst du dich?', en:'Do you remember?', es:'¿Lo recuerdas?' }, future:{ de:'Du wirst dich erinnern.', en:'You will remember.', es:'Lo recordarás.' } }
   },
   { inf:'gewinnen', en:'to win', es:'ganar', emoji:'🏆', type:'irregular',
     present:{ ich:'gewinne', du:'gewinnst', er:'gewinnt', wir:'gewinnen', ihr:'gewinnt', sie:'gewinnen' },
     past:{ aux:'haben', pp:'gewonnen', ich:'habe gewonnen', du:'hast gewonnen', er:'hat gewonnen', wir:'haben gewonnen', ihr:'habt gewonnen', sie:'haben gewonnen' },
     future:{ ich:'werde gewinnen', du:'wirst gewinnen', er:'wird gewinnen', wir:'werden gewinnen', ihr:'werdet gewinnen', sie:'werden gewinnen' },
+    praet:{ ich:'gewann', du:'gewannst', er:'gewann', wir:'gewannen', ihr:'gewannt', sie:'gewannen' },
+    konj2:{ ich:'gewänne', du:'gewännest', er:'gewänne', wir:'gewännen', ihr:'gewännet', sie:'gewännen' },
     examples:{ present:{ de:'Die Schweiz gewinnt.', en:'Switzerland wins.', es:'Suiza gana.' }, past:{ de:'Wir haben gewonnen!', en:'We won!', es:'¡Ganamos!' }, future:{ de:'Wer wird gewinnen?', en:'Who will win?', es:'¿Quién ganará?' } }
   },
   { inf:'verlieren', en:'to lose', es:'perder', emoji:'😔', type:'irregular',
     present:{ ich:'verliere', du:'verlierst', er:'verliert', wir:'verlieren', ihr:'verliert', sie:'verlieren' },
     past:{ aux:'haben', pp:'verloren', ich:'habe verloren', du:'hast verloren', er:'hat verloren', wir:'haben verloren', ihr:'habt verloren', sie:'haben verloren' },
     future:{ ich:'werde verlieren', du:'wirst verlieren', er:'wird verlieren', wir:'werden verlieren', ihr:'werdet verlieren', sie:'werden verlieren' },
+    praet:{ ich:'verlor', du:'verlorst', er:'verlor', wir:'verloren', ihr:'verlort', sie:'verloren' },
+    konj2:{ ich:'verlöre', du:'verlörest', er:'verlöre', wir:'verlören', ihr:'verlöret', sie:'verlören' },
     examples:{ present:{ de:'Ich verliere immer meine Schlüssel.', en:'I always lose my keys.', es:'Siempre pierdo mis llaves.' }, past:{ de:'Er hat seinen Job verloren.', en:'He lost his job.', es:'Él perdió su trabajo.' }, future:{ de:'Du wirst nicht verlieren.', en:'You will not lose.', es:'No perderás.' } }
   },
   { inf:'sparen', en:'to save (money)', es:'ahorrar', emoji:'💰', type:'regular',
     present:{ ich:'spare', du:'sparst', er:'spart', wir:'sparen', ihr:'spart', sie:'sparen' },
     past:{ aux:'haben', pp:'gespart', ich:'habe gespart', du:'hast gespart', er:'hat gespart', wir:'haben gespart', ihr:'habt gespart', sie:'haben gespart' },
     future:{ ich:'werde sparen', du:'wirst sparen', er:'wird sparen', wir:'werden sparen', ihr:'werdet sparen', sie:'werden sparen' },
+    praet:{ ich:'sparte', du:'spartest', er:'sparte', wir:'sparten', ihr:'spartet', sie:'sparten' },
+    konj2:{ ich:'würde sparen', du:'würdest sparen', er:'würde sparen', wir:'würden sparen', ihr:'würdet sparen', sie:'würden sparen' },
     examples:{ present:{ de:'Ich spare für die Ferien.', en:'I am saving for vacation.', es:'Ahorro para las vacaciones.' }, past:{ de:'Wir haben viel gespart.', en:'We saved a lot.', es:'Ahorramos mucho.' }, future:{ de:'Ich werde mehr sparen.', en:'I will save more.', es:'Ahorraré más.' } }
   },
   { inf:'wechseln', en:'to change/switch', es:'cambiar', emoji:'🔄', type:'regular',
     present:{ ich:'wechsle', du:'wechselst', er:'wechselt', wir:'wechseln', ihr:'wechselt', sie:'wechseln' },
     past:{ aux:'haben', pp:'gewechselt', ich:'habe gewechselt', du:'hast gewechselt', er:'hat gewechselt', wir:'haben gewechselt', ihr:'habt gewechselt', sie:'haben gewechselt' },
     future:{ ich:'werde wechseln', du:'wirst wechseln', er:'wird wechseln', wir:'werden wechseln', ihr:'werdet wechseln', sie:'werden wechseln' },
+    praet:{ ich:'wechselte', du:'wechseltest', er:'wechselte', wir:'wechselten', ihr:'wechseltet', sie:'wechselten' },
+    konj2:{ ich:'würde wechseln', du:'würdest wechseln', er:'würde wechseln', wir:'würden wechseln', ihr:'würdet wechseln', sie:'würden wechseln' },
     examples:{ present:{ de:'Ich wechsle die Krankenkasse.', en:'I am switching health insurance.', es:'Cambio de seguro médico.' }, past:{ de:'Sie hat die Stelle gewechselt.', en:'She changed jobs.', es:'Ella cambió de trabajo.' }, future:{ de:'Ich werde die Linie wechseln.', en:'I will change lines.', es:'Cambiaré de línea.' } }
   },
   { inf:'studieren', en:'to study (university)', es:'estudiar (universidad)', emoji:'🎓', type:'regular',
     present:{ ich:'studiere', du:'studierst', er:'studiert', wir:'studieren', ihr:'studiert', sie:'studieren' },
     past:{ aux:'haben', pp:'studiert', ich:'habe studiert', du:'hast studiert', er:'hat studiert', wir:'haben studiert', ihr:'habt studiert', sie:'haben studiert' },
     future:{ ich:'werde studieren', du:'wirst studieren', er:'wird studieren', wir:'werden studieren', ihr:'werdet studieren', sie:'werden studieren' },
-    examples:{ present:{ de:'Ich studiere an der Uni Bern.', en:'I study at the University of Bern.', es:'Estudio en la Universidad de Berna.' }, past:{ de:'Einstein hat in Zürich studiert.', en:'Einstein studied in Zurich.', es:'Einstein estudió en Zúrich.' }, future:{ de:'Sie wird Medizin studieren.', en:'She will study medicine.', es:'Ella estudiará medicina.' } }
+    praet:{ ich:'studierte', du:'studiertest', er:'studierte', wir:'studierten', ihr:'studiertet', sie:'studierten' },
+    konj2:{ ich:'würde studieren', du:'würdest studieren', er:'würde studieren', wir:'würden studieren', ihr:'würdet studieren', sie:'würden studieren' },
+    examples:{ present:{ de:'Ich studiere an der Uni Bern.', en:'I study at the University of Bern.', es:'Estudio en la Universidad de Berna.' }, past:{ de:'Einstein hat in Zürich studiert.', en:'Einstein studied in Zurich.', es:'Einstein estudió en Zúrich.' }, future:{ de:'Sie wird Medizin studieren.', en:'She will study medicine.', es:'Ella estudiará medicina.' }, praet:{ de:'Sie studierte Medizin in Bern.', en:'She studied medicine in Bern.', es:'Estudió medicina en Berna.' }, konj2:{ de:'Ich würde gerne in Bern studieren.', en:'I would like to study in Bern.', es:'Me gustaría estudiar en Berna.' } }
   },
 ];
 
@@ -2164,22 +2338,22 @@ const TRACKS = {
     levels: [
       { id:'a1', name:'Mit Karte bitte!', emoji:'☕', sub:'Sobrevivir el día a día', locations:['altstadt','bahnhof','marit','post','cafe','aare_grammar','confiserie'] },
       { id:'a2', name:'Sobrevivo...', emoji:'🕯️', sub:'Hay luz al final del túnel', locations:['marzili','rosengarten','restaurant','baerenpark','munster','quartiere','velo','hidden_gems'] },
-      { id:'b1', name:'Veo luz!', emoji:'💡', sub:'¿Es el final del túnel?!', locations:['inselspital','migration','polizei','bundesplatz','bernmobil','bundeshaus','sport'] },
-      { id:'b2', name:'Nadie me saca de aquí', emoji:'🚇', sub:'Pruébame. YO VIVO aquí.', locations:['casino','munster','gurten','university','jobcenter','einstein'] },
+      { id:'b1', name:'Veo luz!', emoji:'💡', sub:'¿Es el final del túnel?!', locations:['inselspital','migration','bundeshaus','sport','einstein'] },
+      { id:'b2', name:'Nadie me saca de aquí', emoji:'🚇', sub:'Pruébame. YO VIVO aquí.', locations:['bundesplatz','gurten','polizei','bernmobil','casino_bern'] },
     ]
   },
   kinder: {
     name: 'Kinder in Bern',
     levels: [
       { id:'k1', name:'Babyccino bitte!', emoji:'☕', sub:'Primeros pasos con niños en Berna', locations:['kindercafe','spielplatz','kita','kibon','brocki'] },
-      { id:'k2', name:'Wir sind dabei!', emoji:'🛝', sub:'Ya nos manejamos', locations:['kinderarzt','schule','elterngruppe','libero','sport'] },
+      { id:'k2', name:'Wir sind dabei!', emoji:'🛝', sub:'Ya nos manejamos', locations:['kinderarzt','schule','elterngruppe'] },
     ]
   },
   work: {
     name: 'Work in Bern',
     levels: [
-      { id:'w1', name:'Grüezi, ich bin neu!', emoji:'👋', sub:'Primer día de trabajo', locations:['barista','server','supermarkt','reinigung','buero'] },
-      { id:'w2', name:'Ich kenne meine Rechte', emoji:'💪', sub:'Conozco mis derechos laborales', locations:['vertrag','uberstunden','kuendigung','bewerbung','interview'] },
+      { id:'w1', name:'Grüezi, ich bin neu!', emoji:'👋', sub:'Primer día de trabajo', locations:['barista','server','buero','supermarkt'] },
+      { id:'w2', name:'Ich kenne meine Rechte', emoji:'💪', sub:'Conozco mis derechos laborales', locations:['vertrag','bewerbung','kuendigung'] },
     ]
   }
 };
@@ -3823,6 +3997,841 @@ const LOCATIONS = {
     ]
   },
 
+  marzili: {
+    name:'Marzili & Aare', emoji:'🏊', sub:'Schwimmen · Sommer · A2',
+    track:'leben', level:'a2',
+    words:[
+      {word:'Freibad',artikel:'das',trans:'outdoor pool / piscina',tip:'Compuesto neutro → das'},
+      {word:'Badehose',artikel:'die',trans:'swim trunks / bañador',tip:'Compuesto femenino → die'},
+      {word:'Handtuch',artikel:'das',trans:'towel / toalla',tip:'Compuesto neutro → das'},
+      {word:'Sonnencreme',artikel:'die',trans:'sunscreen / protector solar',tip:'Compuesto femenino → die'},
+      {word:'Wickelfisch',artikel:'der',trans:'waterproof bag / bolsa impermeable',tip:'Ícono bernés → der'},
+      {word:'Strömung',artikel:'die',trans:'current / corriente',tip:'Termina en -ung → die'},
+      {word:'Liegewiese',artikel:'die',trans:'sunbathing lawn / pradera',tip:'Compuesto femenino → die'},
+      {word:'Sprungturm',artikel:'der',trans:'diving tower / trampolín',tip:'Compuesto masculino → der'},
+      {word:'Dusche',artikel:'die',trans:'shower / ducha',tip:'Termina en -e → die'},
+      {word:'Umkleide',artikel:'die',trans:'changing room / vestuario',tip:'Compuesto femenino → die'},
+      {word:'Eingang',artikel:'der',trans:'entrance / entrada',tip:'Compuesto masculino → der'},
+      {word:'Wassertemperatur',artikel:'die',trans:'water temperature',tip:'Compuesto femenino → die'},
+      {word:'Rettungsschwimmer',artikel:'der',trans:'lifeguard / socorrista',tip:'Compuesto masculino → der'},
+      {word:'Schwimmbrille',artikel:'die',trans:'goggles / gafas de natación',tip:'Compuesto femenino → die'},
+      {word:'Liegestuhl',artikel:'der',trans:'deck chair / tumbona',tip:'Compuesto masculino → der'},
+    ],
+    sentences:[
+      {s:'___ Marzili ist das beliebteste Freibad.',a:'das',trans:'El Marzili es la piscina más popular.'},
+      {s:'___ Strömung ist heute stark.',a:'die',trans:'La corriente está fuerte hoy.'},
+      {s:'___ Wickelfisch ist sehr praktisch.',a:'der',trans:'El Wickelfisch es muy práctico.'},
+      {s:'___ Wassertemperatur beträgt 20 Grad.',a:'die',trans:'La temperatura es 20 grados.'},
+      {s:'___ Liegewiese ist voll.',a:'die',trans:'La pradera está llena.'},
+      {s:'___ Eingang ist kostenlos.',a:'der',trans:'La entrada es gratuita.'},
+    ],
+    phrases:{
+      formal:[
+        {de:'Wie ist die Wassertemperatur heute?',es:'¿Cuál es la temperatura del agua?',en:'What is the water temperature today?',ctx:'Consulta aare.guru primero'},
+        {de:'Ist das Schwimmen hier sicher?',es:'¿Es seguro nadar aquí?',en:'Is swimming safe here?',ctx:'Siempre preguntar'},
+        {de:'Wo sind die Umkleidekabinen?',es:'¿Dónde están los vestuarios?',en:'Where are the changing rooms?',ctx:'En el Marzili'},
+        {de:'Gibt es einen Rettungsschwimmer?',es:'¿Hay socorrista?',en:'Is there a lifeguard?',ctx:'Importante'},
+        {de:'Darf man hier vom Turm springen?',es:'¿Se puede saltar desde la torre?',en:'Can you jump from the tower here?',ctx:'En el Sprungturm'},
+      ],
+      casual:[
+        {de:'Gömmer Aareschwumm mache?',es:'¿Vamos a nadar por el Aare?',en:'Shall we do the Aare swim?',ctx:'Bernés — el ritual del verano'},
+        {de:'Hesch de Wickelfisch?',es:'¿Tienes el Wickelfisch?',en:'Do you have the Wickelfisch?',ctx:'Bernés — imprescindible'},
+        {de:'D Strömi isch mega stark hüt!',es:'¡La corriente está muy fuerte!',en:'The current is super strong today!',ctx:'Bernés'},
+        {de:'Hesch aare.guru gluegt?',es:'¿Consultaste aare.guru?',en:'Did you check aare.guru?',ctx:'La app del verano'},
+        {de:'S Marzili isch gratis!',es:'¡El Marzili es gratis!',en:'The Marzili is free!',ctx:'Bernés'},
+      ]
+    },
+    culture:[
+      {emoji:'🏊',title:'El Marzili — la playa de Berna',text:'El Marzili es la piscina al aire libre más querida de Berna, directamente en el Aare. Entrada gratuita. En verano miles de berneses vienen a nadar y dejarse llevar por la corriente — el Aareschwumm. Abre de mayo a septiembre.',tag:'Verano'},
+      {emoji:'🎒',title:'El Wickelfisch — icono bernés',text:'El Wickelfisch es una bolsa impermeable con forma de pez para nadar por el Aare con tus cosas. Es el símbolo del verano en Berna. Lo venden en muchas tiendas de la ciudad.',tag:'Cultura local'},
+    ],
+    survival:[
+      {emoji:'📱',title:'aare.guru — obligatorio antes de nadar',text:'Antes de entrar al Aare, abre aare.guru. Te da la temperatura, velocidad de la corriente y pronóstico. Si la corriente supera 2.5 m/s o la temperatura es menor de 16°C — mejor no nadar.',tag:'Seguridad'},
+    ]
+  },
+  rosengarten: {
+    name:'Rosengarten & Aussicht', emoji:'🌹', sub:'Aussichtspunkt · Natur · A2',
+    track:'leben', level:'a2',
+    words:[
+      {word:'Rose',artikel:'die',trans:'rose / rosa',tip:'Termina en -e → die'},
+      {word:'Garten',artikel:'der',trans:'garden / jardín',tip:'Masculino → der'},
+      {word:'Aussicht',artikel:'die',trans:'view / vista',tip:'Compuesto femenino → die'},
+      {word:'Sonnenuntergang',artikel:'der',trans:'sunset / atardecer',tip:'Compuesto masculino → der'},
+      {word:'Alpen',artikel:'die',trans:'Alps / Alpes',tip:'Plural → die'},
+      {word:'Hügel',artikel:'der',trans:'hill / colina',tip:'Termina en -el → der'},
+      {word:'Bank',artikel:'die',trans:'bench / banco',tip:'Femenino → die'},
+      {word:'Blüte',artikel:'die',trans:'blossom / flor',tip:'Termina en -e → die'},
+      {word:'Duft',artikel:'der',trans:'scent / aroma',tip:'Masculino → der'},
+      {word:'Kiosk',artikel:'der',trans:'kiosk / quiosco',tip:'Masculino → der'},
+      {word:'Pétanque',artikel:'das',trans:'pétanque / petanca',tip:'Neutro → das'},
+      {word:'Stadtblick',artikel:'der',trans:'city view / vista de la ciudad',tip:'Compuesto masculino → der'},
+      {word:'Panorama',artikel:'das',trans:'panorama',tip:'Neutro → das'},
+      {word:'Spielplatz',artikel:'der',trans:'playground / parque infantil',tip:'Compuesto masculino → der'},
+      {word:'Restaurant',artikel:'das',trans:'restaurant',tip:'Termina en -ant → das'},
+    ],
+    sentences:[
+      {s:'___ Rosengarten ist wunderschön.',a:'der',trans:'El Rosengarten es precioso.'},
+      {s:'___ Aussicht auf die Alpen ist toll.',a:'die',trans:'La vista a los Alpes es genial.'},
+      {s:'___ Sonnenuntergang hier ist unvergesslich.',a:'der',trans:'El atardecer aquí es inolvidable.'},
+      {s:'___ Eintritt ist kostenlos.',a:'der',trans:'La entrada es gratuita.'},
+      {s:'___ Garten hat viele Rosensorten.',a:'der',trans:'El jardín tiene muchas variedades de rosas.'},
+      {s:'___ Restaurant hat eine schöne Terrasse.',a:'das',trans:'El restaurante tiene una terraza bonita.'},
+    ],
+    phrases:{
+      formal:[
+        {de:'Wann blühen die Rosen?',es:'¿Cuándo florecen las rosas?',en:'When do the roses bloom?',ctx:'Mayo-junio es la mejor época'},
+        {de:'Ist der Eintritt kostenlos?',es:'¿Es gratuita la entrada?',en:'Is entry free?',ctx:'Sí, siempre'},
+        {de:'Wie komme ich zum Rosengarten?',es:'¿Cómo llego al Rosengarten?',en:'How do I get to the Rosengarten?',ctx:'Bus 10 desde Bahnhof'},
+        {de:'Hat das Restaurant geöffnet?',es:'¿Está abierto el restaurante?',en:'Is the restaurant open?',ctx:'Rosengarten Restaurant'},
+        {de:'Von wo sieht man die Alpen am besten?',es:'¿Desde dónde se ven mejor los Alpes?',en:'Where is the best Alps view?',ctx:'Desde la Pläfe o Rosengarten'},
+      ],
+      casual:[
+        {de:'De Sunneuntergang isch heute unglaublich!',es:'¡El atardecer es increíble hoy!',en:'The sunset is incredible today!',ctx:'Bernés — el mejor plan de tarde'},
+        {de:'Gömmer go Pétanque spiele?',es:'¿Vamos a jugar petanca?',en:'Shall we play pétanque?',ctx:'Bernés — actividad clásica'},
+        {de:'S isch gratis und mega schön!',es:'¡Es gratis y súper bonito!',en:'It\'s free and super beautiful!',ctx:'Bernés'},
+        {de:'Hani dir gseit, dass de Goethe Bern gliebt het?',es:'¿Te dije que Goethe amó Berna?',en:'Did I tell you Goethe loved Bern?',ctx:'Dato cultural bernés'},
+        {de:'Mir bringed e Flasche Wii mit!',es:'¡Traemos una botella de vino!',en:'We\'re bringing a bottle of wine!',ctx:'Bernés — plan perfecto'},
+      ]
+    },
+    culture:[
+      {emoji:'🌹',title:'El Rosengarten — el balcón de Berna',text:'Jardín público con más de 200 variedades de rosas. La vista panorámica de la Altstadt, el Aare y los Alpes es probablemente la más hermosa de Berna. Entrada gratuita siempre.',tag:'Vista'},
+      {emoji:'🌅',title:'El mejor atardecer de Berna',text:'El Rosengarten es el mejor lugar para ver el atardecer en Berna. Cuando el sol cae detrás de los Alpes y tiñe el cielo de naranja, con la Altstadt abajo y el Aare brillando — es un momento que no se olvida.',tag:'Insider'},
+    ],
+    survival:[
+      {emoji:'🚌',title:'Cómo llegar',text:'Bus número 10 desde Bahnhof Bern hasta parada Rosengarten — 10 minutos. O a pie desde la Altstadt — 20 minutos. Abierto todo el año, gratuito siempre.',tag:'Transporte'},
+    ]
+  },
+  restaurant: {
+    name:'Restaurant & Essen gehen', emoji:'🍽️', sub:'Gastronomía · Bestellen · A2',
+    track:'leben', level:'a2',
+    words:[
+      {word:'Speisekarte',artikel:'die',trans:'menu / carta',tip:'Compuesto femenino → die'},
+      {word:'Vorspeise',artikel:'die',trans:'starter / entrada',tip:'Compuesto femenino → die'},
+      {word:'Hauptgericht',artikel:'das',trans:'main course / plato principal',tip:'Compuesto neutro → das'},
+      {word:'Nachspeise',artikel:'die',trans:'dessert / postre',tip:'Compuesto femenino → die'},
+      {word:'Tagesmenü',artikel:'das',trans:'daily menu / menú del día',tip:'Compuesto neutro → das'},
+      {word:'Kellner',artikel:'der',trans:'waiter / mesero',tip:'Termina en -er → der'},
+      {word:'Kellnerin',artikel:'die',trans:'waitress / mesera',tip:'Termina en -in → die'},
+      {word:'Reservierung',artikel:'die',trans:'reservation / reserva',tip:'Termina en -ung → die'},
+      {word:'Trinkgeld',artikel:'das',trans:'tip / propina',tip:'Compuesto neutro → das'},
+      {word:'Rechnung',artikel:'die',trans:'bill / cuenta',tip:'Termina en -ung → die'},
+      {word:'Rösti',artikel:'der',trans:'Rösti / plato suizo de papa',tip:'Plato suizo → der'},
+      {word:'Raclette',artikel:'das',trans:'raclette',tip:'Neutro → das'},
+      {word:'Fondue',artikel:'das',trans:'fondue',tip:'Neutro → das'},
+      {word:'Getränk',artikel:'das',trans:'drink / bebida',tip:'Neutro → das'},
+      {word:'Vegetarisch',artikel:'das',trans:'vegetarian option / opción vegetariana',tip:'Adjetivo → das'},
+    ],
+    sentences:[
+      {s:'Ich möchte ___ Tisch reservieren.',a:'einen',trans:'Me gustaría reservar una mesa.'},
+      {s:'___ Speisekarte, bitte.',a:'die',trans:'La carta, por favor.'},
+      {s:'___ Tagesmenü kostet 18 Franken.',a:'das',trans:'El menú del día cuesta 18 francos.'},
+      {s:'Bringen Sie mir bitte ___ Rechnung.',a:'die',trans:'Tráigame la cuenta, por favor.'},
+      {s:'___ Rösti ist sehr lecker.',a:'der',trans:'El Rösti está muy rico.'},
+      {s:'Haben Sie ___ vegetarisches Gericht?',a:'ein',trans:'¿Tienen algún plato vegetariano?'},
+    ],
+    phrases:{
+      formal:[
+        {de:'Haben Sie einen Tisch für zwei Personen?',es:'¿Tienen mesa para dos?',en:'Do you have a table for two?',ctx:'Al entrar al restaurante'},
+        {de:'Ich bin Vegetarier.',es:'Soy vegetariano/a.',en:'I am vegetarian.',ctx:'Importante para pedir'},
+        {de:'Ich bin allergisch gegen Nüsse.',es:'Soy alérgico/a a las nueces.',en:'I am allergic to nuts.',ctx:'Siempre decirlo'},
+        {de:'Was empfehlen Sie heute?',es:'¿Qué recomienda hoy?',en:'What do you recommend today?',ctx:'Al camarero'},
+        {de:'Getrennt oder zusammen bezahlen?',es:'¿Separado o junto?',en:'Separate or together?',ctx:'Normal en Suiza pedir separado'},
+      ],
+      casual:[
+        {de:'Isch no öppis frei?',es:'¿Queda alguna mesa?',en:'Any tables free?',ctx:'Bernés — sin reserva'},
+        {de:'De Rösti isch zum Abgötte!',es:'¡El Rösti está divino!',en:'The Rösti is amazing!',ctx:'Bernés'},
+        {de:'Chani no es Wasser ha?',es:'¿Puedo tener más agua?',en:'Can I have more water?',ctx:'En Suiza el agua no siempre es gratis'},
+        {de:'Mir teilid s Fondue!',es:'¡Compartimos la fondue!',en:'We\'re sharing the fondue!',ctx:'Plan perfecto'},
+        {de:'Zahle bitte!',es:'¡La cuenta, por favor!',en:'Check please!',ctx:'Suizo directo'},
+      ]
+    },
+    culture:[
+      {emoji:'🥔',title:'Rösti — el plato nacional no oficial',text:'El Rösti son patatas ralladas y fritas en mantequilla. El Röstigraben (zanja del Rösti) es el nombre informal de la frontera cultural entre Suiza alemana y francesa.',tag:'Gastronomía'},
+      {emoji:'💳',title:'Pagar en Suiza',text:'Twint es muy popular. La propina no es obligatoria pero se redondea. Pedir getrennt (por separado) es completamente normal.',tag:'Práctica'},
+    ],
+    survival:[
+      {emoji:'💰',title:'Comer económico en Berna',text:'• Tagesmenü — 15-20 CHF\n• Migros/Coop restaurant — 10-15 CHF\n• Altersheim restaurants — 12-18 CHF\n• Märit martes y sábados — fresco y barato\n\nEvita restaurantes en la Kramgasse turística.',tag:'Ahorro'},
+    ]
+  },
+
+  bundesplatz: {
+    name:'Bundesplatz & Wasserspiel', emoji:'⛲', sub:'Sommer · Politik · B1',
+    track:'leben', level:'b1',
+    words:[
+      {word:'Brunnen',artikel:'der',trans:'fountain / fuente',tip:'Termina en -en → der'},
+      {word:'Wasserspiel',artikel:'das',trans:'water feature / juego de agua',tip:'Compuesto neutro → das'},
+      {word:'Veranstaltung',artikel:'die',trans:'event / evento',tip:'Termina en -ung → die'},
+      {word:'Demonstration',artikel:'die',trans:'demonstration / manifestación',tip:'Termina en -ion → die'},
+      {word:'Konzert',artikel:'das',trans:'concert / concierto',tip:'Neutro → das'},
+      {word:'Fahne',artikel:'die',trans:'flag / bandera',tip:'Termina en -e → die'},
+      {word:'Nationalfeiertag',artikel:'der',trans:'national holiday / fiesta nacional',tip:'Compuesto masculino → der'},
+      {word:'Bühne',artikel:'die',trans:'stage / escenario',tip:'Termina en -e → die'},
+      {word:'Menge',artikel:'die',trans:'crowd / multitud',tip:'Termina en -e → die'},
+      {word:'Markt',artikel:'der',trans:'market / mercado',tip:'Masculino → der'},
+      {word:'Pflasterstein',artikel:'der',trans:'cobblestone / adoquín',tip:'Compuesto masculino → der'},
+      {word:'Öffentlich',artikel:'das',trans:'public / público',tip:'Adjetivo variable'},
+      {word:'Umzug',artikel:'der',trans:'parade / desfile',tip:'Compuesto masculino → der'},
+      {word:'Sicherheit',artikel:'die',trans:'security / seguridad',tip:'Termina en -heit → die'},
+      {word:'Trinkwasser',artikel:'das',trans:'drinking water / agua potable',tip:'Compuesto neutro → das'},
+    ],
+    sentences:[
+      {s:'___ Bundesplatz ist sehr gross.',a:'der',trans:'La plaza del parlamento es muy grande.'},
+      {s:'___ Wasserspiel ist im Sommer aktiv.',a:'das',trans:'El juego de agua está activo en verano.'},
+      {s:'___ Veranstaltung findet am Samstag statt.',a:'die',trans:'El evento tiene lugar el sábado.'},
+      {s:'___ Nationalfeiertag ist am 1. August.',a:'der',trans:'El día nacional es el 1 de agosto.'},
+      {s:'___ Konzert beginnt um 20 Uhr.',a:'das',trans:'El concierto empieza a las 20h.'},
+      {s:'___ Brunnen sind überall in der Altstadt.',a:'die',trans:'Las fuentes están por toda la Altstadt.'},
+    ],
+    phrases:{
+      formal:[
+        {de:'Was findet heute auf dem Bundesplatz statt?',es:'¿Qué hay hoy en el Bundesplatz?',en:'What is on at the Bundesplatz today?',ctx:'Preguntando sobre eventos'},
+        {de:'Ist das Wasserspiel heute in Betrieb?',es:'¿Funciona el juego de agua hoy?',en:'Is the water feature on today?',ctx:'Solo en verano'},
+        {de:'Wann beginnt die Veranstaltung?',es:'¿Cuándo empieza el evento?',en:'When does the event start?',ctx:'En la taquilla'},
+        {de:'Darf ich hier fotografieren?',es:'¿Puedo fotografiar aquí?',en:'May I take photos here?',ctx:'Frente al Bundeshaus'},
+        {de:'Wo ist der nächste Trinkbrunnen?',es:'¿Dónde está la fuente de agua potable?',en:'Where is the nearest drinking fountain?',ctx:'Más de 100 en la Altstadt'},
+      ],
+      casual:[
+        {de:'D Chinder spieled im Wasserspiel!',es:'¡Los niños juegan en el juego de agua!',en:'The kids are playing in the water feature!',ctx:'Plan veraniego gratis'},
+        {de:'Gömmer luege was am Bundesplatz lauft?',es:'¿Vamos a ver qué pasa?',en:'Shall we check what\'s on at the Bundesplatz?',ctx:'Bernés'},
+        {de:'Am 1. August isch immer mega Stimmung!',es:'¡El 1 de agosto siempre hay gran ambiente!',en:'August 1st always has amazing atmosphere!',ctx:'Fiesta nacional suiza'},
+        {de:'Hesch gwüsst dass me da Brunne trinke chann?',es:'¿Sabías que puedes beber de las fuentes?',en:'Did you know you can drink from the fountains?',ctx:'Agua potable gratis'},
+        {de:'D Fahne isch riesig!',es:'¡La bandera es enorme!',en:'The flag is huge!',ctx:'La bandera suiza en el Bundeshaus'},
+      ]
+    },
+    culture:[
+      {emoji:'💧',title:'El Wasserspiel — parque acuático del centro',text:'En verano, 26 chorros emergen del suelo del Bundesplatz sin aviso. Los niños lo usan como parque acuático. Completamente gratis. Los adultos también se mojan.',tag:'Verano'},
+      {emoji:'🇨🇭',title:'El corazón político de Suiza',text:'El Bundesplatz es escenario del 1 de agosto (fiesta nacional), Fasnacht, conciertos y manifestaciones. Los suizos usan activamente el espacio frente a su parlamento.',tag:'Política'},
+    ],
+    survival:[
+      {emoji:'🚰',title:'Los 100+ Brunnen de la Altstadt',text:'Berna tiene más de 100 fuentes de agua potable en la Altstadt. Todas gratuitas. En verano nunca necesitas comprar agua. El más famoso: Chindlifresserbrunnen (el devorador de niños) en la Kornhausgasse.',tag:'Gratis'},
+    ]
+  },
+  gurten: {
+    name:'Gurten — Hausberg', emoji:'🏔️', sub:'Natur · Wandern · B1',
+    track:'leben', level:'b1',
+    words:[
+      {word:'Hausberg',artikel:'der',trans:'local mountain / montaña local',tip:'Compuesto masculino → der'},
+      {word:'Seilbahn',artikel:'die',trans:'cable car / funicular',tip:'Compuesto femenino → die'},
+      {word:'Wanderweg',artikel:'der',trans:'hiking trail / sendero',tip:'Compuesto masculino → der'},
+      {word:'Gipfel',artikel:'der',trans:'summit / cima',tip:'Termina en -el → der'},
+      {word:'Aussichtsturm',artikel:'der',trans:'observation tower',tip:'Compuesto masculino → der'},
+      {word:'Picknick',artikel:'das',trans:'picnic',tip:'Neutro → das'},
+      {word:'Festival',artikel:'das',trans:'festival',tip:'Neutro → das'},
+      {word:'Rodelbahn',artikel:'die',trans:'toboggan run / pista de trineo',tip:'Compuesto femenino → die'},
+      {word:'Miniaturzug',artikel:'der',trans:'miniature train / tren miniatura',tip:'Compuesto masculino → der'},
+      {word:'Höhe',artikel:'die',trans:'altitude / altura',tip:'Termina en -e → die'},
+      {word:'Nebel',artikel:'der',trans:'fog / niebla',tip:'Termina en -el → der'},
+      {word:'Sonnenaufgang',artikel:'der',trans:'sunrise / amanecer',tip:'Compuesto masculino → der'},
+      {word:'Loipe',artikel:'die',trans:'cross-country ski trail',tip:'Femenino → die'},
+      {word:'Alpenblick',artikel:'der',trans:'Alps view / vista Alpes',tip:'Compuesto masculino → der'},
+      {word:'Kinderparadies',artikel:'das',trans:'children paradise / paraíso infantil',tip:'Compuesto neutro → das'},
+    ],
+    sentences:[
+      {s:'___ Gurten ist der Hausberg von Bern.',a:'der',trans:'El Gurten es la montaña local de Berna.'},
+      {s:'___ Seilbahn fährt alle 15 Minuten.',a:'die',trans:'El funicular sale cada 15 minutos.'},
+      {s:'___ Aussicht ist fantastisch.',a:'die',trans:'La vista es fantástica.'},
+      {s:'___ Festival findet im Juli statt.',a:'das',trans:'El festival tiene lugar en julio.'},
+      {s:'___ Wanderweg dauert 30 Minuten.',a:'der',trans:'El sendero dura 30 minutos.'},
+      {s:'___ Kinderparadies ist sehr beliebt.',a:'das',trans:'El paraíso infantil es muy popular.'},
+    ],
+    phrases:{
+      formal:[
+        {de:'Was kostet die Seilbahn?',es:'¿Cuánto cuesta el funicular?',en:'How much is the cable car?',ctx:'Con GA/Halbtax es gratis o reducido'},
+        {de:'Gibt es einen Kinderspielplatz oben?',es:'¿Hay parque infantil arriba?',en:'Is there a playground at the top?',ctx:'Sí — Kinderparadies'},
+        {de:'Wann findet das Gurtenfestival statt?',es:'¿Cuándo es el festival?',en:'When is the Gurten Festival?',ctx:'Julio — el más grande de Berna'},
+        {de:'Kann man auch zu Fuss rauf?',es:'¿Se puede subir a pie?',en:'Can you also walk up?',ctx:'Sí — 30 min'},
+        {de:'Wie lange dauert die Fahrt mit der Seilbahn?',es:'¿Cuánto dura el funicular?',en:'How long is the cable car ride?',ctx:'Unos 4 minutos'},
+      ],
+      casual:[
+        {de:'Gömmer uf de Gurte?',es:'¿Vamos al Gurten?',en:'Shall we go to the Gurten?',ctx:'Bernés — plan clásico'},
+        {de:'De Alpeblick isch heute unglaublich!',es:'¡La vista a los Alpes es increíble!',en:'The Alps view today is unbelievable!',ctx:'Bernés'},
+        {de:'D Chinder liebid de Kinderparadies!',es:'¡A los niños les encanta!',en:'The kids love the Kinderparadies!',ctx:'Bernés'},
+        {de:'Im Summer chunnt me eifach id Seilbahn!',es:'¡En verano simplemente te subes al funicular!',en:'In summer you just hop on the cable car!',ctx:'Bernés'},
+        {de:'Am Gurtenfestival bini au gsi!',es:'¡Yo también estuve en el festival!',en:'I was at the Gurten Festival too!',ctx:'Bernés'},
+      ]
+    },
+    culture:[
+      {emoji:'🏔️',title:'El Gurten — la montaña de Berna',text:'El Gurten (858m) es la montaña local de Berna. Se accede en funicular desde Wabern en 4 minutos. Arriba hay restaurante, jardín de juegos, mirador con vista a los Alpes y rutas de senderismo. En invierno hay pistas de trineo.',tag:'Naturaleza'},
+      {emoji:'🎵',title:'Gurtenfestival — el festival más grande',text:'El Gurtenfestival es el festival de música más importante de Berna, cada julio en la cima del Gurten. Artistas internacionales con el telón de fondo de los Alpes.',tag:'Cultura'},
+    ],
+    survival:[
+      {emoji:'🎫',title:'Seilbahn — precio y abonos',text:'Con GA: gratis. Con Halbtax: 50% descuento. Sin abono: ~8 CHF ida y vuelta. Con Kibon Card: descuento para familias. Parking abajo: gratuito.',tag:'Precios'},
+    ]
+  },
+  polizei: {
+    name:'Polizei & Notfall', emoji:'🚔', sub:'Notfälle · Rechte · B1',
+    track:'leben', level:'b1',
+    words:[
+      {word:'Polizei',artikel:'die',trans:'police / policía',tip:'Femenino → die'},
+      {word:'Notruf',artikel:'der',trans:'emergency call / emergencia',tip:'Compuesto masculino → der'},
+      {word:'Unfall',artikel:'der',trans:'accident / accidente',tip:'Compuesto masculino → der'},
+      {word:'Diebstahl',artikel:'der',trans:'theft / robo',tip:'Compuesto masculino → der'},
+      {word:'Anzeige',artikel:'die',trans:'police report / denuncia',tip:'Termina en -e → die'},
+      {word:'Protokoll',artikel:'das',trans:'report / protocolo',tip:'Neutro → das'},
+      {word:'Feuerwehr',artikel:'die',trans:'fire department / bomberos',tip:'Compuesto femenino → die'},
+      {word:'Sanität',artikel:'die',trans:'ambulance service / ambulancia',tip:'Femenino → die'},
+      {word:'Versicherung',artikel:'die',trans:'insurance / seguro',tip:'Termina en -ung → die'},
+      {word:'Recht',artikel:'das',trans:'right / derecho',tip:'Neutro → das'},
+      {word:'Anwalt',artikel:'der',trans:'lawyer / abogado',tip:'Masculino → der'},
+      {word:'Botschaft',artikel:'die',trans:'embassy / embajada',tip:'Termina en -schaft → die'},
+      {word:'Zeuge',artikel:'der',trans:'witness / testigo',tip:'Termina en -e (masc.) → der'},
+      {word:'Personalausweis',artikel:'der',trans:'ID / identificación',tip:'Compuesto masculino → der'},
+      {word:'Schadensmeldung',artikel:'die',trans:'damage report / reporte de daños',tip:'Termina en -ung → die'},
+    ],
+    sentences:[
+      {s:'___ Polizei ist unter 117 erreichbar.',a:'die',trans:'La policía se llama al 117.'},
+      {s:'___ Unfall ist auf der Hauptstrasse.',a:'der',trans:'El accidente es en la calle principal.'},
+      {s:'___ Anzeige muss ich erstatten.',a:'die',trans:'Tengo que hacer una denuncia.'},
+      {s:'___ Feuerwehr kommt sofort.',a:'die',trans:'Los bomberos vienen enseguida.'},
+      {s:'Ich brauche ___ Anwalt.',a:'einen',trans:'Necesito un abogado.'},
+      {s:'___ Versicherung deckt das ab.',a:'die',trans:'El seguro lo cubre.'},
+    ],
+    phrases:{
+      formal:[
+        {de:'Ich möchte eine Anzeige erstatten.',es:'Quiero hacer una denuncia.',en:'I want to file a police report.',ctx:'En la comisaría'},
+        {de:'Mir wurde das Velo gestohlen.',es:'Me robaron la bicicleta.',en:'My bicycle was stolen.',ctx:'El robo más común en Berna'},
+        {de:'Ich hatte einen Unfall.',es:'Tuve un accidente.',en:'I had an accident.',ctx:'Llama al 117'},
+        {de:'Ich verstehe meine Rechte nicht.',es:'No entiendo mis derechos.',en:'I do not understand my rights.',ctx:'Tienes derecho a un intérprete'},
+        {de:'Ich möchte meine Botschaft kontaktieren.',es:'Quiero contactar mi embajada.',en:'I want to contact my embassy.',ctx:'Derecho fundamental'},
+      ],
+      casual:[
+        {de:'Rüef d Polizei!',es:'¡Llama a la policía!',en:'Call the police!',ctx:'Bernés — urgente'},
+        {de:'I ha mis Velo nid gschlosse und jetzt isch weg.',es:'No puse el candado y ya no está.',en:'I didn\'t lock my bike and now it\'s gone.',ctx:'La situación más común 😅'},
+        {de:'Was isch d Notrufnummer?',es:'¿Cuál es el número de emergencias?',en:'What\'s the emergency number?',ctx:'117 policía, 144 sanidad, 118 bomberos'},
+        {de:'Mir hend e Unfall gha.',es:'Tuvimos un accidente.',en:'We had an accident.',ctx:'Bernés'},
+        {de:'D Versicherig zahlt das hoffentlich.',es:'El seguro lo pagará con suerte.',en:'Hopefully the insurance pays for this.',ctx:'El pensamiento suizo universal'},
+      ]
+    },
+    culture:[
+      {emoji:'🚨',title:'Números de emergencia en Suiza',text:'117 (Policía), 118 (Bomberos), 144 (Ambulancia), 145 (Toxicología), 112 (Europeo). Gratuitos desde cualquier teléfono.',tag:'⚠️ Importante'},
+      {emoji:'⚖️',title:'Tus derechos como extranjero',text:'Derecho a intérprete, a contactar tu embajada, a un abogado antes de declarar. La policía suiza generalmente es profesional y respeta estos derechos.',tag:'Derechos'},
+    ],
+    survival:[
+      {emoji:'📱',title:'Números de emergencia — guárdalos ahora',text:'🚔 Policía: 117\n🚒 Bomberos: 118\n🚑 Ambulancia: 144\n☎️ EU Emergency: 112\n☎️ Toxicología: 145\n\nGuárdalos en tu teléfono ahora.',tag:'🆘 Guardar'},
+    ]
+  },
+  bernmobil: {
+    name:'Bernmobil & Tram', emoji:'🚋', sub:'Transport · Modalverben · B1',
+    track:'leben', level:'b1',
+    words:[
+      {word:'Tram',artikel:'das',trans:'tram / tranvía',tip:'Neutro → das'},
+      {word:'Linie',artikel:'die',trans:'line / línea',tip:'Termina en -e → die'},
+      {word:'Haltestelle',artikel:'die',trans:'stop / parada',tip:'Compuesto femenino → die'},
+      {word:'Fahrschein',artikel:'der',trans:'ticket / billete',tip:'Compuesto masculino → der'},
+      {word:'Tageskarte',artikel:'die',trans:'day pass / tarjeta diaria',tip:'Compuesto femenino → die'},
+      {word:'Monatskarte',artikel:'die',trans:'monthly pass / abono mensual',tip:'Compuesto femenino → die'},
+      {word:'Kontrolleur',artikel:'der',trans:'ticket inspector / revisor',tip:'Termina en -eur → der'},
+      {word:'Busse',artikel:'die',trans:'fine / multa',tip:'Femenino → die'},
+      {word:'Nachtlinie',artikel:'die',trans:'night line / línea nocturna',tip:'Compuesto femenino → die'},
+      {word:'Verspätung',artikel:'die',trans:'delay / retraso',tip:'Termina en -ung → die'},
+      {word:'Umsteigen',artikel:'das',trans:'transfer / transbordo',tip:'Infinitivo → das'},
+      {word:'Richtung',artikel:'die',trans:'direction / dirección',tip:'Termina en -ung → die'},
+      {word:'Endstation',artikel:'die',trans:'terminus / terminal',tip:'Compuesto femenino → die'},
+      {word:'Abonnement',artikel:'das',trans:'subscription / abono',tip:'Neutro → das'},
+      {word:'Strecke',artikel:'die',trans:'route / trayecto',tip:'Termina en -e → die'},
+    ],
+    sentences:[
+      {s:'___ Tram Nummer 9 fährt zum Gurten.',a:'das',trans:'El tranvía 9 va al Gurten.'},
+      {s:'___ Haltestelle ist gleich hier.',a:'die',trans:'La parada está justo aquí.'},
+      {s:'___ Tageskarte kostet 13 Franken.',a:'die',trans:'La tarjeta diaria cuesta 13 francos.'},
+      {s:'___ Verspätung beträgt 5 Minuten.',a:'die',trans:'El retraso es de 5 minutos.'},
+      {s:'___ Kontrolleur kommt manchmal.',a:'der',trans:'El revisor viene a veces.'},
+      {s:'___ Nachtlinie fährt bis 5 Uhr.',a:'die',trans:'La línea nocturna circula hasta las 5.'},
+    ],
+    phrases:{
+      formal:[
+        {de:'Welche Linie fährt zum Bahnhof?',es:'¿Qué línea va a la estación?',en:'Which line goes to the train station?',ctx:'Preguntando en la calle'},
+        {de:'Wie viel kostet eine Tageskarte?',es:'¿Cuánto cuesta una tarjeta diaria?',en:'How much is a day pass?',ctx:'En el automat'},
+        {de:'Muss ich umsteigen?',es:'¿Tengo que hacer transbordo?',en:'Do I have to transfer?',ctx:'Planificando ruta'},
+        {de:'Bis wann gilt dieses Ticket?',es:'¿Hasta cuándo vale este billete?',en:'How long is this ticket valid?',ctx:'Tiempo limitado'},
+        {de:'Ich habe vergessen zu lösen. Was soll ich tun?',es:'Olvidé comprar el billete. ¿Qué hago?',en:'I forgot to buy a ticket. What should I do?',ctx:'Sé honesto con el revisor'},
+      ],
+      casual:[
+        {de:'Nimm das Tram 9 bis Wabern!',es:'¡Coge el tranvía 9 hasta Wabern!',en:'Take tram 9 to Wabern!',ctx:'Para ir al Gurten'},
+        {de:'D Linie 3 isch super praktisch!',es:'¡La línea 3 es muy práctica!',en:'Line 3 is super practical!',ctx:'Bernés'},
+        {de:'Hesch de Fairtiq? De rechnet automatisch!',es:'¿Tienes Fairtiq? ¡Calcula automáticamente!',en:'Do you have Fairtiq? It calculates automatically!',ctx:'La mejor app para transporte'},
+        {de:'S Nachtträmli fährt bis 5!',es:'¡El tranvía nocturno circula hasta las 5!',en:'The night tram runs until 5!',ctx:'Bernés'},
+        {de:'Isch de Kontrolleur cho?',es:'¿Vino el revisor?',en:'Did the inspector come?',ctx:'La pregunta de todos 😅'},
+      ]
+    },
+    culture:[
+      {emoji:'🚋',title:'Bernmobil — el transporte de Berna',text:'Bernmobil opera los tranvías y autobuses de Berna. La red es eficiente y puntual. Líneas principales: 3, 6, 7, 8, 9. Los suizos se indignan si hay más de 2 minutos de retraso.',tag:'Transporte'},
+      {emoji:'📱',title:'Fairtiq — paga solo lo justo',text:'Activas el viaje al subir y lo desactivas al bajar. Calcula automáticamente el precio más barato. Con Halbtax ya es la mitad. Nunca pagarás de más.',tag:'App'},
+    ],
+    survival:[
+      {emoji:'🎫',title:'Tarifas en Berna',text:'Billete sencillo zona 100: 2.60 CHF. Tageskarte: 13 CHF. Monatskarte: ~85 CHF. Halbtax (50% en todo Suiza): 185 CHF/año — se amortiza rápido.',tag:'Precios'},
+    ]
+  },
+
+  casino_bern: {
+    name:'Casino & Kultur Bern', emoji:'🎭', sub:'Kultur · Freizeit · B2',
+    track:'leben', level:'b2',
+    words:[
+      {word:'Konzert',artikel:'das',trans:'concert / concierto',tip:'Neutro → das'},
+      {word:'Theater',artikel:'das',trans:'theater / teatro',tip:'Neutro → das'},
+      {word:'Ausstellung',artikel:'die',trans:'exhibition / exposición',tip:'Termina en -ung → die'},
+      {word:'Museum',artikel:'das',trans:'museum / museo',tip:'Termina en -um → das'},
+      {word:'Eintrittskarte',artikel:'die',trans:'ticket / entrada',tip:'Compuesto femenino → die'},
+      {word:'Vorstellung',artikel:'die',trans:'performance / función',tip:'Termina en -ung → die'},
+      {word:'Orchester',artikel:'das',trans:'orchestra / orquesta',tip:'Neutro → das'},
+      {word:'Saal',artikel:'der',trans:'hall / sala',tip:'Masculino → der'},
+      {word:'Bühne',artikel:'die',trans:'stage / escenario',tip:'Termina en -e → die'},
+      {word:'Programm',artikel:'das',trans:'program / programa',tip:'Neutro → das'},
+      {word:'Abendkasse',artikel:'die',trans:'box office / taquilla',tip:'Compuesto femenino → die'},
+      {word:'Kulturpass',artikel:'der',trans:'culture pass / pase cultural',tip:'Compuesto masculino → der'},
+      {word:'Kino',artikel:'das',trans:'cinema / cine',tip:'Neutro → das'},
+      {word:'Oper',artikel:'die',trans:'opera / ópera',tip:'Femenino → die'},
+      {word:'Veranstaltungskalender',artikel:'der',trans:'events calendar / agenda',tip:'Compuesto masculino → der'},
+    ],
+    sentences:[
+      {s:'___ Casino ist ein Kulturzentrum.',a:'das',trans:'El Casino es un centro cultural.'},
+      {s:'___ Konzert beginnt um 20 Uhr.',a:'das',trans:'El concierto empieza a las 20h.'},
+      {s:'___ Eintrittskarte kostet 45 Franken.',a:'die',trans:'La entrada cuesta 45 francos.'},
+      {s:'___ Ausstellung ist noch bis März.',a:'die',trans:'La exposición es hasta marzo.'},
+      {s:'___ Orchester spielt Beethoven.',a:'das',trans:'La orquesta toca Beethoven.'},
+      {s:'___ Kulturpass gibt viele Vergünstigungen.',a:'der',trans:'El pase cultural da muchos descuentos.'},
+    ],
+    phrases:{
+      formal:[
+        {de:'Haben Sie noch Karten für heute Abend?',es:'¿Quedan entradas para esta noche?',en:'Are there still tickets for tonight?',ctx:'En la taquilla'},
+        {de:'Gibt es ermässigte Karten für Studierende?',es:'¿Hay entradas reducidas para estudiantes?',en:'Are there reduced tickets for students?',ctx:'Siempre preguntar'},
+        {de:'Um wie viel Uhr beginnt die Vorstellung?',es:'¿A qué hora empieza la función?',en:'What time does the performance start?',ctx:'Puntualidad suiza'},
+        {de:'Ist das Programm auf Deutsch oder Englisch?',es:'¿El programa es en alemán o inglés?',en:'Is the program in German or English?',ctx:'Importante para extranjeros'},
+        {de:'Wo ist die Garderobe?',es:'¿Dónde está el guardarropa?',en:'Where is the cloakroom?',ctx:'En el Casino'},
+      ],
+      casual:[
+        {de:'Gömmer ins Konzert hüt Abig?',es:'¿Vamos al concierto esta noche?',en:'Shall we go to the concert tonight?',ctx:'Bernés'},
+        {de:'D Berner Sinfonieorchester isch mega gut!',es:'¡La Orquesta Sinfónica es increíble!',en:'The Bern Symphony Orchestra is amazing!',ctx:'Bernés'},
+        {de:'Ha Karte fürs Casino, chunsch mit?',es:'Tengo entrada, ¿vienes?',en:'I have tickets, want to come?',ctx:'Bernés'},
+        {de:'D Abendkasse isch no offe.',es:'La taquilla todavía está abierta.',en:'The box office is still open.',ctx:'Bernés'},
+        {de:'Mit em Kulturpass isch es viu billiger!',es:'¡Con el pase cultural es mucho más barato!',en:'With the culture pass it\'s much cheaper!',ctx:'Bernés'},
+      ]
+    },
+    culture:[
+      {emoji:'🎭',title:'El Casino Bern — no es un casino de juego',text:'El Casino Bern es uno de los centros culturales más importantes de la ciudad. Alberga conciertos de la Orquesta Sinfónica de Berna, jazz, pop, rock y conferencias. La acústica de la sala principal es excepcional.',tag:'Cultura'},
+      {emoji:'🎵',title:'Vida cultural en Berna',text:'Berna tiene vida cultural rica para su tamaño: Stadttheater (ópera y teatro), Dampfzentrale (alternativa junto al Aare), Progr (independiente), Bee-Flat (jazz), Dachstock (alternativa). App Bern Ticket para todos los eventos.',tag:'Ocio'},
+    ],
+    survival:[
+      {emoji:'💰',title:'Cultura a buen precio en Berna',text:'• Kulturpass Bern — descuentos en muchos eventos\n• Kibon Card — descuentos para familias\n• Último momento — descuentos el mismo día\n• Primer domingo del mes en Kunstmuseum: gratis\n• Pregunta siempre por ermässigte Karten (tarifa reducida)',tag:'Ahorro'},
+    ]
+  },
+  kinderarzt: {
+    name:'Kinderarzt & Gesundheit', emoji:'👶', sub:'Gesundheit · Kinder · K2',
+    track:'kinder', level:'k2',
+    words:[
+      {word:'Kinderarzt',artikel:'der',trans:'pediatrician / pediatra',tip:'Compuesto masculino → der'},
+      {word:'Impfung',artikel:'die',trans:'vaccination / vacuna',tip:'Termina en -ung → die'},
+      {word:'Impfpass',artikel:'der',trans:'vaccination card / carnet vacunas',tip:'Compuesto masculino → der'},
+      {word:'Fieber',artikel:'das',trans:'fever / fiebre',tip:'Neutro → das'},
+      {word:'Husten',artikel:'der',trans:'cough / tos',tip:'Termina en -en → der'},
+      {word:'Erkältung',artikel:'die',trans:'cold / resfriado',tip:'Termina en -ung → die'},
+      {word:'Allergie',artikel:'die',trans:'allergy / alergia',tip:'Termina en -ie → die'},
+      {word:'Krankenkasse',artikel:'die',trans:'health insurance / seguro médico',tip:'Compuesto femenino → die'},
+      {word:'Termin',artikel:'der',trans:'appointment / cita',tip:'Masculino → der'},
+      {word:'Untersuchung',artikel:'die',trans:'check-up / revisión',tip:'Termina en -ung → die'},
+      {word:'Medikament',artikel:'das',trans:'medication / medicamento',tip:'Termina en -ment → das'},
+      {word:'Rezept',artikel:'das',trans:'prescription / receta',tip:'Neutro → das'},
+      {word:'Apotheke',artikel:'die',trans:'pharmacy / farmacia',tip:'Termina en -e → die'},
+      {word:'Bauchschmerzen',artikel:'die',trans:'stomachache / dolor de estómago',tip:'Plural → die'},
+      {word:'Ohrenschmerzen',artikel:'die',trans:'earache / dolor de oídos',tip:'Plural → die'},
+    ],
+    sentences:[
+      {s:'___ Kinderarzt hat einen Termin frei.',a:'der',trans:'El pediatra tiene cita disponible.'},
+      {s:'___ Impfpass muss immer dabei sein.',a:'der',trans:'El carnet de vacunas debe estar siempre.'},
+      {s:'___ Fieber ist hoch.',a:'das',trans:'La fiebre es alta.'},
+      {s:'___ Krankenkasse übernimmt die Kosten.',a:'die',trans:'El seguro cubre los costes.'},
+      {s:'Ich brauche ___ Rezept.',a:'ein',trans:'Necesito una receta.'},
+      {s:'___ Apotheke ist gleich nebenan.',a:'die',trans:'La farmacia está al lado.'},
+    ],
+    phrases:{
+      formal:[
+        {de:'Mein Kind hat hohes Fieber.',es:'Mi hijo/a tiene fiebre alta.',en:'My child has a high fever.',ctx:'En urgencias pediátricas'},
+        {de:'Ich brauche einen dringenden Termin.',es:'Necesito una cita urgente.',en:'I need an urgent appointment.',ctx:'Por teléfono'},
+        {de:'Welche Impfungen braucht mein Kind?',es:'¿Qué vacunas necesita mi hijo/a?',en:'Which vaccinations does my child need?',ctx:'Revisión de vacunas'},
+        {de:'Ist dieses Medikament für Kinder geeignet?',es:'¿Es este medicamento para niños?',en:'Is this medication suitable for children?',ctx:'En la farmacia'},
+        {de:'Hat mein Kind Anrecht auf kostenlose Untersuchungen?',es:'¿Tiene derecho a revisiones gratuitas?',en:'Does my child have the right to free check-ups?',ctx:'Sí hasta los 6 años'},
+      ],
+      casual:[
+        {de:'S Chind isch chrankh.',es:'El niño/la niña está enfermo/a.',en:'The child is sick.',ctx:'Bernés'},
+        {de:'Mir müend zum Chinderdoktor.',es:'Tenemos que ir al pediatra.',en:'We need to go to the pediatrician.',ctx:'Bernés'},
+        {de:'Het s Chind Fieber?',es:'¿Tiene fiebre?',en:'Does the child have a fever?',ctx:'Bernés'},
+        {de:'D Impfig isch wichtig!',es:'¡La vacuna es importante!',en:'The vaccination is important!',ctx:'Bernés'},
+        {de:'Mir gömmer hüt no in d Apotheke.',es:'Vamos a la farmacia hoy.',en:'We\'re still going to the pharmacy today.',ctx:'Bernés'},
+      ]
+    },
+    culture:[
+      {emoji:'💉',title:'Vacunas en Suiza',text:'El seguro básico (KVG) cubre las vacunas recomendadas hasta los 15 años. Los niños menores de 19 años tienen franquicia cero.',tag:'Salud'},
+      {emoji:'🏥',title:'Sistema médico pediátrico',text:'Para urgencias pediátricas: el Inselspital tiene urgencias 24h. El seguro básico cubre todas las visitas médicas después de la franquicia.',tag:'Sistema'},
+    ],
+    survival:[
+      {emoji:'📞',title:'Números útiles para padres',text:'• Urgencias Inselspital niños: 031 632 21 11\n• Farmacia de guardia: 0900 55 35 55\n• Toxicología: 145\n• Médico a domicilio: 0900 57 67 47\n\nGuarda estos números ahora.',tag:'🆘 Guardar'},
+    ]
+  },
+  schule: {
+    name:'Schule & Bildung', emoji:'🏫', sub:'Schulsystem · Bildung · K2',
+    track:'kinder', level:'k2',
+    words:[
+      {word:'Primarschule',artikel:'die',trans:'primary school / escuela primaria',tip:'Compuesto femenino → die'},
+      {word:'Sekundarschule',artikel:'die',trans:'secondary school / secundaria',tip:'Compuesto femenino → die'},
+      {word:'Zeugnis',artikel:'das',trans:'report card / boletín',tip:'Neutro → das'},
+      {word:'Note',artikel:'die',trans:'grade / nota',tip:'Termina en -e → die'},
+      {word:'Hausaufgaben',artikel:'die',trans:'homework / tarea',tip:'Plural → die'},
+      {word:'Schulweg',artikel:'der',trans:'school route / camino al cole',tip:'Compuesto masculino → der'},
+      {word:'Elternabend',artikel:'der',trans:'parent evening / reunión de padres',tip:'Compuesto masculino → der'},
+      {word:'Hort',artikel:'der',trans:'after-school care / cuidado extraescolar',tip:'Masculino → der'},
+      {word:'Ferienplan',artikel:'der',trans:'holiday schedule / calendario escolar',tip:'Compuesto masculino → der'},
+      {word:'Lehrerin',artikel:'die',trans:'teacher (f) / maestra',tip:'Termina en -in → die'},
+      {word:'Lehrer',artikel:'der',trans:'teacher (m) / maestro',tip:'Termina en -er → der'},
+      {word:'Anmeldung',artikel:'die',trans:'enrollment / inscripción',tip:'Termina en -ung → die'},
+      {word:'Schulkreis',artikel:'der',trans:'school district / zona escolar',tip:'Compuesto masculino → der'},
+      {word:'Gymnasium',artikel:'das',trans:'high school / bachillerato',tip:'Termina en -um → das'},
+      {word:'DaZ',artikel:'der',trans:'German as 2nd language / alemán L2',tip:'Masculino → der'},
+    ],
+    sentences:[
+      {s:'___ Primarschule beginnt mit 6 Jahren.',a:'die',trans:'La primaria empieza a los 6 años.'},
+      {s:'___ Zeugnis kommt zweimal pro Jahr.',a:'das',trans:'El boletín viene dos veces al año.'},
+      {s:'___ Elternabend ist am Dienstag.',a:'der',trans:'La reunión de padres es el martes.'},
+      {s:'___ Hort ist bis 18 Uhr offen.',a:'der',trans:'El cuidado extraescolar está abierto hasta las 18h.'},
+      {s:'___ Anmeldung ist bis Januar.',a:'die',trans:'La inscripción es hasta enero.'},
+      {s:'___ DaZ-Unterricht ist kostenlos.',a:'der',trans:'Las clases de DaZ son gratuitas.'},
+    ],
+    phrases:{
+      formal:[
+        {de:'Wo melde ich mein Kind für die Schule an?',es:'¿Dónde inscribo a mi hijo en la escuela?',en:'Where do I enroll my child in school?',ctx:'En la Schulverwaltung de tu barrio'},
+        {de:'Hat mein Kind Anrecht auf DaZ-Unterricht?',es:'¿Tiene derecho a clases de DaZ?',en:'Does my child have the right to DaZ classes?',ctx:'Sí — gratuito'},
+        {de:'Wann ist der nächste Elternabend?',es:'¿Cuándo es la próxima reunión de padres?',en:'When is the next parent evening?',ctx:'Importante asistir'},
+        {de:'Was bedeutet diese Note?',es:'¿Qué significa esta nota?',en:'What does this grade mean?',ctx:'Notas del 1 al 6 — 6 es el máximo'},
+        {de:'Gibt es Hausaufgabenhilfe?',es:'¿Hay ayuda con los deberes?',en:'Is there homework help available?',ctx:'Muchos Quartiertreffs ofrecen esto'},
+      ],
+      casual:[
+        {de:'S Chind gfallt d Schuel!',es:'¡Al niño le gusta el colegio!',en:'The child likes school!',ctx:'Bernés — la mejor noticia'},
+        {de:'Wann händ mir Schüelferie?',es:'¿Cuándo son las vacaciones?',en:'When do we have school holidays?',ctx:'Bernés — siempre la pregunta'},
+        {de:'D Lehrerin isch sehr nett.',es:'La maestra es muy amable.',en:'The teacher is very nice.',ctx:'Bernés'},
+        {de:'Mir müend go Elternabed.',es:'Tenemos que ir a la reunión de padres.',en:'We have to go to the parent evening.',ctx:'Bernés'},
+        {de:'Hesch d Hausufgabe gmacht?',es:'¿Hiciste la tarea?',en:'Did you do your homework?',ctx:'Bernés — la pregunta eterna'},
+      ]
+    },
+    culture:[
+      {emoji:'📚',title:'El sistema escolar suizo-bernés',text:'Primarschule: 1°-6° grado (6-12 años). Luego Sekundarschule (7°-9°). Notas del 1 al 6 — 6 es el máximo. Escolaridad obligatoria y gratuita. DaZ apoya a niños que no hablan alemán.',tag:'Sistema'},
+      {emoji:'🌍',title:'DaZ — apoyo gratuito de alemán',text:'Todos los niños extranjeros tienen derecho a clases adicionales de alemán (DaZ) de forma gratuita en la escuela pública. Es un derecho — exígelo desde el primer día.',tag:'Derechos'},
+    ],
+    survival:[
+      {emoji:'📅',title:'Inscripción escolar — paso a paso',text:'1. Averigua tu Schulkreis en bern.ch\n2. Lleva: pasaporte del niño, prueba de domicilio, carnet de vacunas\n3. Inscripción normalmente antes de enero para septiembre\n4. El año escolar empieza en agosto en Berna\n5. Pregunta por DaZ desde el primer día\n\nContacto: schulverwaltung@bern.ch',tag:'Paso a paso'},
+    ]
+  },
+  elterngruppe: {
+    name:'Elterngruppe & Gemeinschaft', emoji:'👨‍👩‍👧', sub:'Familie · Gemeinschaft · K2',
+    track:'kinder', level:'k2',
+    words:[
+      {word:'Spielgruppe',artikel:'die',trans:'playgroup / grupo de juego',tip:'Compuesto femenino → die'},
+      {word:'Elterngruppe',artikel:'die',trans:'parent group / grupo de padres',tip:'Compuesto femenino → die'},
+      {word:'Krabbelgruppe',artikel:'die',trans:'baby group / grupo para bebés',tip:'Compuesto femenino → die'},
+      {word:'Mütterberatung',artikel:'die',trans:'mother advisory / consejo materno',tip:'Compuesto femenino → die'},
+      {word:'Quartiertreff',artikel:'der',trans:'neighborhood meeting / encuentro barrial',tip:'Compuesto masculino → der'},
+      {word:'Integration',artikel:'die',trans:'integration / integración',tip:'Termina en -ion → die'},
+      {word:'Austausch',artikel:'der',trans:'exchange / intercambio',tip:'Compuesto masculino → der'},
+      {word:'Beratung',artikel:'die',trans:'advice / asesoría',tip:'Termina en -ung → die'},
+      {word:'Nachbarschaft',artikel:'die',trans:'neighborhood / vecindario',tip:'Termina en -schaft → die'},
+      {word:'Gemeinschaft',artikel:'die',trans:'community / comunidad',tip:'Termina en -schaft → die'},
+      {word:'Treffpunkt',artikel:'der',trans:'meeting point / punto de encuentro',tip:'Compuesto masculino → der'},
+      {word:'Kontakt',artikel:'der',trans:'contact / contacto',tip:'Masculino → der'},
+      {word:'Freiwilligenarbeit',artikel:'die',trans:'volunteer work / voluntariado',tip:'Compuesto femenino → die'},
+      {word:'Willkommenspaket',artikel:'das',trans:'welcome package / paquete bienvenida',tip:'Compuesto neutro → das'},
+      {word:'Vätergruppe',artikel:'die',trans:'fathers group / grupo de padres',tip:'Compuesto femenino → die'},
+    ],
+    sentences:[
+      {s:'___ Spielgruppe trifft sich jeden Dienstag.',a:'die',trans:'El grupo de juego se reúne cada martes.'},
+      {s:'___ Elterngruppe ist sehr offen.',a:'die',trans:'El grupo de padres es muy abierto.'},
+      {s:'___ Quartiertreff ist jeden Monat.',a:'der',trans:'El encuentro barrial es cada mes.'},
+      {s:'___ Gemeinschaft hilft sehr.',a:'die',trans:'La comunidad ayuda mucho.'},
+      {s:'___ Beratung ist kostenlos.',a:'die',trans:'La asesoría es gratuita.'},
+      {s:'___ Kontakt ist wichtig beim Einleben.',a:'der',trans:'El contacto es importante al integrarse.'},
+    ],
+    phrases:{
+      formal:[
+        {de:'Gibt es eine Spielgruppe in meinem Quartier?',es:'¿Hay grupo de juego en mi barrio?',en:'Is there a playgroup in my neighborhood?',ctx:'En el Quartiertreff'},
+        {de:'Ich suche Kontakt zu anderen Eltern.',es:'Busco contacto con otros padres.',en:'I am looking for contact with other parents.',ctx:'Honesto y directo'},
+        {de:'Gibt es eine Beratung für neue Familien?',es:'¿Hay asesoría para familias nuevas?',en:'Is there advice for new families?',ctx:'Mütterberatung — gratis'},
+        {de:'Wann treffen sich die Eltern?',es:'¿Cuándo se reúnen los padres?',en:'When do the parents meet?',ctx:'Preguntando en el Kita'},
+        {de:'Ich spreche noch nicht so gut Deutsch.',es:'Todavía no hablo muy bien alemán.',en:'I don\'t speak German very well yet.',ctx:'Sé honesto — la gente ayuda'},
+      ],
+      casual:[
+        {de:'Chunsch au zur Spielgruppe?',es:'¿También vienes al grupo de juego?',en:'Are you coming to the playgroup too?',ctx:'Bernés — haciendo amigos'},
+        {de:'D Krabbelgruppe isch super für d Chliine!',es:'¡El grupo para bebés es genial!',en:'The baby group is great for the little ones!',ctx:'Bernés'},
+        {de:'Mir hend so toll Nachbare!',es:'¡Tenemos vecinos tan maravillosos!',en:'We have such wonderful neighbors!',ctx:'Bernés'},
+        {de:'Im Quartiertreff lernt me Lüt kenne.',es:'En el encuentro barrial conoces gente.',en:'At the neighborhood meeting you meet people.',ctx:'Bernés'},
+        {de:'Bisch du au neu in Bern?',es:'¿También eres nuevo/a en Berna?',en:'Are you also new to Bern?',ctx:'La mejor pregunta para romper el hielo'},
+      ]
+    },
+    culture:[
+      {emoji:'🤝',title:'La red de apoyo para familias',text:'Berna tiene red completa para familias nuevas: Spielgruppen, Krabbelgruppen, Elterngruppen, Mütter-/Väterberatung. El Quartiertreff de tu barrio es el mejor punto de partida. Muchos grupos son multilingües.',tag:'Comunidad'},
+      {emoji:'🌍',title:'Integración a través de los niños',text:'La Spielgruppe, el Kita, el Spielplatz — son espacios donde los padres se conocen naturalmente. No tengas miedo de hablar alemán aunque no sea perfecto. Los berneses valoran el esfuerzo.',tag:'Integración'},
+    ],
+    survival:[
+      {emoji:'📍',title:'Grupos y recursos para familias',text:'• Mütterberatung: beratungsdienste-bern.ch — gratis\n• Spielgruppen: spielgruppen-bern.ch\n• Familienberatung: 031 321 61 62\n• Quartiertreff: quartiere.bern.ch\n• Generationenhaus: generationenhaus-bern.ch',tag:'Recursos'},
+    ]
+  },
+  buero: {
+    name:'Büro & Arbeitsplatz', emoji:'💻', sub:'Arbeiten · Kollegen · W1',
+    track:'work', level:'w1',
+    words:[
+      {word:'Büro',artikel:'das',trans:'office / oficina',tip:'Neutro → das'},
+      {word:'Arbeitsplatz',artikel:'der',trans:'workplace / puesto de trabajo',tip:'Compuesto masculino → der'},
+      {word:'Kollege',artikel:'der',trans:'colleague (m) / colega',tip:'Termina en -e (masc.) → der'},
+      {word:'Kollegin',artikel:'die',trans:'colleague (f) / colega',tip:'Termina en -in → die'},
+      {word:'Besprechung',artikel:'die',trans:'meeting / reunión',tip:'Termina en -ung → die'},
+      {word:'Sitzung',artikel:'die',trans:'meeting / sesión',tip:'Termina en -ung → die'},
+      {word:'Auftrag',artikel:'der',trans:'task / encargo',tip:'Compuesto masculino → der'},
+      {word:'Deadline',artikel:'die',trans:'deadline / fecha límite',tip:'Femenino → die'},
+      {word:'Homeoffice',artikel:'das',trans:'home office / teletrabajo',tip:'Anglicismo neutro → das'},
+      {word:'Feierabend',artikel:'der',trans:'end of workday / fin del trabajo',tip:'Compuesto masculino → der'},
+      {word:'Kaffeepause',artikel:'die',trans:'coffee break / pausa del café',tip:'Compuesto femenino → die'},
+      {word:'Mittagspause',artikel:'die',trans:'lunch break / pausa del almuerzo',tip:'Compuesto femenino → die'},
+      {word:'Überstunden',artikel:'die',trans:'overtime / horas extra',tip:'Plural → die'},
+      {word:'Lohn',artikel:'der',trans:'salary / salario',tip:'Masculino → der'},
+      {word:'Vorgesetzte',artikel:'der',trans:'boss / superior',tip:'Adjetivo sustantivado → der/die'},
+    ],
+    sentences:[
+      {s:'___ Büro ist im dritten Stock.',a:'das',trans:'La oficina está en el tercer piso.'},
+      {s:'___ Besprechung beginnt um 9 Uhr.',a:'die',trans:'La reunión empieza a las 9.'},
+      {s:'___ Feierabend ist um 17 Uhr.',a:'der',trans:'El fin de la jornada es a las 17h.'},
+      {s:'___ Homeoffice ist erlaubt.',a:'das',trans:'El teletrabajo está permitido.'},
+      {s:'___ Kaffeepause ist um 10 Uhr.',a:'die',trans:'La pausa del café es a las 10.'},
+      {s:'___ Lohn wird am Ende des Monats bezahlt.',a:'der',trans:'El salario se paga a fin de mes.'},
+    ],
+    phrases:{
+      formal:[
+        {de:'Ich habe einen Termin mit Herrn/Frau...',es:'Tengo una cita con el señor/la señora...',en:'I have an appointment with Mr./Ms...',ctx:'Llegando a la oficina'},
+        {de:'Können wir einen Besprechungstermin vereinbaren?',es:'¿Podemos fijar una reunión?',en:'Can we schedule a meeting?',ctx:'Por email o en persona'},
+        {de:'Bis wann ist die Deadline?',es:'¿Hasta cuándo es el plazo?',en:'When is the deadline?',ctx:'Pregunta importante'},
+        {de:'Darf ich von zuhause arbeiten?',es:'¿Puedo trabajar desde casa?',en:'May I work from home?',ctx:'Muy común en Suiza'},
+        {de:'Ich arbeite ab heute in dieser Abteilung.',es:'Trabajo aquí desde hoy.',en:'I am working in this department starting today.',ctx:'Primer día'},
+      ],
+      casual:[
+        {de:'Feierabend! Endlich!',es:'¡Fin del trabajo! ¡Por fin!',en:'Work\'s done! Finally!',ctx:'Universal 😄'},
+        {de:'Gömer go Kaffeepause mache?',es:'¿Vamos a tomar un café?',en:'Shall we take a coffee break?',ctx:'Bernés — ritual de oficina'},
+        {de:'D Sitzung isch wieder mal z lang gsi.',es:'La reunión fue demasiado larga otra vez.',en:'The meeting was too long again.',ctx:'Universal 😅'},
+        {de:'Ich ha Homeoffice hüt.',es:'Hoy tengo teletrabajo.',en:'I\'m working from home today.',ctx:'Bernés'},
+        {de:'De Chef isch hüt guet druff!',es:'¡El jefe está de buen humor hoy!',en:'The boss is in a good mood today!',ctx:'Bernés — aprovecha 😄'},
+      ]
+    },
+    culture:[
+      {emoji:'🏢',title:'Cultura laboral suiza',text:'La cultura laboral suiza valora puntualidad, precisión y respeto por los límites. El Feierabend se respeta. Las reuniones comienzan y terminan puntualmente. Homeoffice es muy común.',tag:'Trabajo'},
+      {emoji:'☕',title:'El café — la vida social de la oficina',text:'La Kaffeepause es sagrada. Es donde se construyen relaciones con los colegas. No la saltes aunque no tomes café.',tag:'Social'},
+    ],
+    survival:[
+      {emoji:'📋',title:'Primer día de trabajo',text:'Espera: presentación a todos los colegas, tour por la oficina, manual de empleado (Personalreglement). Llega 5 minutos antes. Nunca tarde.',tag:'Consejos'},
+    ]
+  },
+  supermarkt: {
+    name:'Supermarkt & Einkaufen', emoji:'🛒', sub:'Einkaufen · Alltag · W1',
+    track:'work', level:'w1',
+    words:[
+      {word:'Supermarkt',artikel:'der',trans:'supermarket / supermercado',tip:'Compuesto masculino → der'},
+      {word:'Migros',artikel:'die',trans:'Migros (Swiss supermarket)',tip:'La más grande → die'},
+      {word:'Coop',artikel:'der',trans:'Coop (Swiss supermarket)',tip:'La rival → der'},
+      {word:'Kassenbon',artikel:'der',trans:'receipt / tique',tip:'Compuesto masculino → der'},
+      {word:'Einkaufswagen',artikel:'der',trans:'shopping cart / carrito',tip:'Compuesto masculino → der'},
+      {word:'Sonderangebot',artikel:'das',trans:'special offer / oferta',tip:'Compuesto neutro → das'},
+      {word:'Rabatt',artikel:'der',trans:'discount / descuento',tip:'Masculino → der'},
+      {word:'Kassierer',artikel:'der',trans:'cashier (m) / cajero',tip:'Termina en -er → der'},
+      {word:'Kassiererin',artikel:'die',trans:'cashier (f) / cajera',tip:'Termina en -in → die'},
+      {word:'Ablaufdatum',artikel:'das',trans:'expiry date / caducidad',tip:'Compuesto neutro → das'},
+      {word:'Bio',artikel:'das',trans:'organic / orgánico',tip:'Neutro → das'},
+      {word:'Cumulus',artikel:'der',trans:'Migros loyalty card / tarjeta puntos',tip:'Masculino → der'},
+      {word:'Pfand',artikel:'das',trans:'deposit / depósito',tip:'Neutro → das'},
+      {word:'Einkaufskorb',artikel:'der',trans:'shopping basket / canasta',tip:'Compuesto masculino → der'},
+      {word:'Supercard',artikel:'die',trans:'Coop loyalty card / tarjeta Coop',tip:'Compuesto femenino → die'},
+    ],
+    sentences:[
+      {s:'___ Migros ist günstig.',a:'die',trans:'Migros es económica.'},
+      {s:'___ Einkaufswagen kostet einen Franken.',a:'der',trans:'El carrito cuesta un franco.'},
+      {s:'___ Sonderangebot gilt bis Samstag.',a:'das',trans:'La oferta es hasta el sábado.'},
+      {s:'___ Ablaufdatum ist morgen.',a:'das',trans:'La caducidad es mañana.'},
+      {s:'___ Cumulus gibt Punkte zurück.',a:'der',trans:'La Cumulus da puntos de vuelta.'},
+      {s:'___ Bio-Produkte sind etwas teurer.',a:'die',trans:'Los productos bio son algo más caros.'},
+    ],
+    phrases:{
+      formal:[
+        {de:'Wo finde ich die Milchprodukte?',es:'¿Dónde están los lácteos?',en:'Where can I find the dairy products?',ctx:'En el supermercado'},
+        {de:'Haben Sie das auch in Bio?',es:'¿Lo tienen en versión orgánica?',en:'Do you have that in organic too?',ctx:'En Suiza hay mucho Bio'},
+        {de:'Kann ich das zurückgeben?',es:'¿Puedo devolver esto?',en:'Can I return this?',ctx:'Con el tique siempre'},
+        {de:'Akzeptieren Sie Twint?',es:'¿Aceptan Twint?',en:'Do you accept Twint?',ctx:'Casi siempre sí'},
+        {de:'Haben Sie eine Cumulus-Karte?',es:'¿Tiene la Cumulus?',en:'Do you have a Cumulus card?',ctx:'La pregunta en todas las cajas Migros'},
+      ],
+      casual:[
+        {de:'Ich gange go Migros, chunsch mit?',es:'Voy a Migros, ¿vienes?',en:'I\'m going to Migros, want to come?',ctx:'Bernés'},
+        {de:'S Coop isch billiger für Früchte.',es:'El Coop es más barato para frutas.',en:'Coop is cheaper for fruit.',ctx:'El debate eterno en Suiza'},
+        {de:'Ha vergässe d Cumulus mitzubringe!',es:'¡Olvidé traer la Cumulus!',en:'I forgot to bring my Cumulus card!',ctx:'El error clásico en la caja'},
+        {de:'D Migros macht z früh zue!',es:'¡Migros cierra demasiado pronto!',en:'Migros closes too early!',ctx:'Cierran a las 20h'},
+        {de:'Ha Glück, s Sonderangebot gilt no!',es:'¡Qué suerte, la oferta todavía vale!',en:'Lucky, the special offer is still on!',ctx:'Bernés'},
+      ]
+    },
+    culture:[
+      {emoji:'🛒',title:'Migros vs Coop',text:'Migros es cooperativa y no vende alcohol ni tabaco. Coop vende de todo. Migros tiene Cumulus, Coop tiene Supercard. Precios similares. Los suizos son leales a uno u otro.',tag:'Cultura'},
+      {emoji:'💳',title:'Tarjetas de fidelidad',text:'Cumulus de Migros y Supercard de Coop son gratuitas y dan descuentos reales. Vale la pena tener ambas.',tag:'Ahorro'},
+    ],
+    survival:[
+      {emoji:'🕐',title:'Horarios en Berna',text:'Lunes-Viernes: 08:00-20:00. Sábado: 08:00-18:00. Domingo: CERRADO (excepto Bahnhof hasta 22:00). Planifica tu compra — el domingo los supermercados están cerrados.',tag:'⚠️ Importante'},
+    ]
+  },
+  vertrag: {
+    name:'Arbeitsvertrag & Rechte', emoji:'📋', sub:'Vertrag · Rechte · W2',
+    track:'work', level:'w2',
+    words:[
+      {word:'Arbeitsvertrag',artikel:'der',trans:'employment contract / contrato',tip:'Compuesto masculino → der'},
+      {word:'Probezeit',artikel:'die',trans:'probation period / período prueba',tip:'Compuesto femenino → die'},
+      {word:'Kündigungsfrist',artikel:'die',trans:'notice period / plazo preaviso',tip:'Compuesto femenino → die'},
+      {word:'Jahresurlaub',artikel:'der',trans:'annual leave / vacaciones',tip:'Compuesto masculino → der'},
+      {word:'Lohnerhöhung',artikel:'die',trans:'pay raise / aumento sueldo',tip:'Termina en -ung → die'},
+      {word:'AHV',artikel:'die',trans:'pension fund / pensión suiza',tip:'Abreviatura femenino → die'},
+      {word:'Pensionskasse',artikel:'die',trans:'pension fund / caja pensiones',tip:'Compuesto femenino → die'},
+      {word:'Gewerkschaft',artikel:'die',trans:'union / sindicato',tip:'Termina en -schaft → die'},
+      {word:'Zeugnis',artikel:'das',trans:'work reference / carta referencia',tip:'Neutro → das'},
+      {word:'Arbeitsbewilligung',artikel:'die',trans:'work permit / permiso trabajo',tip:'Termina en -ung → die'},
+      {word:'Kündigung',artikel:'die',trans:'termination / despido-renuncia',tip:'Termina en -ung → die'},
+      {word:'GAV',artikel:'der',trans:'collective agreement / convenio colectivo',tip:'Masculino → der'},
+      {word:'Sozialversicherung',artikel:'die',trans:'social security / seguro social',tip:'Termina en -ung → die'},
+      {word:'Abmahnung',artikel:'die',trans:'formal warning / advertencia',tip:'Termina en -ung → die'},
+      {word:'Arbeitsstunden',artikel:'die',trans:'working hours / horas trabajo',tip:'Plural → die'},
+    ],
+    sentences:[
+      {s:'___ Arbeitsvertrag muss ich unterschreiben.',a:'den',trans:'Tengo que firmar el contrato.'},
+      {s:'___ Probezeit dauert 3 Monate.',a:'die',trans:'El período de prueba dura 3 meses.'},
+      {s:'___ Kündigungsfrist beträgt einen Monat.',a:'die',trans:'El preaviso es de un mes.'},
+      {s:'___ Jahresurlaub sind 4 Wochen.',a:'der',trans:'Las vacaciones son 4 semanas.'},
+      {s:'___ AHV wird vom Lohn abgezogen.',a:'die',trans:'La AHV se descuenta del salario.'},
+      {s:'___ Zeugnis brauche ich für die Bewerbung.',a:'das',trans:'Necesito la referencia para la solicitud.'},
+    ],
+    phrases:{
+      formal:[
+        {de:'Kann ich den Vertrag vor der Unterschrift prüfen?',es:'¿Puedo revisar el contrato antes de firmar?',en:'Can I review the contract before signing?',ctx:'Siempre sí — tómate tiempo'},
+        {de:'Was ist die Kündigungsfrist?',es:'¿Cuál es el plazo de preaviso?',en:'What is the notice period?',ctx:'Importante conocerlo'},
+        {de:'Wie viele Ferientage habe ich pro Jahr?',es:'¿Cuántos días de vacaciones tengo?',en:'How many vacation days do I have?',ctx:'Mínimo legal: 20 días'},
+        {de:'Gibt es einen GAV in dieser Branche?',es:'¿Hay convenio colectivo?',en:'Is there a collective agreement?',ctx:'Protege tus derechos'},
+        {de:'Ich möchte meine Kündigung einreichen.',es:'Quiero presentar mi renuncia.',en:'I would like to submit my resignation.',ctx:'Por escrito siempre'},
+      ],
+      casual:[
+        {de:'Ha endlich de Vertrag unterschriebe!',es:'¡Por fin firmé el contrato!',en:'I finally signed the contract!',ctx:'El alivio universal'},
+        {de:'Vier Wuche Ferie — super!',es:'¡Cuatro semanas de vacaciones!',en:'Four weeks vacation — awesome!',ctx:'Bernés — el estándar suizo'},
+        {de:'D Probezeit isch fertig!',es:'¡Terminó el período de prueba!',en:'The probation period is over!',ctx:'Bernés — ¡a celebrar!'},
+        {de:'Ich chünd jetzt formell.',es:'Renuncio formalmente.',en:'I\'m resigning formally.',ctx:'Siempre por escrito'},
+        {de:'D AHV isch kompliziert aber wichtig.',es:'La AHV es complicada pero importante.',en:'The AHV is complicated but important.',ctx:'El sistema de pensiones'},
+      ]
+    },
+    culture:[
+      {emoji:'📋',title:'El contrato laboral suizo',text:'Debe incluir: salario, horario, Probezeit (máx 3 meses), preaviso y vacaciones (mínimo 4 semanas = 20 días). Siempre lee antes de firmar.',tag:'Derechos'},
+      {emoji:'🏦',title:'AHV y las 3 pensiones',text:'AHV (estatal — obligatoria), Pensionskasse/BVG (laboral — empresa contribuye), 3° pilar (privado — voluntario). Si te vas de Suiza puedes recuperar parte.',tag:'Finanzas'},
+    ],
+    survival:[
+      {emoji:'⚖️',title:'Tus derechos laborales en Suiza',text:'• Mínimo 4 semanas vacaciones/año\n• Pago durante enfermedad\n• No despido durante embarazo\n• Derecho a carta de referencia\n\nDudas: sindicato o Centro Jurídico de tu barrio.',tag:'Derechos'},
+    ]
+  },
+  bewerbung: {
+    name:'Bewerbung & Jobsuche', emoji:'📄', sub:'Bewerbung · Karriere · W2',
+    track:'work', level:'w2',
+    words:[
+      {word:'Bewerbung',artikel:'die',trans:'job application / solicitud empleo',tip:'Termina en -ung → die'},
+      {word:'Lebenslauf',artikel:'der',trans:'CV / currículum',tip:'Compuesto masculino → der'},
+      {word:'Motivationsschreiben',artikel:'das',trans:'cover letter / carta presentación',tip:'Compuesto neutro → das'},
+      {word:'Vorstellungsgespräch',artikel:'das',trans:'job interview / entrevista',tip:'Compuesto neutro → das'},
+      {word:'Stelle',artikel:'die',trans:'position / puesto de trabajo',tip:'Termina en -e → die'},
+      {word:'Arbeitgeber',artikel:'der',trans:'employer / empleador',tip:'Compuesto masculino → der'},
+      {word:'Referenz',artikel:'die',trans:'reference / referencia',tip:'Termina en -z → die'},
+      {word:'Qualifikation',artikel:'die',trans:'qualification / calificación',tip:'Termina en -ion → die'},
+      {word:'Erfahrung',artikel:'die',trans:'experience / experiencia',tip:'Termina en -ung → die'},
+      {word:'Ausbildung',artikel:'die',trans:'education / formación',tip:'Termina en -ung → die'},
+      {word:'Diplom',artikel:'das',trans:'diploma',tip:'Neutro → das'},
+      {word:'Beruf',artikel:'der',trans:'profession / profesión',tip:'Masculino → der'},
+      {word:'Gehalt',artikel:'das',trans:'salary / salario',tip:'Neutro → das'},
+      {word:'RAV',artikel:'das',trans:'employment office / oficina empleo',tip:'Neutro → das'},
+      {word:'Probezeit',artikel:'die',trans:'trial period / período prueba',tip:'Compuesto femenino → die'},
+    ],
+    sentences:[
+      {s:'___ Lebenslauf muss aktuell sein.',a:'der',trans:'El currículum debe estar actualizado.'},
+      {s:'___ Bewerbung schicke ich per E-Mail.',a:'die',trans:'Envío la solicitud por correo.'},
+      {s:'___ Vorstellungsgespräch ist am Montag.',a:'das',trans:'La entrevista es el lunes.'},
+      {s:'___ Stelle ist unbefristet.',a:'die',trans:'El puesto es indefinido.'},
+      {s:'___ Ausbildung ist sehr wichtig.',a:'die',trans:'La formación es muy importante.'},
+      {s:'___ RAV hilft bei der Jobsuche.',a:'das',trans:'La oficina de empleo ayuda.'},
+    ],
+    phrases:{
+      formal:[
+        {de:'Ich bewerbe mich für die ausgeschriebene Stelle.',es:'Me postulo para el puesto publicado.',en:'I am applying for the advertised position.',ctx:'Frase inicial del email'},
+        {de:'Im Anhang finden Sie meinen Lebenslauf.',es:'En el adjunto encontrará mi currículum.',en:'Please find my CV in the attachment.',ctx:'En el email de solicitud'},
+        {de:'Wann können Sie mich für ein Gespräch einladen?',es:'¿Cuándo pueden invitarme a una entrevista?',en:'When can you invite me for an interview?',ctx:'Seguimiento proactivo'},
+        {de:'Was sind die Gehaltsvorstellungen?',es:'¿Cuáles son las expectativas salariales?',en:'What is the salary range?',ctx:'En la entrevista'},
+        {de:'Habe ich die Stelle bekommen?',es:'¿Conseguí el trabajo?',en:'Did I get the position?',ctx:'La pregunta más ansiosa 😅'},
+      ],
+      casual:[
+        {de:'Ich ha e Vorstelligsgspräch!',es:'¡Tengo una entrevista!',en:'I have a job interview!',ctx:'Bernés — ¡a prepararse!'},
+        {de:'Ha d Stelle becho!',es:'¡Conseguí el trabajo!',en:'I got the job!',ctx:'Bernés — ¡a celebrar!'},
+        {de:'De Lebenslauf muss uf Dütsch si.',es:'El CV debe estar en alemán.',en:'The CV has to be in German.',ctx:'Importante para Suiza'},
+        {de:'S RAV isch hilfreich.',es:'La oficina de empleo es útil.',en:'The employment office is helpful.',ctx:'Bernés'},
+        {de:'Ha no nüt ghört vom Arbeitgeber.',es:'Todavía no sé nada del empleador.',en:'I haven\'t heard anything from the employer.',ctx:'La espera universal 😤'},
+      ]
+    },
+    culture:[
+      {emoji:'📄',title:'La solicitud suiza',text:'Incluye: Motivationsschreiben personalizado, Lebenslauf en formato suizo con foto, diplomas y Zeugnisse. Todo en alemán.',tag:'Trabajo'},
+      {emoji:'🎓',title:'El RAV — tu aliado sin trabajo',text:'Regístrate en el RAV inmediatamente al perder tu trabajo. Tienes derecho al seguro de desempleo (ALV) si has cotizado suficiente. También ofrecen cursos de formación.',tag:'Derechos'},
+    ],
+    survival:[
+      {emoji:'🔍',title:'Dónde buscar trabajo en Berna',text:'• jobs.ch — la más usada en Suiza\n• jobup.ch — muy completa\n• linkedin.com — redes profesionales\n• Jobroom.ch — oficial del RAV\n\nAdapta el CV al mercado suizo, incluye foto, escribe en alemán.',tag:'Práctica'},
+    ]
+  },
+  kuendigung: {
+    name:'Kündigung & Abgang', emoji:'👋', sub:'Kündigung · ALV · W2',
+    track:'work', level:'w2',
+    words:[
+      {word:'Kündigung',artikel:'die',trans:'termination / renuncia-despido',tip:'Termina en -ung → die'},
+      {word:'Kündigungsschreiben',artikel:'das',trans:'resignation letter / carta renuncia',tip:'Compuesto neutro → das'},
+      {word:'Abfindung',artikel:'die',trans:'severance pay / indemnización',tip:'Termina en -ung → die'},
+      {word:'Freistellung',artikel:'die',trans:'garden leave / liberación laboral',tip:'Termina en -ung → die'},
+      {word:'ALV',artikel:'die',trans:'unemployment insurance / paro',tip:'Femenino → die'},
+      {word:'Restferien',artikel:'die',trans:'remaining vacation / vacaciones pendientes',tip:'Plural → die'},
+      {word:'Übergabe',artikel:'die',trans:'handover / traspaso',tip:'Compuesto femenino → die'},
+      {word:'Abgangsgespräch',artikel:'das',trans:'exit interview / entrevista salida',tip:'Compuesto neutro → das'},
+      {word:'Nachfolger',artikel:'der',trans:'successor / sucesor',tip:'Termina en -er → der'},
+      {word:'Netzwerk',artikel:'das',trans:'network / red de contactos',tip:'Neutro → das'},
+      {word:'Lohnausweis',artikel:'der',trans:'pay certificate / certificado sueldo',tip:'Compuesto masculino → der'},
+      {word:'Arbeitslosigkeit',artikel:'die',trans:'unemployment / desempleo',tip:'Termina en -keit → die'},
+      {word:'Referenzperson',artikel:'die',trans:'reference person / referencia',tip:'Compuesto femenino → die'},
+      {word:'Abmeldung',artikel:'die',trans:'deregistration / baja registro',tip:'Termina en -ung → die'},
+      {word:'Zwischenzeugnis',artikel:'das',trans:'interim reference / referencia parcial',tip:'Compuesto neutro → das'},
+    ],
+    sentences:[
+      {s:'___ Kündigung muss schriftlich sein.',a:'die',trans:'La renuncia debe ser por escrito.'},
+      {s:'___ Kündigungsfrist beträgt einen Monat.',a:'die',trans:'El preaviso es de un mes.'},
+      {s:'___ Zeugnis brauche ich dringend.',a:'das',trans:'Necesito urgentemente la referencia.'},
+      {s:'___ ALV zahlt 70-80% des Lohns.',a:'die',trans:'El paro paga el 70-80% del sueldo.'},
+      {s:'___ Übergabe dauert zwei Wochen.',a:'die',trans:'El traspaso dura dos semanas.'},
+      {s:'___ Restferien werden ausbezahlt.',a:'die',trans:'Las vacaciones pendientes se pagan.'},
+    ],
+    phrases:{
+      formal:[
+        {de:'Ich möchte mein Arbeitsverhältnis kündigen.',es:'Deseo rescindir mi contrato.',en:'I wish to terminate my employment.',ctx:'La frase formal para renunciar'},
+        {de:'Ich bitte um ein Arbeitszeugnis.',es:'Solicito una carta de referencia.',en:'I request a work reference letter.',ctx:'Derecho a recibirla — exígela'},
+        {de:'Wann endet mein Arbeitsverhältnis genau?',es:'¿Cuándo termina exactamente?',en:'When exactly does my employment end?',ctx:'Calcular bien el fin'},
+        {de:'Habe ich Anrecht auf Freistellung?',es:'¿Tengo derecho a liberación laboral?',en:'Am I entitled to garden leave?',ctx:'A veces sí durante el preaviso'},
+        {de:'Wie melde ich mich beim RAV an?',es:'¿Cómo me registro en el RAV?',en:'How do I register with the unemployment office?',ctx:'Inmediatamente después de la kündigung'},
+      ],
+      casual:[
+        {de:'Ich ha gchündet!',es:'¡Renuncié!',en:'I resigned!',ctx:'Bernés'},
+        {de:'Mir händ mi gchündet.',es:'Me despidieron.',en:'They let me go.',ctx:'Bernés'},
+        {de:'Ich bruchi dringed s Zeugnis.',es:'Necesito urgentemente la referencia.',en:'I urgently need the reference.',ctx:'Bernés'},
+        {de:'Zum Glück ha ich d ALV.',es:'Por suerte tengo el paro.',en:'Luckily I have unemployment insurance.',ctx:'Bernés'},
+        {de:'S Netzwerk isch jetzt wichtig.',es:'La red de contactos es importante ahora.',en:'The network is important now.',ctx:'LinkedIn, contactos, etc.'},
+      ]
+    },
+    culture:[
+      {emoji:'📝',title:'Cómo renunciar en Suiza',text:'Siempre por escrito (Kündigungsschreiben) antes del último día del mes. El estándar es 1 mes durante el primer año, 2 meses a partir del segundo. Guarda una copia.',tag:'Proceso'},
+      {emoji:'💰',title:'ALV — el seguro de desempleo',text:'Si has cotizado 12 meses en los últimos 2 años, tienes derecho a ALV: 70-80% de tu último salario durante máx 400 días. Regístrate en el RAV el primer día después de tu último día.',tag:'Derechos'},
+    ],
+    survival:[
+      {emoji:'📋',title:'Lista de cosas al salir',text:'✓ Pide el Zeugnis por escrito\n✓ Calcula tus Restferien\n✓ Pide el Lohnausweis\n✓ Confirma la fecha exacta de fin\n✓ Regístrate en el RAV si no tienes nuevo trabajo\n✓ Actualiza LinkedIn y contactos\n\nNo firmes nada que no entiendas.',tag:'Checklist'},
+    ]
+  },
+
   hidden_gems: {
     name:'Hidden Gems von Bern', emoji:'💎', sub:'Geheimtipps · Insider · A2',
     track:'leben', level:'a2',
@@ -4099,7 +5108,8 @@ function setHomeTrack(track){
   document.querySelectorAll('.ttab').forEach(t=>{t.className='ttab';});
   document.getElementById('ttab-'+track).className='ttab active-'+track;
   const t=LANG[state.lang||'es'];
-  document.getElementById('home-track-label').textContent=t.trackNames[track];
+  const lbl=document.getElementById('home-track-label');
+  if(lbl) lbl.textContent=t.trackNames[track];
   renderLevelStrips();
 }
 
@@ -4147,27 +5157,12 @@ function openLevel(level){
   });
   // Back button goes to level screen
   const backBtn=document.querySelector('#locationmap .lm-back');
-  if(backBtn){ backBtn.textContent=`← ${isEN?'Levels':'Niveles'}`; backBtn.onclick=()=>showScreen('levelscreen'); }
+  if(backBtn){ backBtn.textContent=`← ${isEN?'Levels':'Niveles'}`; backBtn.onclick=()=>goLevelSelect(); }
   showScreen('locationmap');
 }
 
 function goToTrack(track){
-  state.track=track;
-  const t=LANG[state.lang||'es']||LANG.es;
-  const isEN=state.lang==='en';
-  const trackEmojis={leben:'🗺️',kinder:'🐨',work:'💼'};
-  const trackNames=t.trackNames;
-  const trackSubs={
-    leben: isEN?'Choose your level':'Elige tu nivel',
-    kinder: isEN?'Choose your level':'Elige tu nivel',
-    work: isEN?'Choose your level':'Elige tu nivel',
-  };
-  document.getElementById('level-track-emoji').textContent=trackEmojis[track];
-  document.getElementById('level-track-name').textContent=trackNames[track];
-  document.getElementById('level-track-sub').textContent=trackSubs[track];
-  document.getElementById('level-back').textContent=`← ${isEN?'Back':'Volver'}`;
-  renderLevelStrips();
-  showScreen('levelscreen');
+  showLevelSelect(track);
 }
 
 function goLocationMap(){
