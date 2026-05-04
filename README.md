@@ -8,4 +8,4 @@ Pueden existir errores o fallas, así que te invito a compartirlos en la secció
 Además, si eres desarrollador y te gustaría aportar tu granito de arena mejorando el código, eres bienvenido a contactarnos.
 
 Gracias y espero que la disfruten.
-Milla — @vivirenviajes
+Milla — IG:vivirenviajes
