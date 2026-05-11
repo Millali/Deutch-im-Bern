@@ -282,30 +282,33 @@ input, select, textarea { font-size: 16px !important; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
-  padding: 6px 10px;
-  border-radius: 12px;
+  gap: 4px;
+  padding: 8px 14px;
+  border-radius: 14px;
   border: 1.5px solid var(--border);
-  background: var(--surface);
+  background: var(--card);
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.2s;
-  min-width: 64px;
+  min-width: 72px;
+  min-height: 56px;
   flex-shrink: 0;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(232,168,56,0.2);
 }
+.mission-step-pill:active { transform: scale(0.94); }
 .mission-step-pill.active {
   border-color: var(--bear);
-  background: rgba(232,168,56,0.12);
+  background: rgba(232,168,56,0.15);
 }
 .mission-step-pill.done {
   border-color: var(--neut);
   background: rgba(63,185,80,0.1);
 }
-.mission-step-pill .pill-icon { font-size: 1.1rem; }
-.mission-step-pill .pill-label { font-size: 0.6rem; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.3px; }
+.mission-step-pill .pill-icon { font-size: 1.3rem; }
+.mission-step-pill .pill-label { font-size: 0.62rem; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.3px; }
 .mission-step-pill.active .pill-label { color: var(--bear); }
 .mission-step-pill.done .pill-label { color: var(--neut); }
-.mission-step-pill .pill-check { font-size: 0.65rem; color: var(--neut); font-weight: 800; }
 
 /* ── MOBILE TOUCH IMPROVEMENTS ── */
 
@@ -465,7 +468,7 @@ button:active { opacity: 0.75; transform: scale(0.97); }
 .mod-tabs::-webkit-scrollbar { display:none; }
 .mtab { padding:12px 14px; font-family:'Nunito',sans-serif; font-size:0.8rem; font-weight:700; color:var(--muted); background:transparent; border:none; border-bottom:2px solid transparent; cursor:pointer; white-space:nowrap; transition:all 0.2s; }
 .mtab.active { color:var(--bear); border-bottom-color:var(--bear); }
-.mod-content { padding:20px 16px; }
+.mod-content { padding:16px 16px 120px; }
 
 /* ── QUIZ / FLASHCARD / BLANK shared ── */
 .ex-wrap { display:flex; flex-direction:column; align-items:center; gap:14px; }
@@ -935,7 +938,7 @@ button:active { opacity: 0.75; transform: scale(0.97); }
   <div class="mod-content" id="mod-content"></div>
 
   <!-- Step nav buttons -->
-  <div id="mission-footer" style="padding:16px;display:flex;gap:10px">
+  <div id="mission-footer" style="padding:12px 16px;display:flex;gap:10px;position:sticky;bottom:0;background:var(--bg);border-top:1px solid var(--border);z-index:10">
     <button class="btn-secondary" id="mission-prev" onclick="missionPrev()" style="display:none">← Anterior</button>
     <button class="btn-primary" id="mission-next" onclick="missionNext()" style="flex:1">Siguiente →</button>
   </div>
@@ -4022,7 +4025,7 @@ const LOCATIONS = {
 
   einstein: {
     name:'Einstein & Geschichte', emoji:'🧠', sub:'Geschichte · Passiv · B2',
-    track:'leben', level:'b2',
+    track:'leben', level:'b1',
     words:[
       {word:'Geschichte',artikel:'die',trans:'history / historia',tip:'Termina en -e → die'},
       {word:'Wissenschaft',artikel:'die',trans:'science / ciencia',tip:'Termina en -schaft → die'},
@@ -4287,7 +4290,7 @@ const LOCATIONS = {
 
   bundesplatz: {
     name:'Bundesplatz & Wasserspiel', emoji:'⛲', sub:'Sommer · Politik · B1',
-    track:'leben', level:'b1',
+    track:'leben', level:'b2',
     words:[
       {word:'Brunnen',artikel:'der',trans:'fountain / fuente',tip:'Termina en -en → der'},
       {word:'Wasserspiel',artikel:'das',trans:'water feature / juego de agua',tip:'Compuesto neutro → das'},
@@ -4339,7 +4342,7 @@ const LOCATIONS = {
   },
   gurten: {
     name:'Gurten — Hausberg', emoji:'🏔️', sub:'Natur · Wandern · B1',
-    track:'leben', level:'b1',
+    track:'leben', level:'b2',
     words:[
       {word:'Hausberg',artikel:'der',trans:'local mountain / montaña local',tip:'Compuesto masculino → der'},
       {word:'Seilbahn',artikel:'die',trans:'cable car / funicular',tip:'Compuesto femenino → die'},
@@ -4391,7 +4394,7 @@ const LOCATIONS = {
   },
   polizei: {
     name:'Polizei & Notfall', emoji:'🚔', sub:'Notfälle · Rechte · B1',
-    track:'leben', level:'b1',
+    track:'leben', level:'b2',
     words:[
       {word:'Polizei',artikel:'die',trans:'police / policía',tip:'Femenino → die'},
       {word:'Notruf',artikel:'der',trans:'emergency call / emergencia',tip:'Compuesto masculino → der'},
@@ -4443,7 +4446,7 @@ const LOCATIONS = {
   },
   bernmobil: {
     name:'Bernmobil & Tram', emoji:'🚋', sub:'Transport · Modalverben · B1',
-    track:'leben', level:'b1',
+    track:'leben', level:'b2',
     words:[
       {word:'Tram',artikel:'das',trans:'tram / tranvía',tip:'Neutro → das'},
       {word:'Linie',artikel:'die',trans:'line / línea',tip:'Termina en -e → die'},
@@ -5347,6 +5350,7 @@ function openModule(loc,id){
 
 function renderMissionNav(){
   const isEN = state.lang==='en';
+  const stepsEl = document.getElementById('mission-steps');
   // Step pills
   const pills = MISSION_STEPS.map((s,i)=>{
     const isDone = missionDone.has(i);
@@ -5357,21 +5361,28 @@ function renderMissionNav(){
       <span class="pill-label">${isEN?s.label_en:s.label_es}</span>
     </div>`;
   }).join('');
-  document.getElementById('mission-steps').innerHTML = pills;
+  stepsEl.innerHTML = pills;
+
+  // Scroll active pill into view
+  setTimeout(()=>{
+    const active = stepsEl.querySelector('.mission-step-pill.active');
+    if(active) active.scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
+  }, 50);
+
   // Progress bar
   const pct = (missionDone.size / MISSION_STEPS.length) * 100;
   document.getElementById('mission-prog-fill').style.width = pct+'%';
-  // Footer buttons
+
+  // Footer buttons — always visible
+  const footer = document.getElementById('mission-footer');
+  footer.style.display = 'flex';
   const prev = document.getElementById('mission-prev');
   const next = document.getElementById('mission-next');
-  const isEN2 = state.lang==='en';
   prev.style.display = missionStep>0 ? '' : 'none';
-  prev.textContent = isEN2?'← Back':'← Anterior';
-  if(missionStep === MISSION_STEPS.length-1){
-    next.textContent = isEN2?'🗺️ Finish':'🗺️ Terminar';
-  } else {
-    next.textContent = isEN2?'Next →':'Siguiente →';
-  }
+  prev.textContent = isEN?'← Back':'← Anterior';
+  next.textContent = missionStep===MISSION_STEPS.length-1
+    ? (isEN?'🗺️ Finish':'🗺️ Terminar')
+    : (isEN?'Next →':'Siguiente →');
 }
 
 function loadMissionStep(idx){
@@ -5402,10 +5413,8 @@ function loadMissionStep(idx){
 }
 
 function jumpMissionStep(idx){
-  // Can jump to any visited step or the next one
-  if(idx <= missionStep || missionDone.has(idx-1) || idx===0){
-    loadMissionStep(idx);
-  }
+  // Allow jumping to any step freely
+  loadMissionStep(idx);
 }
 
 function missionNext(){
@@ -5428,117 +5437,292 @@ function renderTab(tab){}
 
 // ── GRAMMAR ──
 function renderGrammar(){
-  // Pull examples from current location's words by artikel
-  const derWords = currentLoc.words.filter(w=>w.artikel==='der').slice(0,2).map(w=>`der ${w.word}`).join(', ') || 'der Mann, der Hund';
-  const dieWords = currentLoc.words.filter(w=>w.artikel==='die').slice(0,2).map(w=>`die ${w.word}`).join(', ') || 'die Frau, die Straße';
-  const dasWords = currentLoc.words.filter(w=>w.artikel==='das').slice(0,2).map(w=>`das ${w.word}`).join(', ') || 'das Kind, das Haus';
+  const level = currentLoc.level || 'a1';
+  const track = currentLoc.track || 'leben';
   const isEN = state.lang==='en';
+  // Route to correct grammar section based on level
+  if(level==='a1') return renderGrammarA1(isEN);
+  if(level==='a2') return renderGrammarA2(isEN);
+  if(level==='b1') return renderGrammarB1(isEN);
+  if(level==='b2') return renderGrammarB2(isEN);
+  if(level==='k1') return renderGrammarK1(isEN);
+  if(level==='k2') return renderGrammarB1(isEN); // same as B1
+  if(level==='w1') return renderGrammarA2(isEN); // same as A2
+  if(level==='w2') return renderGrammarB1(isEN); // same as B1
+  return renderGrammarA1(isEN);
+}
 
+// ── shared helper: location word pills with TTS
+function wordPills(isEN){
+  return `<div style="background:rgba(232,168,56,0.08);border:1px solid rgba(232,168,56,0.25);border-radius:12px;padding:14px;margin-bottom:16px">
+    <div style="font-weight:800;color:var(--bear);margin-bottom:8px">💡 ${isEN?'Words from this location (tap to hear)':'Palabras de este lugar (toca para escuchar)'}</div>
+    <div id="grammar-pills" style="display:flex;flex-wrap:wrap;gap:8px">
+      ${currentLoc.words.slice(0,10).map((w,i)=>`<span
+        data-word="${w.word}" data-idx="${i}"
+        style="background:var(--card);border:1px solid var(--border);border-radius:8px;
+               padding:6px 10px;font-size:0.82rem;cursor:pointer;display:inline-flex;align-items:center;gap:4px"
+        onclick="speak('${w.word.replace(/'/g,"\'")}',this)">
+        <span style="color:${w.artikel==='der'?'var(--masc)':w.artikel==='die'?'var(--fem)':'var(--neut)'};font-weight:700">${w.artikel}</span>
+        ${w.word}
+        <span style="color:var(--bear);font-size:0.65rem">🔊</span>
+      </span>`).join('')}
+    </div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════════════
+// A1 — Articles, Plurals, Basic sentence structure
+// ══════════════════════════════════════════════════
+function renderGrammarA1(isEN){
+  const derW = currentLoc.words.filter(w=>w.artikel==='der').slice(0,2).map(w=>`der ${w.word}`).join(', ')||'der Mann, der Hund';
+  const dieW = currentLoc.words.filter(w=>w.artikel==='die').slice(0,2).map(w=>`die ${w.word}`).join(', ')||'die Frau, die Straße';
+  const dasW = currentLoc.words.filter(w=>w.artikel==='das').slice(0,2).map(w=>`das ${w.word}`).join(', ')||'das Kind, das Haus';
   return `<div>
+    ${wordPills(isEN)}
     <div style="margin-bottom:16px">
-      <div class="art-badge der">🔵 DER — ${isEN?'masculine':'masculino'}</div>
+      <div class="art-badge der">🔵 DER — ${isEN?'masculine · "el"':'masculino · "el"'}</div>
       <ul class="rule-list">
-        <li><span class="arrow">→</span>${isEN?'Ends in':'Termina en'} <strong>-er, -el, -en</strong> → ${derWords} <span class="ltag en">EN</span></li>
-        <li><span class="arrow">→</span>${isEN?'Days, months, seasons':'Días, meses, estaciones'} → der Montag, der Sommer, der Januar</li>
-        <li><span class="arrow">→</span>${isEN?'Ends in':'Termina en'} <strong>-ismus, -or, -ig, -ling</strong> → der König, der Frühling</li>
-        <li><span class="arrow">→</span>${isEN?'Alcoholic drinks':'Bebidas alcohólicas'} → der Wein, der Whisky, der Kaffee</li>
-        <li><span class="arrow">→</span>${isEN?'Living males':'Masculinos vivos'} → der Mann, der Hund <span class="ltag es">ES: "el"</span></li>
+        <li><span class="arrow">→</span>${isEN?'Ends in -er, -el, -en':'Termina en -er, -el, -en'} → ${derW}</li>
+        <li><span class="arrow">→</span>${isEN?'Days, months, seasons':'Días, meses, estaciones'} → der Montag, der Sommer</li>
+        <li><span class="arrow">→</span>${isEN?'Ends in -ismus, -or, -ig':'Termina en -ismus, -or, -ig'} → der König, der Motor</li>
+        <li><span class="arrow">→</span>${isEN?'Alcoholic drinks':'Bebidas alcohólicas'} → der Wein, der Kaffee</li>
       </ul>
-      <div class="art-badge die">🔴 DIE — ${isEN?'feminine':'femenino'}</div>
+      <div class="art-badge die">🔴 DIE — ${isEN?'feminine · "la"':'femenino · "la"'}</div>
       <ul class="rule-list">
-        <li><span class="arrow">→</span>${isEN?'Ends in':'Termina en'} <strong>-ung, -heit, -keit, -schaft</strong> → ${dieWords} <span class="ltag es">ES: siempre</span></li>
-        <li><span class="arrow">→</span>${isEN?'Ends in':'Termina en'} <strong>-tion, -sion, -tät, -ie</strong> → die Nation, die Allergie <span class="ltag en">EN: -tion!</span></li>
-        <li><span class="arrow">→</span>${isEN?'Ends in -e (many)':'Termina en -e (muchos)'} → die Schule, die Straße, die Brücke</li>
-        <li><span class="arrow">→</span>${isEN?'Ends in -in (feminine)':'Termina en -in (femenino)'} → die Lehrerin, die Ärztin</li>
-        <li><span class="arrow">→</span>${isEN?'Living females':'Femeninas vivas'} → die Frau, die Mutter, die Katze</li>
+        <li><span class="arrow">→</span>${isEN?'Ends in -ung, -heit, -keit, -schaft':'Termina en -ung, -heit, -keit, -schaft'} → ${dieW}</li>
+        <li><span class="arrow">→</span>${isEN?'Ends in -tion, -tät, -ie':'Termina en -tion, -tät, -ie'} → die Nation, die Qualität</li>
+        <li><span class="arrow">→</span>${isEN?'Ends in -e (many words)':'Termina en -e (muchas palabras)'} → die Straße, die Brücke</li>
+        <li><span class="arrow">→</span>${isEN?'Feminine persons (-in)':'Personas femeninas (-in)'} → die Lehrerin, die Ärztin</li>
       </ul>
-      <div class="art-badge das">🟢 DAS — ${isEN?'neuter':'neutro'}</div>
+      <div class="art-badge das">🟢 DAS — ${isEN?'neuter · "lo/el"':'neutro · "lo/el"'}</div>
       <ul class="rule-list">
-        <li><span class="arrow">→</span>${isEN?'Ends in -chen, -lein':'Termina en -chen, -lein'} → ${dasWords} <span class="ltag es">ES: ${isEN?'no equivalent':'sin equiv.'}</span></li>
+        <li><span class="arrow">→</span>${isEN?'Ends in -chen, -lein (diminutives)':'Termina en -chen, -lein (diminutivos)'} → ${dasW}</li>
         <li><span class="arrow">→</span>${isEN?'Ends in -um, -ment':'Termina en -um, -ment'} → das Museum, das Dokument</li>
-        <li><span class="arrow">→</span>${isEN?'Infinitives as nouns':'Infinitivos como sustantivos'} → das Essen, das Leben, das Lernen</li>
-        <li><span class="arrow">→</span>${isEN?'Prefix Ge-':'Con prefijo Ge-'} → das Gebäude, das Gesicht, das Gespräch</li>
-        <li><span class="arrow">→</span>${isEN?'Colors, metals':'Colores, metales'} → das Gold, das Blau, das Eisen</li>
+        <li><span class="arrow">→</span>${isEN?'Verb used as noun':'Verbos usados como sustantivos'} → das Essen, das Lernen</li>
+        <li><span class="arrow">→</span>${isEN?'Prefix Ge-':'Con prefijo Ge-'} → das Gebäude, das Gespräch</li>
       </ul>
     </div>
-    <div style="background:rgba(232,168,56,0.08);border:1px solid rgba(232,168,56,0.25);border-radius:12px;padding:14px">
-      <div style="font-weight:800;color:var(--bear);margin-bottom:8px">💡 ${isEN?'Key words from':'Palabras clave de'} ${currentLoc.name}</div>
-      <div style="display:flex;flex-wrap:wrap;gap:8px">
-        ${currentLoc.words.slice(0,8).map(w=>`<span style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:0.82rem"><span style="color:${w.artikel==='der'?'var(--masc)':w.artikel==='die'?'var(--fem)':'var(--neut)'};font-weight:700">${w.artikel}</span> ${w.word}</span>`).join('')}
+    <div style="background:rgba(63,185,80,0.08);border:1px solid rgba(63,185,80,0.25);border-radius:12px;padding:14px;margin-bottom:16px">
+      <div style="font-weight:800;color:var(--neut);margin-bottom:10px">📐 ${isEN?'Basic sentence structure':'Estructura básica de oración'}</div>
+      <div style="font-size:0.85rem;color:var(--text);margin-bottom:6px">
+        <span style="color:var(--masc);font-weight:700">Subjekt</span> +
+        <span style="color:var(--gold);font-weight:700"> Verb </span> +
+        <span style="color:var(--bear);font-weight:700"> Rest</span>
       </div>
+      <div style="font-size:0.82rem;margin-bottom:4px">✓ <strong>Ich</strong> <span style="color:var(--gold)">trinke</span> Kaffee. ${isEN?'(I drink coffee)':'(Yo bebo café)'}</div>
+      <div style="font-size:0.82rem;margin-bottom:4px">✓ <strong>Der Bär</strong> <span style="color:var(--gold)">lebt</span> in Bern. ${isEN?'(The bear lives in Bern)':'(El oso vive en Berna)'}</div>
+      <div style="font-size:0.78rem;color:var(--muted);margin-top:8px">⚠️ ${isEN?'The verb is ALWAYS in position 2!':'¡El verbo siempre va en la posición 2!'}</div>
     </div>
-
-    <div style="margin-top:18px">
-      <div style="font-weight:800;color:var(--bear);margin-bottom:12px;font-size:0.9rem">🔗 Konnektoren — Connectors / Conectores</div>
-
-      <div style="font-size:0.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Koordinierende (no cambian el orden)</div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px">
-        ${[
-          {de:'und',en:'and',es:'y'},
-          {de:'aber',en:'but',es:'pero'},
-          {de:'oder',en:'or',es:'o'},
-          {de:'denn',en:'because/for',es:'pues/porque'},
-          {de:'sondern',en:'but rather',es:'sino'},
-        ].map(c=>`<div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:8px 12px;font-size:0.82rem">
-          <span style="color:var(--bear);font-weight:700;font-family:'Playfair Display',serif">${c.de}</span>
-          <span style="color:var(--muted);font-size:0.72rem;display:block">${state.lang==='en'?c.en:c.es}</span>
+    <div style="background:rgba(68,147,248,0.08);border:1px solid rgba(68,147,248,0.2);border-radius:12px;padding:14px">
+      <div style="font-weight:800;color:var(--masc);margin-bottom:10px">🔢 ${isEN?'Plurals — no simple rule!':'Plurales — ¡no hay regla simple!'}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:0.82rem">
+        ${[['der Tisch','die Tische','(+e)'],['das Kind','die Kinder','(+er)'],['die Frau','die Frauen','(+en)'],['der Mann','die Männer','(+er Umlaut)'],['das Museum','die Museen','(-um→-en)'],['der Bär','die Bären','(+en)']].map(([s,p,r])=>`
+        <div style="background:var(--card);border-radius:8px;padding:8px">
+          <div style="color:var(--muted);font-size:0.72rem">${s}</div>
+          <div style="font-weight:700;color:var(--text)">${p}</div>
+          <div style="color:var(--bear);font-size:0.7rem">${r}</div>
         </div>`).join('')}
-      </div>
-
-      <div style="font-size:0.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Subordinierende (verb goes to END ⚠️)</div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px">
-        ${[
-          {de:'weil',en:'because',es:'porque'},
-          {de:'dass',en:'that',es:'que'},
-          {de:'obwohl',en:'although',es:'aunque'},
-          {de:'wenn',en:'when/if',es:'cuando/si'},
-          {de:'als',en:'when (past)',es:'cuando (pasado)'},
-          {de:'damit',en:'so that',es:'para que'},
-          {de:'ob',en:'whether/if',es:'si'},
-          {de:'nachdem',en:'after',es:'después de que'},
-          {de:'bevor',en:'before',es:'antes de que'},
-          {de:'seit',en:'since',es:'desde que'},
-          {de:'während',en:'while',es:'mientras'},
-          {de:'bis',en:'until',es:'hasta que'},
-          {de:'falls',en:'in case',es:'en caso de que'},
-          {de:'indem',en:'by (doing)',es:'haciendo'},
-          {de:'obwohl',en:'although',es:'aunque'},
-          {de:'so bald',en:'as soon as',es:'tan pronto como'},
-          {de:'soweit',en:'as far as',es:'en la medida en que'},
-        ].map(c=>`<div style="background:rgba(248,81,73,0.06);border:1px solid rgba(248,81,73,0.2);border-radius:10px;padding:8px 12px;font-size:0.82rem">
-          <span style="color:var(--fem);font-weight:700;font-family:'Playfair Display',serif">${c.de}</span>
-          <span style="color:var(--muted);font-size:0.72rem;display:block">${state.lang==='en'?c.en:c.es}</span>
-        </div>`).join('')}
-      </div>
-
-      <div style="font-size:0.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Adverbiale Konnektoren (verb 2nd, inversion)</div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px">
-        ${[
-          {de:'deshalb',en:'therefore',es:'por eso'},
-          {de:'trotzdem',en:'nevertheless',es:'sin embargo'},
-          {de:'außerdem',en:'furthermore',es:'además'},
-          {de:'dennoch',en:'still/yet',es:'aun así'},
-          {de:'deswegen',en:'because of this',es:'por eso'},
-          {de:'dann',en:'then',es:'entonces'},
-          {de:'danach',en:'after that',es:'después de eso'},
-          {de:'davor',en:'before that',es:'antes de eso'},
-          {de:'gleichzeitig',en:'at the same time',es:'al mismo tiempo'},
-          {de:'schließlich',en:'finally',es:'finalmente'},
-        ].map(c=>`<div style="background:rgba(68,147,248,0.06);border:1px solid rgba(68,147,248,0.2);border-radius:10px;padding:8px 12px;font-size:0.82rem">
-          <span style="color:var(--masc);font-weight:700;font-family:'Playfair Display',serif">${c.de}</span>
-          <span style="color:var(--muted);font-size:0.72rem;display:block">${state.lang==='en'?c.en:c.es}</span>
-        </div>`).join('')}
-      </div>
-
-      <div style="background:rgba(248,81,73,0.08);border:1px solid rgba(248,81,73,0.25);border-radius:12px;padding:12px;font-size:0.82rem">
-        <div style="font-weight:800;color:var(--fem);margin-bottom:6px">⚠️ La regla más importante: VERB AT THE END</div>
-        <div style="color:var(--text);margin-bottom:4px">✓ Ich bleibe zu Hause, <span style="color:var(--fem);font-weight:700">weil</span> es regnet.</div>
-        <div style="color:var(--muted);font-size:0.75rem;margin-bottom:8px">${state.lang==='en'?"I stay home because it's raining.":"Me quedo en casa porque llueve."}</div>
-        <div style="color:var(--text);margin-bottom:4px">✓ Ich weiß nicht, <span style="color:var(--fem);font-weight:700">ob</span> er kommt.</div>
-        <div style="color:var(--muted);font-size:0.75rem">${state.lang==='en'?"I don't know whether he is coming.":"No sé si él vendrá."}</div>
       </div>
     </div>
   </div>`;
+}
+
+// ══════════════════════════════════════════════════
+// A2 — Akkusativ, Perfekt, Modal verbs, Prepositions
+// ══════════════════════════════════════════════════
+function renderGrammarA2(isEN){
+  const akkW = currentLoc.words.filter(w=>w.artikel==='der').slice(0,1).map(w=>w.word)[0]||'Mann';
+  return `<div>
+    ${wordPills(isEN)}
+    <div style="background:rgba(248,81,73,0.08);border:1px solid rgba(248,81,73,0.25);border-radius:12px;padding:14px;margin-bottom:16px">
+      <div style="font-weight:800;color:var(--fem);margin-bottom:10px">🎯 ${isEN?'Akkusativ — the direct object':'Akkusativ — el objeto directo'}</div>
+      <div style="font-size:0.82rem;color:var(--muted);margin-bottom:10px">${isEN?'Only DER changes → DEN. Die and Das stay the same!':'¡Solo DER cambia → DEN! Die y Das no cambian.'}</div>
+      <table style="width:100%;font-size:0.82rem;border-collapse:collapse">
+        <tr style="color:var(--muted);font-size:0.72rem">
+          <td style="padding:4px 8px"></td><td style="padding:4px 8px">masc.</td><td style="padding:4px 8px">fem.</td><td style="padding:4px 8px">neut.</td>
+        </tr>
+        <tr style="background:var(--card)">
+          <td style="padding:6px 8px;font-weight:700;color:var(--muted)">Nom.</td>
+          <td style="padding:6px 8px;color:var(--masc);font-weight:700">der</td>
+          <td style="padding:6px 8px;color:var(--fem);font-weight:700">die</td>
+          <td style="padding:6px 8px;color:var(--neut);font-weight:700">das</td>
+        </tr>
+        <tr>
+          <td style="padding:6px 8px;font-weight:700;color:var(--fem)">Akk.</td>
+          <td style="padding:6px 8px;color:var(--fem);font-weight:800">den ⚠️</td>
+          <td style="padding:6px 8px;color:var(--fem);font-weight:700">die</td>
+          <td style="padding:6px 8px;color:var(--neut);font-weight:700">das</td>
+        </tr>
+      </table>
+      <div style="margin-top:10px;font-size:0.82rem">
+        <div style="margin-bottom:4px">✓ Ich sehe <span style="color:var(--fem);font-weight:700">den</span> ${akkW}. ${isEN?'(I see the '+akkW+')':'(Veo el/la '+akkW+')'}</div>
+        <div>✓ Ich kaufe <span style="color:var(--fem);font-weight:700">die</span> Zeitung. / <span style="color:var(--neut);font-weight:700">das</span> Buch.</div>
+      </div>
+    </div>
+    <div style="background:rgba(63,185,80,0.08);border:1px solid rgba(63,185,80,0.25);border-radius:12px;padding:14px;margin-bottom:16px">
+      <div style="font-weight:800;color:var(--neut);margin-bottom:10px">⏱️ ${isEN?'Perfekt — talking about the past':'Perfekt — hablar del pasado'}</div>
+      <div style="font-size:0.82rem;color:var(--text);margin-bottom:8px">
+        <strong style="color:var(--gold)">haben/sein</strong> + ${isEN?'Partizip II (at the end!)':'Partizip II (¡al final!)'}
+      </div>
+      <div style="font-size:0.82rem;margin-bottom:6px">✓ Ich <span style="color:var(--gold);font-weight:700">habe</span> Kaffee <span style="color:var(--neut);font-weight:700">getrunken</span>. ${isEN?'(I drank coffee)':'(Bebí café)'}</div>
+      <div style="font-size:0.82rem;margin-bottom:10px">✓ Ich <span style="color:var(--gold);font-weight:700">bin</span> nach Bern <span style="color:var(--neut);font-weight:700">gefahren</span>. ${isEN?'(I went to Bern)':'(Fui a Berna)'}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:0.78rem">
+        <div style="background:var(--card);border-radius:8px;padding:8px">
+          <div style="color:var(--gold);font-weight:700;margin-bottom:4px">haben + PP</div>
+          <div style="color:var(--muted)">machen → gemacht</div>
+          <div style="color:var(--muted)">trinken → getrunken</div>
+          <div style="color:var(--muted)">kaufen → gekauft</div>
+        </div>
+        <div style="background:var(--card);border-radius:8px;padding:8px">
+          <div style="color:var(--neut);font-weight:700;margin-bottom:4px">sein + PP</div>
+          <div style="color:var(--muted)">fahren → gefahren</div>
+          <div style="color:var(--muted)">gehen → gegangen</div>
+          <div style="color:var(--muted)">kommen → gekommen</div>
+        </div>
+      </div>
+    </div>
+    <div style="background:rgba(210,153,34,0.08);border:1px solid rgba(210,153,34,0.25);border-radius:12px;padding:14px">
+      <div style="font-weight:800;color:var(--gold);margin-bottom:10px">⚡ ${isEN?'Modal verbs — verb goes to END':'Verbos modales — verbo al FINAL'}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:0.82rem;margin-bottom:10px">
+        ${[['können','can / poder'],['müssen','must / deber'],['wollen','want / querer'],['dürfen','may / poder (permiso)'],['sollen','should / deber'],['möchten','would like / quisiera']].map(([v,t])=>`
+        <div style="background:var(--card);border-radius:8px;padding:8px">
+          <div style="color:var(--gold);font-weight:700">${v}</div>
+          <div style="color:var(--muted);font-size:0.72rem">${isEN?t.split('/')[0].trim():t.split('/')[1]?.trim()||t}</div>
+        </div>`).join('')}
+      </div>
+      <div style="font-size:0.82rem">✓ Ich <span style="color:var(--gold);font-weight:700">kann</span> Deutsch <span style="color:var(--neut);font-weight:700">sprechen</span>. ${isEN?'(I can speak German)':'(Puedo hablar alemán)'}</div>
+      <div style="font-size:0.82rem">✓ Du <span style="color:var(--gold);font-weight:700">musst</span> das Ticket <span style="color:var(--neut);font-weight:700">kaufen</span>. ${isEN?'(You must buy the ticket)':'(Debes comprar el billete)'}</div>
+    </div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════════════
+// B1 — Dativ, all 3 cases, subordinators, adjective endings
+// ══════════════════════════════════════════════════
+function renderGrammarB1(isEN){
+  return `<div>
+    ${wordPills(isEN)}
+    <div style="background:rgba(210,153,34,0.08);border:1px solid rgba(210,153,34,0.25);border-radius:12px;padding:14px;margin-bottom:16px">
+      <div style="font-weight:800;color:var(--gold);margin-bottom:10px">🎯 ${isEN?'All 3 Cases — the full table':'Los 3 casos — la tabla completa'}</div>
+      <table style="width:100%;font-size:0.78rem;border-collapse:collapse">
+        <tr style="color:var(--muted);font-size:0.7rem;text-align:center">
+          <td style="padding:4px"></td>
+          <td style="padding:4px">masc.</td><td style="padding:4px">fem.</td><td style="padding:4px">neut.</td><td style="padding:4px">pl.</td>
+        </tr>
+        ${[
+          ['Nom.','var(--muted)','der','die','das','die'],
+          ['Akk.','var(--fem)','den ⚠️','die','das','die'],
+          ['Dat.','var(--gold)','dem ⚠️','der ⚠️','dem ⚠️','den+n ⚠️'],
+        ].map(([cas,col,...arts])=>`<tr style="background:var(--card);border-bottom:1px solid var(--border)">
+          <td style="padding:6px 8px;font-weight:700;color:${col}">${cas}</td>
+          ${arts.map((a,i)=>`<td style="padding:6px 8px;text-align:center;font-weight:${a.includes('⚠️')?'800':'600'};color:${i===0?'var(--masc)':i===1?'var(--fem)':'var(--neut)'}">${a}</td>`).join('')}
+        </tr>`).join('')}
+      </table>
+      <div style="margin-top:10px;font-size:0.8rem">
+        <div style="margin-bottom:4px">✓ Ich helfe <span style="color:var(--gold);font-weight:700">dem</span> Mann / <span style="color:var(--gold);font-weight:700">der</span> Frau. ${isEN?'(Dative: to whom)':'(Dativo: ¿a quién?)'}</div>
+        <div>✓ ${isEN?'Dative prepositions: mit, bei, seit, von, zu, aus, nach, gegenüber':'Preposiciones con Dativo: mit, bei, seit, von, zu, aus, nach, gegenüber'}</div>
+      </div>
+    </div>
+    <div style="background:rgba(248,81,73,0.08);border:1px solid rgba(248,81,73,0.2);border-radius:12px;padding:14px;margin-bottom:16px">
+      <div style="font-weight:800;color:var(--fem);margin-bottom:10px">📎 ${isEN?'Subordinating conjunctions → verb at END':'Conjunciones subordinantes → verbo al FINAL'}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
+        ${[['weil','porque/because'],['dass','que/that'],['obwohl','aunque/although'],['wenn','cuando/when'],['als','cuando(pasado)/when(past)'],['damit','para que/so that'],['ob','si/whether'],['bevor','antes/before'],['nachdem','después/after'],['während','mientras/while']].map(([de,es])=>`
+        <div style="background:var(--card);border:1px solid rgba(248,81,73,0.3);border-radius:8px;padding:6px 10px;font-size:0.8rem">
+          <span style="color:var(--fem);font-weight:700">${de}</span>
+          <span style="color:var(--muted);font-size:0.7rem;display:block">${isEN?es.split('/')[1]:es.split('/')[0]}</span>
+        </div>`).join('')}
+      </div>
+      <div style="background:rgba(248,81,73,0.1);border-radius:8px;padding:10px;font-size:0.82rem">
+        <div style="font-weight:800;color:var(--fem);margin-bottom:4px">⚠️ VERB AT THE END!</div>
+        <div>✓ Ich lerne Deutsch, <span style="color:var(--fem);font-weight:700">weil</span> ich in Bern <span style="color:var(--neut);font-weight:800">wohne</span>.</div>
+        <div style="color:var(--muted);font-size:0.75rem">${isEN?"I learn German because I live in Bern.":"Aprendo alemán porque vivo en Berna."}</div>
+      </div>
+    </div>
+    <div style="background:rgba(68,147,248,0.08);border:1px solid rgba(68,147,248,0.2);border-radius:12px;padding:14px">
+      <div style="font-weight:800;color:var(--masc);margin-bottom:10px">🎨 ${isEN?'Adjective endings after der/die/das':'Terminaciones de adjetivo con der/die/das'}</div>
+      <table style="width:100%;font-size:0.78rem;border-collapse:collapse;margin-bottom:8px">
+        <tr style="color:var(--muted);font-size:0.7rem">
+          <td style="padding:4px 6px"></td><td style="padding:4px 6px">masc.</td><td style="padding:4px 6px">fem.</td><td style="padding:4px 6px">neut.</td>
+        </tr>
+        <tr style="background:var(--card)">
+          <td style="padding:5px 6px;color:var(--muted);font-weight:700">Nom.</td>
+          <td style="padding:5px 6px">der alt<span style="color:var(--bear);font-weight:800">e</span></td>
+          <td style="padding:5px 6px">die alt<span style="color:var(--bear);font-weight:800">e</span></td>
+          <td style="padding:5px 6px">das alt<span style="color:var(--bear);font-weight:800">e</span></td>
+        </tr>
+        <tr>
+          <td style="padding:5px 6px;color:var(--muted);font-weight:700">Akk.</td>
+          <td style="padding:5px 6px">den alt<span style="color:var(--fem);font-weight:800">en</span></td>
+          <td style="padding:5px 6px">die alt<span style="color:var(--bear);font-weight:800">e</span></td>
+          <td style="padding:5px 6px">das alt<span style="color:var(--bear);font-weight:800">e</span></td>
+        </tr>
+        <tr style="background:var(--card)">
+          <td style="padding:5px 6px;color:var(--muted);font-weight:700">Dat.</td>
+          <td style="padding:5px 6px">dem alt<span style="color:var(--fem);font-weight:800">en</span></td>
+          <td style="padding:5px 6px">der alt<span style="color:var(--fem);font-weight:800">en</span></td>
+          <td style="padding:5px 6px">dem alt<span style="color:var(--fem);font-weight:800">en</span></td>
+        </tr>
+      </table>
+      <div style="font-size:0.82rem">✓ Der alt<span style="color:var(--bear);font-weight:800">e</span> Bahnhof ist schön. / Ich sehe den alt<span style="color:var(--fem);font-weight:800">en</span> Turm.</div>
+    </div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════════════
+// B2 — Konjunktiv II, Passive, Relative clauses, Genitiv
+// ══════════════════════════════════════════════════
+function renderGrammarB2(isEN){
+  return `<div>
+    ${wordPills(isEN)}
+    <div style="background:rgba(248,81,73,0.08);border:1px solid rgba(248,81,73,0.25);border-radius:12px;padding:14px;margin-bottom:16px">
+      <div style="font-weight:800;color:var(--fem);margin-bottom:10px">🔮 Konjunktiv II — ${isEN?'hypothetical & polite':'hipotético y cortés'}</div>
+      <div style="font-size:0.82rem;color:var(--muted);margin-bottom:10px">${isEN?'Used for wishes, hypotheticals, and polite requests':'Para deseos, hipótesis y peticiones formales'}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:0.8rem;margin-bottom:10px">
+        ${[['sein → wäre','würde + Inf.'],['haben → hätte','könnten (could)'],['können → könnte','sollte (should)'],['werden → würde','müsste (would have to)']].map(([a,b])=>`
+        <div style="background:var(--card);border-radius:8px;padding:8px">
+          <div style="color:var(--fem);font-weight:700;font-size:0.75rem">${a}</div>
+          <div style="color:var(--muted);font-size:0.72rem">${b}</div>
+        </div>`).join('')}
+      </div>
+      <div style="font-size:0.82rem;margin-bottom:4px">✓ Ich <span style="color:var(--fem);font-weight:700">würde</span> gerne in Bern bleiben. ${isEN?'(I would like to stay)':'(Me gustaría quedarme)'}</div>
+      <div style="font-size:0.82rem">✓ <span style="color:var(--fem);font-weight:700">Könnten</span> Sie mir helfen? ${isEN?'(Could you help me? — polite)':'(¿Podría ayudarme? — formal)'}</div>
+    </div>
+    <div style="background:rgba(63,185,80,0.08);border:1px solid rgba(63,185,80,0.25);border-radius:12px;padding:14px;margin-bottom:16px">
+      <div style="font-weight:800;color:var(--neut);margin-bottom:10px">🔄 ${isEN?'Passive voice — focus on the action':'Voz pasiva — el foco está en la acción'}</div>
+      <div style="font-size:0.82rem;color:var(--muted);margin-bottom:8px">werden + Partizip II</div>
+      <div style="font-size:0.82rem;margin-bottom:4px">✓ Das Gesetz <span style="color:var(--neut);font-weight:700">wird</span> <span style="color:var(--gold);font-weight:700">geändert</span>. ${isEN?'(The law is being changed)':'(La ley está siendo cambiada)'}</div>
+      <div style="font-size:0.82rem;margin-bottom:8px">✓ Der Antrag <span style="color:var(--neut);font-weight:700">wurde</span> <span style="color:var(--gold);font-weight:700">genehmigt</span>. ${isEN?'(The application was approved)':'(La solicitud fue aprobada)'}</div>
+      <div style="font-size:0.78rem;color:var(--muted)">${isEN?'Agent (by whom): Das Gesetz wird vom Parlament geändert.':'Agente (por quién): Das Gesetz wird vom Parlament geändert.'}</div>
+    </div>
+    <div style="background:rgba(68,147,248,0.08);border:1px solid rgba(68,147,248,0.2);border-radius:12px;padding:14px;margin-bottom:16px">
+      <div style="font-weight:800;color:var(--masc);margin-bottom:10px">🔗 ${isEN?'Relative clauses':'Cláusulas de relativo'}</div>
+      <div style="font-size:0.82rem;color:var(--muted);margin-bottom:8px">${isEN?'The relative pronoun agrees with the noun it refers to':'El pronombre relativo concuerda con el sustantivo al que se refiere'}</div>
+      <div style="font-size:0.82rem;margin-bottom:4px">✓ Das ist der Mann, <span style="color:var(--masc);font-weight:700">der</span> hier wohnt. ${isEN?'(who lives here)':'(que vive aquí)'}</div>
+      <div style="font-size:0.82rem;margin-bottom:4px">✓ Das ist die Frau, <span style="color:var(--fem);font-weight:700">die</span> ich kenne. ${isEN?'(whom I know)':'(a quien conozco)'}</div>
+      <div style="font-size:0.82rem;margin-bottom:8px">✓ Das ist das Haus, <span style="color:var(--neut);font-weight:700">das</span> er kauft. ${isEN?'(that he is buying)':'(que él compra)'}</div>
+      <div style="font-size:0.78rem;color:var(--muted)">⚠️ ${isEN?'Verb goes to END of relative clause!':'¡El verbo va al FINAL de la cláusula relativa!'}</div>
+    </div>
+    <div style="background:rgba(210,153,34,0.08);border:1px solid rgba(210,153,34,0.25);border-radius:12px;padding:14px">
+      <div style="font-weight:800;color:var(--gold);margin-bottom:10px">📌 Genitiv — ${isEN?'possession':'posesión'}</div>
+      <div style="font-size:0.82rem;margin-bottom:8px">${isEN?'Replaces "von" in formal writing. Noun gets -s/-es ending.':'Reemplaza "von" en escritura formal. El sustantivo toma -s/-es.'}</div>
+      <div style="font-size:0.82rem;margin-bottom:4px">✓ Das Büro <span style="color:var(--gold);font-weight:700">des Chefs</span>. ${isEN?'(the boss\'s office)':'(la oficina del jefe)'}</div>
+      <div style="font-size:0.82rem;margin-bottom:4px">✓ Die Hauptstadt <span style="color:var(--gold);font-weight:700">der Schweiz</span>. ${isEN?'(the capital of Switzerland)':'(la capital de Suiza)'}</div>
+      <div style="font-size:0.82rem">✓ Wegen <span style="color:var(--gold);font-weight:700">des Wetters</span>. ${isEN?'(because of the weather)':'(a causa del tiempo)'}</div>
+    </div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════════════
+// K1 — Same as A1 but with child-focused examples
+// ══════════════════════════════════════════════════
+function renderGrammarK1(isEN){
+  return renderGrammarA1(isEN).replace(
+    'der Mann, der Hund',
+    'der Teddy, der Hund'
+  ).replace(
+    'die Frau, die Straße',
+    'die Mama, die Schule'
+  );
 }
 
 // ── FLASHCARDS ──
