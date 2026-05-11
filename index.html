@@ -276,6 +276,37 @@ input, select, textarea { font-size: 16px !important; }
   background:var(--card); border:1px solid var(--border); text-align:left; line-height:1.5;
   color:var(--text); }
 
+
+/* ── MISSION FLOW ── */
+.mission-step-pill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 10px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+  min-width: 64px;
+  flex-shrink: 0;
+}
+.mission-step-pill.active {
+  border-color: var(--bear);
+  background: rgba(232,168,56,0.12);
+}
+.mission-step-pill.done {
+  border-color: var(--neut);
+  background: rgba(63,185,80,0.1);
+}
+.mission-step-pill .pill-icon { font-size: 1.1rem; }
+.mission-step-pill .pill-label { font-size: 0.6rem; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.3px; }
+.mission-step-pill.active .pill-label { color: var(--bear); }
+.mission-step-pill.done .pill-label { color: var(--neut); }
+.mission-step-pill .pill-check { font-size: 0.65rem; color: var(--neut); font-weight: 800; }
+
 /* ── MOBILE TOUCH IMPROVEMENTS ── */
 
 /* Active press states for all buttons */
@@ -827,7 +858,7 @@ button:active { opacity: 0.75; transform: scale(0.97); }
 <!-- ══ LEVEL SELECT ══ -->
 <div id="levelselect" class="screen">
   <div class="ls-screen-header">
-    <button class="ls-back-btn" onclick="goTrackSelect()">←</button>
+    <button class="ls-back-btn" onclick="goHome()">←</button>
     <div class="ls-screen-title" id="ls-track-title">Leben in Bern</div>
   </div>
   <div class="ls-level-list" id="ls-level-list"></div>
@@ -857,7 +888,7 @@ button:active { opacity: 0.75; transform: scale(0.97); }
 
   <!-- Big START button -->
   <div style="padding:16px">
-    <button onclick="goTrackSelect()" class="btn-primary" style="font-size:1.1rem;padding:18px">
+    <button onclick="showLevelSelect('leben')" class="btn-primary" style="font-size:1.1rem;padding:18px">
       🗺️ <span id="home-start-btn">Empezar a aprender →</span>
     </button>
   </div>
@@ -880,6 +911,7 @@ button:active { opacity: 0.75; transform: scale(0.97); }
 
 <!-- ══ MODULE ══ -->
 <div id="module" class="screen">
+  <!-- Header: back + location name -->
   <div class="mod-hero" id="mod-hero">
     <div class="mod-hero-bg" id="mod-hero-bg"></div>
     <button class="mod-back" onclick="goLocationMap()">← <span id="mod-back-lbl">Volver</span></button>
@@ -888,16 +920,25 @@ button:active { opacity: 0.75; transform: scale(0.97); }
       <p id="mod-sub">—</p>
     </div>
   </div>
-  <div class="mod-tabs" id="mod-tabs">
-    <button class="mtab active" onclick="switchTab('grammar',this)">📖 Gramática</button>
-    <button class="mtab" onclick="switchTab('flashcards',this)">🃏 Cards</button>
-    <button class="mtab" onclick="switchTab('quiz',this)">🎯 Quiz</button>
-    <button class="mtab" onclick="switchTab('blank',this)">✍️ Espacios</button>
-    <button class="mtab" onclick="switchTab('phrases',this)">🗣️ Frases</button>
-    <button class="mtab" onclick="switchTab('culture',this)">🏛️ Cultura</button>
-    <button class="mtab" onclick="switchTab('survival',this)">🧡 Survival</button>
+
+  <!-- Mission progress bar + step indicators -->
+  <div id="mission-nav" style="padding:16px 16px 0">
+    <!-- Overall progress bar -->
+    <div style="background:var(--border);border-radius:99px;height:6px;margin-bottom:14px;overflow:hidden">
+      <div id="mission-prog-fill" style="height:100%;background:linear-gradient(90deg,var(--gold),var(--bear));border-radius:99px;transition:width 0.4s ease;width:0%"></div>
+    </div>
+    <!-- Step pills -->
+    <div style="display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px" id="mission-steps"></div>
   </div>
+
+  <!-- Step content -->
   <div class="mod-content" id="mod-content"></div>
+
+  <!-- Step nav buttons -->
+  <div id="mission-footer" style="padding:16px;display:flex;gap:10px">
+    <button class="btn-secondary" id="mission-prev" onclick="missionPrev()" style="display:none">← Anterior</button>
+    <button class="btn-primary" id="mission-next" onclick="missionNext()" style="flex:1">Siguiente →</button>
+  </div>
 </div>
 
 <!-- ══ UNLOCK OVERLAY ══ -->
@@ -914,7 +955,6 @@ button:active { opacity: 0.75; transform: scale(0.97); }
 <!-- Bottom Nav -->
 <div class="bottom-nav" id="bottom-nav" style="display:none">
   <button class="bnav active" id="bn-home" onclick="goHome()"><span class="bicon">🏠</span><span id="bn-lbl-home">Inicio</span></button>
-  <button class="bnav" id="bn-tracks" onclick="goTrackSelect()"><span class="bicon">🗺️</span><span>Tracks</span></button>
   <button class="bnav" id="bn-spiel" onclick="showSatzspiel()"><span class="bicon">🎮</span>Satzspiel</button>
   <button class="bnav" id="bn-verb" onclick="showVerbspiel()"><span class="bicon">⚡</span>Verbspiel</button>
 </div>
@@ -5273,37 +5313,118 @@ function goLocationMap(){
 // ════════════════════════════════════════════
 // MODULE
 // ════════════════════════════════════════════
+// ════════════════════════════════════════════
+// MISSION FLOW
+// ════════════════════════════════════════════
+const MISSION_STEPS = [
+  { id:'words',    icon:'🎯', label_es:'Palabras', label_en:'Words'   },
+  { id:'phrases',  icon:'🗣️', label_es:'Frases',   label_en:'Phrases' },
+  { id:'grammar',  icon:'📖', label_es:'Gramática',label_en:'Grammar' },
+  { id:'culture',  icon:'🏛️', label_es:'Cultura',  label_en:'Culture' },
+  { id:'practice', icon:'✍️', label_es:'Práctica', label_en:'Practice'},
+  { id:'quiz',     icon:'🏆', label_es:'Quiz',     label_en:'Quiz'    },
+];
+// Culture & Survival accessible via "more" but not in main flow
+let missionStep = 0;
+let missionDone = new Set(); // which steps completed this visit
+
 function openModule(loc,id){
   currentLoc={...loc,id};
   document.getElementById('mod-title').textContent=loc.name;
   document.getElementById('mod-sub').textContent=loc.sub;
   document.getElementById('mod-hero-bg').textContent=loc.emoji;
+  // Reset all decks
   qDeck=make15(loc.words); qIndex=0; qCorrect=0; qWrong=0; qAnswered=false;
   fDeck=make15(loc.words); fIndex=0; fCorrect=0; fWrong=0; fFlipped=false;
   bDeck=shuffle(loc.sentences||[]); bIndex=0; bCorrect=0; bWrong=0;
   phraseMode='formal';
-  document.querySelectorAll('.mtab').forEach(t=>t.classList.remove('active'));
-  document.querySelector('.mtab').classList.add('active');
-  switchTab('grammar');
+  missionStep=0;
+  missionDone=new Set();
+  renderMissionNav();
+  loadMissionStep(0);
   showScreen('module');
 }
 
-function switchTab(tab,btn){
-  currentTab=tab;
-  if(btn){document.querySelectorAll('.mtab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');}
-  renderTab(tab);
+function renderMissionNav(){
+  const isEN = state.lang==='en';
+  // Step pills
+  const pills = MISSION_STEPS.map((s,i)=>{
+    const isDone = missionDone.has(i);
+    const isActive = i===missionStep;
+    const cls = isDone?'done':isActive?'active':'';
+    return `<div class="mission-step-pill ${cls}" onclick="jumpMissionStep(${i})">
+      <span class="pill-icon">${isDone?'✅':s.icon}</span>
+      <span class="pill-label">${isEN?s.label_en:s.label_es}</span>
+    </div>`;
+  }).join('');
+  document.getElementById('mission-steps').innerHTML = pills;
+  // Progress bar
+  const pct = (missionDone.size / MISSION_STEPS.length) * 100;
+  document.getElementById('mission-prog-fill').style.width = pct+'%';
+  // Footer buttons
+  const prev = document.getElementById('mission-prev');
+  const next = document.getElementById('mission-next');
+  const isEN2 = state.lang==='en';
+  prev.style.display = missionStep>0 ? '' : 'none';
+  prev.textContent = isEN2?'← Back':'← Anterior';
+  if(missionStep === MISSION_STEPS.length-1){
+    next.textContent = isEN2?'🗺️ Finish':'🗺️ Terminar';
+  } else {
+    next.textContent = isEN2?'Next →':'Siguiente →';
+  }
 }
 
-function renderTab(tab){
-  const c=document.getElementById('mod-content');
-  if(tab==='grammar') c.innerHTML=renderGrammar();
-  else if(tab==='flashcards'){c.innerHTML=renderFCHTML();loadFC();}
-  else if(tab==='quiz'){c.innerHTML=renderQHTML();loadQ();}
-  else if(tab==='blank'){c.innerHTML=renderBHTML();loadB();}
-  else if(tab==='phrases') c.innerHTML=renderPhrases();
-  else if(tab==='culture') c.innerHTML=renderCulture();
-  else if(tab==='survival') c.innerHTML=renderSurvival();
+function loadMissionStep(idx){
+  missionStep = idx;
+  renderMissionNav();
+  const step = MISSION_STEPS[idx];
+  const content = document.getElementById('mod-content');
+  // Scroll to top
+  content.scrollTop = 0;
+  document.getElementById('module').scrollTop = 0;
+
+  if(step.id==='words'){
+    content.innerHTML = renderFCHTML();
+    loadFC();
+  } else if(step.id==='phrases'){
+    renderPhrases(); // sets mod-content directly
+  } else if(step.id==='grammar'){
+    content.innerHTML = renderGrammar();
+  } else if(step.id==='practice'){
+    content.innerHTML = renderBHTML();
+    loadB();
+  } else if(step.id==='quiz'){
+    content.innerHTML = renderQHTML();
+    loadQ();
+  } else if(step.id==='culture'){
+    content.innerHTML = renderCultureFull();
+  }
 }
+
+function jumpMissionStep(idx){
+  // Can jump to any visited step or the next one
+  if(idx <= missionStep || missionDone.has(idx-1) || idx===0){
+    loadMissionStep(idx);
+  }
+}
+
+function missionNext(){
+  missionDone.add(missionStep);
+  if(missionStep >= MISSION_STEPS.length-1){
+    // All steps done — go back to map
+    goLocationMap();
+  } else {
+    loadMissionStep(missionStep+1);
+  }
+}
+
+function missionPrev(){
+  if(missionStep>0) loadMissionStep(missionStep-1);
+}
+
+// switchTab kept for backward compat (satzspiel/verbspiel use it)
+function switchTab(tab,btn){}
+function renderTab(tab){}
 
 // ── GRAMMAR ──
 function renderGrammar(){
@@ -5550,21 +5671,40 @@ function checkQ(chosen){
 function showQDone(){
   const passed=qWrong<=3;
   const isEN=state.lang==='en';
+
+  // Mark mission step done
+  missionDone.add(missionStep);
+  renderMissionNav();
+
+  // Hide footer nav during quiz done screen
+  document.getElementById('mission-footer').style.display='none';
+
   let html=`<div class="finished">
     <span class="big">${passed?'🏆':qWrong<=5?'💪':'📚'}</span>
     <h2>${qCorrect}/${qDeck.length} ${isEN?'correct':'correctas'}</h2>
-    <p>${passed?(isEN?'You passed! Max 3 errors allowed.':'¡Superaste! Máximo 3 errores permitidos.'):(isEN?'Max 3 errors to pass. Almost!':'Necesitas máximo 3 errores. ¡Casi!')}</p>
-    <p style="font-size:0.78rem;color:var(--muted);margin-top:-12px">${isEN?'Errors':'Errores'}: ${qWrong}/3 ${isEN?'allowed':'permitidos'}</p>`;
+    <p>${passed?(isEN?'Location complete! Max 3 errors.':'¡Lugar completado! Máximo 3 errores.'):(isEN?'Max 3 errors to pass. Almost!':'Necesitas máximo 3 errores. ¡Casi!')}</p>`;
+
   if(passed&&!state.completed.includes(currentLoc.id)){
     state.completed.push(currentLoc.id);
     addXP(100); saveState();
-    html+=`<button class="btn-primary" style="margin-bottom:8px" onclick="showUnlock()">🏆 ${isEN?'See reward & next location':'Ver recompensa y siguiente lugar'}</button>`;
-  } else if(passed&&state.completed.includes(currentLoc.id)){
-    html+=`<p style="color:var(--neut);font-size:0.85rem">✓ ${isEN?'Already completed!':'¡Ya completado!'}</p>`;
-    html+=`<button class="btn-primary" style="margin-bottom:8px" onclick="goLocationMap()">🗺️ ${isEN?'Back to map':'Ver el mapa'}</button>`;
+    html+=`<button class="btn-primary" style="margin-bottom:8px" onclick="showUnlock()">🏆 ${isEN?'See reward!':'¡Ver recompensa!'}</button>`;
+  } else if(passed){
+    html+=`<button class="btn-primary" style="margin-bottom:8px" onclick="goLocationMap()">🗺️ ${isEN?'Next location':'Siguiente lugar'}</button>`;
   }
-  html+=`<button class="btn-secondary" onclick="restartQ()">↺ ${isEN?'Try again':'Volver a intentar'}</button></div>`;
+
+  // Culture & Survival are now mission steps — no need for bonus buttons
+
+  html+=`<button class="btn-secondary" onclick="restartQ();document.getElementById('mission-footer').style.display='flex'">↺ ${isEN?'Try again':'Volver a intentar'}</button></div>`;
   document.getElementById('qz-wrap').innerHTML=html;
+}
+
+function showBonusTab(tab){
+  document.getElementById('mission-footer').style.display='flex';
+  const content = document.getElementById('mod-content');
+  if(tab==='culture') content.innerHTML=renderCulture();
+  else if(tab==='survival') content.innerHTML=renderSurvival();
+  // Add back button
+  content.insertAdjacentHTML('afterbegin',`<div style="padding:12px 16px 0"><button class="btn-secondary" onclick="restartQ();document.getElementById('mission-footer').style.display=\'none\'">← ${state.lang==='en'?'Back to quiz':'Volver al quiz'}</button></div>`);
 }
 
 function restartQ(){qDeck=make15(currentLoc.words);qIndex=0;qCorrect=0;qWrong=0;document.getElementById('mod-content').innerHTML=renderQHTML();loadQ();}
@@ -5631,26 +5771,86 @@ function restartB(){bDeck=shuffle(currentLoc.sentences||[]);bIndex=0;bCorrect=0;
 // ── PHRASES ──
 function renderPhrases(){
   const phrases=currentLoc.phrases[phraseMode]||[];
-  return `<div>
-    <div class="ptog-row">
-      <button class="ptog ${phraseMode==='formal'?'active':''}" onclick="setPM('formal')">🎩 Formal</button>
-      <button class="ptog ${phraseMode==='casual'?'active':''}" onclick="setPM('casual')">😎 Bernés casual</button>
-    </div>
-    ${phrases.map(p=>`<div class="phrase-card">
-      <div class="ph-de">${p.de}</div>
-      <button class="speak-btn big" onclick="speak('${p.de.replace(/'/g,"\'")}',this)">🔊 ${state.lang==='en'?'Listen':'Escuchar'}</button>
+  const isEN=state.lang==='en';
+  // Build phrase cards safely — no inline string injection for speak()
+  const cards = phrases.map((p,i)=>{
+    const card = document.createElement('div');
+    card.className = 'phrase-card';
+    card.innerHTML = `
+      <div class="ph-de" id="ph-de-${i}">${p.de}</div>
+      <button class="speak-btn big" data-idx="${i}">🔊 ${isEN?'Listen':'Escuchar'}</button>
       <div class="ph-es">🇪🇸 ${p.es}</div>
       <div class="ph-en">🇬🇧 ${p.en||toEnglish(p.es)}</div>
-      <div class="ph-ctx">📍 ${p.ctx}</div>
-    </div>`).join('')}
-  </div>`;
+      <div class="ph-ctx">📍 ${p.ctx}</div>`;
+    return card;
+  });
+
+  const wrap = document.createElement('div');
+  wrap.style.paddingBottom='8px';
+
+  // Toggle bar
+  const tog = document.createElement('div');
+  tog.className='ptog-row';
+  tog.innerHTML=`<button class="ptog ${phraseMode==='formal'?'active':''}" onclick="setPM('formal')">🎩 Formal</button>
+    <button class="ptog ${phraseMode==='casual'?'active':''}" onclick="setPM('casual')">😎 Bernés casual</button>`;
+  wrap.appendChild(tog);
+
+  cards.forEach((card,i)=>{
+    wrap.appendChild(card);
+    // Attach speak handler safely
+    const btn = card.querySelector('.speak-btn');
+    btn.addEventListener('click', function(){ speak(phrases[i].de, this); });
+  });
+
+  const hint = document.createElement('div');
+  hint.style.cssText='padding:8px 16px 16px;text-align:center;font-size:0.75rem;color:var(--muted)';
+  hint.textContent = isEN?'Tap 🔊 to hear each phrase':'Toca 🔊 para escuchar cada frase';
+  wrap.appendChild(hint);
+
+  // Replace mod-content directly (since we're building DOM nodes)
+  const mc = document.getElementById('mod-content');
+  mc.innerHTML='';
+  mc.appendChild(wrap);
+  return null; // signals to loadMissionStep not to set innerHTML
 }
 
-function setPM(mode){phraseMode=mode;document.getElementById('mod-content').innerHTML=renderPhrases();}
+function setPM(mode){phraseMode=mode;renderPhrases();}
 
 // ── CULTURE ──
 function renderCulture(){
   return `<div>${(currentLoc.culture||[]).map(c=>`<div class="cult-card"><span class="cult-emoji">${c.emoji}</span><h4>${c.title}</h4><p>${c.text}</p><span class="cult-tag">${c.tag}</span></div>`).join('')}</div>`;
+}
+
+function renderCultureFull(){
+  const isEN = state.lang==='en';
+  const items = currentLoc.culture||[];
+  const survival = currentLoc.survival||[];
+  if(!items.length && !survival.length){
+    return `<div style="padding:40px 20px;text-align:center;color:var(--muted)">
+      🏛️ ${isEN?'Culture tips coming soon for':'Tips de cultura próximamente para'} ${currentLoc.name}
+    </div>`;
+  }
+  return `<div style="padding:0 0 8px">
+    <div style="padding:16px 16px 8px;font-size:0.78rem;color:var(--muted);line-height:1.6;background:var(--surface);border-bottom:1px solid var(--border)">
+      📖 ${isEN
+        ? 'Read each tip carefully — the Quiz may test this content!'
+        : 'Lee cada tip con atención — ¡el Quiz puede preguntar sobre esto!'}
+    </div>
+    ${items.map(item=>`
+      <div class="cult-card" style="margin:12px 16px 0;border-radius:16px">
+        <span class="cult-emoji">${item.emoji}</span>
+        <h4 style="margin-bottom:6px">${item.title}</h4>
+        <p style="line-height:1.6;color:var(--text)">${item.text}</p>
+        <span class="cult-tag">${item.tag}</span>
+      </div>`).join('')}
+    ${survival.map(item=>`
+      <div class="survival-card" style="margin:12px 16px 0;border-radius:16px">
+        <h4>🧡 ${item.title}</h4>
+        <p style="white-space:pre-line;line-height:1.6">${item.text}</p>
+        <span class="cult-tag">${item.tag}</span>
+      </div>`).join('')}
+    <div style="height:16px"></div>
+  </div>`;
 }
 
 // ── SURVIVAL ──
